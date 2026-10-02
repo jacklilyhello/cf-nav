@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
+import { routeMatchesHostname } from './release-guards.mjs';
 const mode = process.argv[2];
 if (!['production', 'rollback'].includes(mode)) throw new Error('Specify production or rollback');
 if (process.env.GITHUB_ACTIONS !== 'true') throw new Error('Domain changes run only in Actions');
@@ -6,6 +7,8 @@ const account = process.env.CLOUDFLARE_ACCOUNT_ID;
 const zone = process.env.CLOUDFLARE_ZONE_ID;
 const hostname = process.env.CF_PRODUCTION_DOMAIN;
 const worker = process.env.CF_WORKER_NAME;
+if (!account || !zone || !process.env.CLOUDFLARE_API_TOKEN)
+  throw new Error('Cloudflare environment is incomplete');
 if (hostname !== 'nav.lily.lat' || worker !== 'cf-nav')
   throw new Error('Unexpected deployment target');
 const headers = {
@@ -25,13 +28,21 @@ async function api(path, method = 'GET', body) {
 }
 const domains = await api(`accounts/${account}/workers/domains`);
 const before = domains.find((x) => x.hostname === hostname);
-if (!before || !['cf-nav', 'websitenavigation'].includes(before.service) || before.zone_id !== zone)
+if (
+  !before ||
+  !['cf-nav', 'websitenavigation'].includes(before.service) ||
+  before.zone_id !== zone ||
+  before.environment !== 'production'
+)
   throw new Error('Unexpected current binding');
 const routes = await api(`zones/${zone}/workers/routes`);
-if (routes.some((x) => x.pattern.includes(hostname)))
+if (routes.some((x) => routeMatchesHostname(x.pattern, hostname)))
   throw new Error('Conflicting route requires investigation');
 if (mode === 'production') {
-  const r = await fetch('https://cf-nav.lilyya.workers.dev/api/health');
+  const r = await fetch('https://cf-nav.lilyya.workers.dev/api/health', {
+    redirect: 'error',
+    signal: AbortSignal.timeout(20000),
+  });
   const health = await r.json();
   if (
     !r.ok ||
@@ -53,7 +64,8 @@ await api(`accounts/${account}/workers/domains`, 'PUT', {
 const after = (await api(`accounts/${account}/workers/domains`)).find(
   (x) => x.hostname === hostname,
 );
-if (after?.service !== service) throw new Error('Domain readback mismatch');
+if (after?.service !== service || after?.zone_id !== zone || after?.environment !== 'production')
+  throw new Error('Domain readback mismatch');
 await writeFile('build/domain-after.json', JSON.stringify(after, null, 2));
 console.log(
   JSON.stringify({

@@ -12,7 +12,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: cf-nav-deploy-${{ inputs.environment || 'staging' }}
+  group: cf-nav-delivery-${{ inputs.environment || 'staging' }}
   cancel-in-progress: false
 jobs:
   deploy:

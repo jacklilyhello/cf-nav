@@ -14,7 +14,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: cf-nav-production-domain
+  group: cf-nav-delivery-production
   cancel-in-progress: false
 jobs:
   domain:
