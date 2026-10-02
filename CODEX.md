@@ -1,3 +1,22 @@
+# Current authorization and implementation
+
+The 2026-10-02 owner request supersedes the historical bootstrap-only restrictions below.
+The authorized scope includes the complete cf-nav rewrite, full legacy-link audit,
+isolated staging, Cloudflare resource provisioning through GitHub Actions, and production
+cutover after successful acceptance. Preserve `websitenavigation` unchanged for rollback.
+Local Cloudflare credentials remain READ ONLY. Never copy or print credentials.
+
+Implementation uses TypeScript, Vite static assets, a Cloudflare Worker, D1,
+Cloudflare Access for a single established administrator, and bounded Cron health checks.
+`global_fetch_strictly_public` is mandatory for the public-egress security boundary.
+Use `npm run check` before release. D1 and deployment configuration are environment-specific.
+Resource workflows are explicit dispatch only; production remains gated by acceptance.
+Do not add AI work logs to repository files. Record verification in pull requests.
+
+---
+
+## Historical bootstrap context (superseded for this authorized task)
+
 # cf-nav — 长期项目说明
 
 本文件是以后所有本地 Codex 任务的项目上下文与工作边界。开始任务时先阅读本文件，并遵守用户当前指令。这里记录的未来目标不代表已经授权开始开发或执行生产操作。
@@ -80,13 +99,13 @@
 
 ## 生产保护：必须遵守
 
-| 对象 | 当前状态与边界 |
-| --- | --- |
+| 对象                          | 当前状态与边界                                                 |
+| ----------------------------- | -------------------------------------------------------------- |
 | 旧 Worker `websitenavigation` | 继续运行，维持现有生产服务；不得自行修改、覆盖、重命名或删除。 |
-| 生产域名 `nav.lily.lat` | 目前由旧 Worker 提供服务；当前禁止修改。 |
-| 新项目 Worker 名称 `cf-nav` | 未来开发阶段使用的名称，本阶段不创建或部署。 |
-| 新项目未来首个部署目标 | 仅 `workers.dev`，且须属于用户授权的后续开发任务。 |
-| 生产切换 | 只有用户明确批准切换 `nav.lily.lat` 后才能执行。 |
+| 生产域名 `nav.lily.lat`       | 目前由旧 Worker 提供服务；当前禁止修改。                       |
+| 新项目 Worker 名称 `cf-nav`   | 未来开发阶段使用的名称，本阶段不创建或部署。                   |
+| 新项目未来首个部署目标        | 仅 `workers.dev`，且须属于用户授权的后续开发任务。             |
+| 生产切换                      | 只有用户明确批准切换 `nav.lily.lat` 后才能执行。               |
 
 任何 Codex 任务如果没有得到用户明确的生产切换指令，不得自行修改：
 
@@ -101,13 +120,13 @@
 
 用户已经提前配置以下参数。这里只记录名称及公开的项目标识，不保存任何凭据值。
 
-| 类型 | 名称 | 说明 |
-| --- | --- | --- |
-| Repository Secret | `CLOUDFLARE_API_TOKEN` | 已存在；本阶段不读取、验证、引用或调用。 |
-| Repository Variable | `CLOUDFLARE_ACCOUNT_ID` | 已存在。 |
-| Repository Variable | `CLOUDFLARE_ZONE_ID` | 已存在。 |
-| Repository Variable | `CF_WORKER_NAME` | 已存在，值为 `cf-nav`。 |
-| Repository Variable | `CF_PRODUCTION_DOMAIN` | 已存在，值为 `nav.lily.lat`。 |
+| 类型                | 名称                    | 说明                                     |
+| ------------------- | ----------------------- | ---------------------------------------- |
+| Repository Secret   | `CLOUDFLARE_API_TOKEN`  | 已存在；本阶段不读取、验证、引用或调用。 |
+| Repository Variable | `CLOUDFLARE_ACCOUNT_ID` | 已存在。                                 |
+| Repository Variable | `CLOUDFLARE_ZONE_ID`    | 已存在。                                 |
+| Repository Variable | `CF_WORKER_NAME`        | 已存在，值为 `cf-nav`。                  |
+| Repository Variable | `CF_PRODUCTION_DOMAIN`  | 已存在，值为 `nav.lily.lat`。            |
 
 - 不修改、删除、重建这些 Secret / Variables，不要求用户再次配置。
 - 后续优先复用这些现有参数，不无意义地增加大量 Repository Variables。
@@ -117,21 +136,21 @@
 
 ## 目录骨架与预期职责
 
-| 路径 | 未来用途 |
-| --- | --- |
-| `.github/workflows/` | GitHub Actions；当前仅有手动 Bootstrap Check。 |
-| `docs/` | 研究、设计与工程文档。 |
-| `src/frontend/` | 未来前台导航界面。 |
-| `src/worker/` | 未来 Worker 入口与平台整合。 |
-| `src/admin/` | 未来单管理员后台。 |
-| `src/api/` | 未来 API。 |
-| `src/health/` | 未来链接健康检测与调度相关实现。 |
-| `src/shared/` | 未来共享类型与工具。 |
-| `migrations/` | 未来数据库 migration；当前无 SQL。 |
-| `scripts/` | 未来工程辅助脚本。 |
-| `tests/` | 未来测试。 |
-| `data/` | 未来经审查的导入、导出或审计数据；当前无旧站数据。 |
-| `public/` | 未来静态资源；当前无 HTML 页面或视觉资产。 |
+| 路径                 | 未来用途                                           |
+| -------------------- | -------------------------------------------------- |
+| `.github/workflows/` | GitHub Actions；当前仅有手动 Bootstrap Check。     |
+| `docs/`              | 研究、设计与工程文档。                             |
+| `src/frontend/`      | 未来前台导航界面。                                 |
+| `src/worker/`        | 未来 Worker 入口与平台整合。                       |
+| `src/admin/`         | 未来单管理员后台。                                 |
+| `src/api/`           | 未来 API。                                         |
+| `src/health/`        | 未来链接健康检测与调度相关实现。                   |
+| `src/shared/`        | 未来共享类型与工具。                               |
+| `migrations/`        | 未来数据库 migration；当前无 SQL。                 |
+| `scripts/`           | 未来工程辅助脚本。                                 |
+| `tests/`             | 未来测试。                                         |
+| `data/`              | 未来经审查的导入、导出或审计数据；当前无旧站数据。 |
+| `public/`            | 未来静态资源；当前无 HTML 页面或视觉资产。         |
 
 当前空目录通过 `.gitkeep` 跟踪。此结构为可调整的职责边界，不预先锁定技术栈、路由或业务实现。
 
