@@ -1,0 +1,159 @@
+[
+  {
+    "id": "https-030",
+    "legacy_id": "legacy-030",
+    "name": "有道翻译",
+    "url": "https://fanyi.youdao.com/",
+    "checked_at": "2026-10-02T13:13:20+00:00",
+    "probe": {
+      "url": "https://fanyi.youdao.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "有道翻译_文本、文档、网页、在线即时翻译",
+      "meta_description": "有道翻译提供即时免费的中文、英语、日语、韩语、法语、德语、俄语、西班牙语、葡萄牙语、越南语、印尼语、意大利语、荷兰语、泰语全文翻译、网页翻译、文档翻译、PDF翻译、DOC翻译、PPT翻译、人工翻译、同传等服务。",
+      "text_excerpt": "有道翻译_文本、文档、网页、在线即时翻译 在线客服 下载电脑版 企业版 开通会员 登录 文本翻译 润色改写 文档翻译 降重降AI率 免费查AI率 知识宝库 音视频翻译 有道龙虾 AI写作 AI PPT arXiv论文翻译 网页翻译 翻译API 意见反馈 收起侧边栏 翻译 AI 翻译 文档翻译 PDF转WORD 人工翻译 AI+人工翻译 你好，我是有道翻译AI助手 目前已有 8 千万人在使用AI翻译，快来试试吧～ 母语级润色 After my undergraduate studies, I have a passion for more academic achievement in finance. Following my completion of undergraduate studies, I am driven by a strong passion to pursue further academic accomplishments in the field of finance. 语法纠错 There are many teenage champions such as",
+      "content_sha256": "17438588ea3065c95a41ea33022fb067c42647fd1a700ccc30c3db6167cf54ee",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 1.22
+  },
+  {
+    "id": "https-043",
+    "legacy_id": "legacy-043",
+    "name": "百度网盘",
+    "url": "https://pan.baidu.com/",
+    "checked_at": "2026-10-02T13:13:20+00:00",
+    "probe": {
+      "url": "https://pan.baidu.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "百度网盘-免费云盘丨文件共享软件丨超大容量丨存储安全",
+      "meta_description": "百度网盘是一款国民级产品，已连续9年为超过7亿用户提供稳定、安全的个人云存储服务，已实现电脑、手机、电视等多种终端场景的覆盖和互联，并支持多类型文件的备份、分享、查看和处理",
+      "text_excerpt": "百度网盘-免费云盘丨文件共享软件丨超大容量丨存储安全",
+      "content_sha256": "255c1b7b7a25fad3c52ce27bddff5d76d7c395bf24d4641a057b878f422ad8a1",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 1.18
+  },
+  {
+    "id": "https-076",
+    "legacy_id": "legacy-076",
+    "name": "素材中国",
+    "url": "https://www.sccnn.com/",
+    "checked_at": "2026-10-02T13:13:20+00:00",
+    "first_attempt": {
+      "url": "https://www.sccnn.com/",
+      "redirects": [],
+      "http_status": null,
+      "error": "connection_error",
+      "detail": "curl: (7) Failed to connect to www.sccnn.com port 443 after 392 ms: Couldn't connect to server "
+    },
+    "probe": {
+      "url": "https://www.sccnn.com/",
+      "redirects": [],
+      "http_status": null,
+      "error": "connection_error",
+      "detail": "curl: (7) Failed to connect to www.sccnn.com port 443 after 407 ms: Couldn't connect to server "
+    },
+    "health_status": "connection_error",
+    "suggested_action": "review",
+    "reason": "Probe could not establish service continuity; transient failure is not a death verdict.",
+    "duration_seconds": 1.76
+  },
+  {
+    "id": "https-084",
+    "legacy_id": "legacy-084",
+    "name": "Lost Type",
+    "url": "https://www.losttype.com/",
+    "checked_at": "2026-10-02T13:13:20+00:00",
+    "probe": {
+      "url": "https://www.losttype.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Lost Type Co-op",
+      "meta_description": "",
+      "text_excerpt": "Lost Type Co-op Fonts Store Blog Contact About Lost Type is a Collaborative Digital Type Foundry Introducing PROSPECTUS Introducing MORT MODERN Introducing LEHIGH Introducing NEW LAPEL PINS Introducing CALAFIA Introducing TOFINO Introducing ESCAFINA Introducing BUFFON Copyright Lost Type™ 2019 Brought to you by Riley Cran and Friends . Home > Welcome! Fonts Store Blog Contact About",
+      "content_sha256": "ffac1e5480cc3f38431fa217e81922b7dd5b696e02adc9cebebae22ccbbae8c0",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.85
+  },
+  {
+    "id": "https-087",
+    "legacy_id": "legacy-087",
+    "name": "FontM",
+    "url": "https://fontm.com/",
+    "checked_at": "2026-10-02T13:13:21+00:00",
+    "probe": {
+      "url": "https://fontm.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "FontM - Free Fonts",
+      "meta_description": "",
+      "text_excerpt": "FontM - Free Fonts Login Register Font Finder powered by www.whatfontis.com Free Fonts A B C D E F G H I J K L M N O P Q R S T U V W X Y Z # Premium decorative legible Script Sans Serif funny Modern computer Serif picture blackletter Random Top Basic Fixed width Sans serif Serif Various Dingbats Alien Ancient Animals Army Asian Bar Code Shapes Esoteric Games Fantastic Horror Kids Logos Nature Runes, Elvish Various Fancy Curly Cartoon Decorative Destroy Distorted Eroded Fire, Ice Grid Groovy Horr",
+      "content_sha256": "946b7c99b9967588fe79796d9bbdbb6ea70ca68d06d39bea99d889551e4349f1",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 1.33
+  },
+  {
+    "id": "https-117",
+    "legacy_id": "legacy-117",
+    "name": "thedayscolor",
+    "url": "https://www.thedayscolor.com/",
+    "checked_at": "2026-10-02T13:13:22+00:00",
+    "probe": {
+      "url": "https://thedayscolor.com/",
+      "redirects": [
+        {
+          "from": "https://www.thedayscolor.com/",
+          "to": "https://thedayscolor.com/",
+          "status": 301
+        }
+      ],
+      "http_status": 200,
+      "title": "The Day's Color",
+      "meta_description": "",
+      "text_excerpt": "The Day's Color The Day's Color The daily color digest @ i ⬆ 01 10 2016 Inspired by David Bowie's 'Blackstar' 12 02 2015 Inspired by Sunn O))) 'Kannon' 11 27 2015 Inspired by 'Fargo' Season 2 11 23 2015 Inspired by Tortoise 'The Catastrophist' 11 22 2015 Inspired by David Bowie's 'Black Star' Video 11 18 2015 Inspired by Autumn Chicago 2015 11 17 2015 Inspired by Captain Beefheart 'Grow Fins' 11 16 2015 Inspired by Freddie Gibbs 'Shadow of a Doubt' 07 07 2015 Inspired by Tame Impala 'Currents' 0",
+      "content_sha256": "6f8d76b497341dce10adf0414287624f1dc6405c20c9132d8a08af7c0aaef375",
+      "content_sample_truncated": false
+    },
+    "health_status": "redirected",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 2.11
+  },
+  {
+    "id": "https-129",
+    "legacy_id": "legacy-129",
+    "name": "Android 9 patch",
+    "url": "https://inloop.github.io/shadow4android/",
+    "checked_at": "2026-10-02T13:13:22+00:00",
+    "probe": {
+      "url": "https://inloop.github.io/shadow4android/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Android Shadow Generator",
+      "meta_description": "Create ninepatch shadow for Android",
+      "text_excerpt": "Android Shadow Generator Android 9-patch shadow generator fully customizable shadows Sorry, you have an outdated browser! Basic Round [ advanced ] Shadow blur Shadow color Shadow offset X Y Fill & Outline Background fill color Enabled Fill color Outline Width Advanced Box size Width Height Drag right/bottom/corner to change minimum size of ninepatch. Padding lines right: bottom: Side clipping Left Right Top Bottom Padding size Left Right Top Bottom change padding line position to content change ",
+      "content_sha256": "fa3379b3606874118be35aa9eae93a7a160c58a612b491f5d679bcee9d7e810e",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.31
+  }
+]
