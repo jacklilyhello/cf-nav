@@ -1,0 +1,65 @@
+name: Repository Bootstrap Check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    name: Check repository skeleton
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Verify bootstrap files and directories
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            CODEX.md
+            README.md
+            .editorconfig
+            .gitattributes
+            .gitignore
+            .prettierrc.json
+            .prettierignore
+            .github/workflows/bootstrap-check.yml
+          )
+
+          for file in "${required_files[@]}"; do
+            if [[ ! -s "$file" ]]; then
+              printf 'Missing or empty required file: %s\n' "$file" >&2
+              exit 1
+            fi
+          done
+
+          required_directories=(
+            docs
+            src/frontend
+            src/worker
+            src/admin
+            src/api
+            src/health
+            src/shared
+            migrations
+            scripts
+            tests
+            data
+            public
+          )
+
+          for directory in "${required_directories[@]}"; do
+            if [[ ! -d "$directory" || ! -f "$directory/.gitkeep" ]]; then
+              printf 'Missing directory placeholder: %s/.gitkeep\n' "$directory" >&2
+              exit 1
+            fi
+          done
+
+          printf 'Repository bootstrap check passed.\n'
