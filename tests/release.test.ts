@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DatabaseSync } from 'node:sqlite';
 import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -7,6 +7,7 @@ import { URL } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import worker from '../src/worker';
 import type { Env } from '../src/shared/types';
+import * as security from '../src/api/security';
 import {
   buildSeedSql,
   routeMatchesHostname,
@@ -29,10 +30,17 @@ function assetEnvironment() {
 }
 
 describe('Worker static routing release regressions', () => {
+  afterEach(() => vi.restoreAllMocks());
   it.each(['/', '/admin', '/admin/'])(
-    'serves %s without requesting canonicalizing index.html',
+    'serves %s without canonicalization after any required authentication',
     async (path) => {
       const { env, assets } = assetEnvironment();
+      // These tests isolate asset canonicalization; real JWT and anonymous redirects
+      // are covered separately in api.test.ts.
+      const authentication = vi.spyOn(security, 'authenticate').mockResolvedValue({
+        email: 'owner@example.com',
+        csrfToken: 'test-token',
+      });
       const response = await worker.fetch(new Request(`https://nav.lily.lat${path}`), env);
       expect(response.status).toBe(200);
       expect(response.headers.get('location')).toBeNull();
@@ -40,9 +48,10 @@ describe('Worker static routing release regressions', () => {
       expect(assets).toHaveBeenCalledOnce();
       expect(new URL(assets.mock.calls[0]![0].url).pathname).toBe('/');
       if (path.startsWith('/admin')) {
+        expect(authentication).toHaveBeenCalledOnce();
         expect(response.headers.get('Cache-Control')).toBe('no-store');
         expect(response.headers.get('X-Robots-Tag')).toContain('noindex');
-      }
+      } else expect(authentication).not.toHaveBeenCalled();
     },
   );
 

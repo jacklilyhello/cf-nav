@@ -65,6 +65,12 @@ production, and validate the production workers.dev build before the separate do
 ## Administrator
 
 Open `/admin`, follow Access login and use the already configured owner's identity.
+Without a valid session, `/admin` and `/admin/` redirect to the fixed same-origin
+`/admin/login` before loading the management application. Access and any browser security
+verification therefore run as document navigations, not inside a JSON request.
+If a session expires or Cloudflare returns an HTML challenge during use, follow the visible
+login/reverification link. Failed requests are not treated as saved changes or automatically
+replayed. Do not disable Access or WAF protection to resolve a login error.
 The app has no registration. Manage categories, sort positions, enabled state, links,
 descriptions, recommendation, icon, notes and health settings. A missing icon renders a
 local initial tile. Search covers the name, domain, description and category.

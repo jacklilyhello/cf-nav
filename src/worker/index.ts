@@ -21,6 +21,16 @@ async function route(request: Request, env: Env): Promise<Response> {
     });
   }
   if (path === '/api/catalog' && request.method === 'GET') return json(await catalog(env));
+  // Enter Access through a document navigation, before the browser needs a JSON session.
+  if (['/admin', '/admin/'].includes(path) && ['GET', 'HEAD'].includes(request.method)) {
+    try {
+      await authenticate(request, env);
+    } catch (error) {
+      if (error instanceof HttpError && error.status === 401)
+        return Response.redirect(`${url.origin}/admin/login`, 303);
+      throw error;
+    }
+  }
   if (path.startsWith('/api/admin/') || path === '/admin/login') {
     const auth = await authenticate(request, env);
     if (path === '/admin/login') return Response.redirect(`${url.origin}/admin`, 303);
