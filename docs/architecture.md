@@ -20,8 +20,8 @@ SQL identifiers come exclusively from fixed internal field lists.
 ## Authentication and request boundaries
 
 `/admin` serves the administration interface. `/admin/login` is protected by an Access
-application covering the staging workers.dev, production workers.dev and production custom
-domain. Access supplies an HttpOnly, SameSite=Lax application cookie. The Worker verifies
+application dedicated to that hostname. Staging, production workers.dev and the production
+custom domain have independent applications, avoiding cross-host login callback dependencies. Access supplies an HttpOnly, SameSite=Lax application cookie. The Worker verifies
 RS256 signatures against the configured team's JWKS, issuer, audience, expiry, application
 type and SHA-256 of the exact existing administrator email. The email hash is configuration,
 not an authentication credential. Other identities and unsigned headers fail closed.
@@ -62,9 +62,12 @@ and 180 days of content mutation events, without request cookies, IP addresses o
 Migrations are versioned SQL. Initial audited seed data is imported once, using a D1 metadata
 marker. Later deployments never overwrite administrator edits with the repository seed.
 JSON exports are versioned. JSON import is validated, bounded and merged transactionally.
-`json_each` imports up to 1,000 links and 100 categories in three writes, within the JSON body
-limit, without one D1 query per item. Imported observations are not trusted as fresh health
-evidence; existing observations survive only when the destination and service identity match.
+Each import accepts up to 1,000 links, 100 categories and an 8 MiB JSON body. `json_each`
+receives chunks no larger than 512 KiB, below D1's 2 MB single-value limit; all chunks and the
+audit event share one atomic batch, within the Free plan's 50-query request limit.
+Exports contain IDs and editable fields, including private notes and health overrides, but
+not automatically measured health results or history. Imported observations are not trusted as
+fresh health evidence; existing observations survive only when the destination and service identity match.
 Navigation URL fragments are preserved for single-page applications, while probes omit them.
 Navigation/category deletion is soft deletion; restore and backup import retain recovery paths.
 Category deletion is rejected while it contains active links.

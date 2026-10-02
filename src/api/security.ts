@@ -35,7 +35,9 @@ export async function authenticate(request: Request, env: Env, keyOverride?: JWT
   try {
     const { payload } = await jwtVerify(token, key, {
       issuer,
-      audience: env.ACCESS_AUD,
+      audience: env.ACCESS_AUD.split(',')
+        .map((audience) => audience.trim())
+        .filter(Boolean),
       algorithms: ['RS256'],
       requiredClaims: ['exp', 'iat', 'sub', 'email'],
       clockTolerance: 5,

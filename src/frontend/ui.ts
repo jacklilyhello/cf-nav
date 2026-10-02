@@ -165,8 +165,24 @@ export function healthBadge(link: NavLink): string {
 }
 export function siteIcon(link: NavLink): string {
   const hash = [...link.name].reduce((value, char) => value + char.charCodeAt(0), 0) % 6;
-  const custom = link.icon && safeUrl(link.icon);
-  return `<span class="site-icon color-${hash}">${custom ? `<img src="${escape(custom)}" alt="" loading="lazy" referrerpolicy="no-referrer" />` : `<span>${escape([...link.name][0]?.toUpperCase() || '↗')}</span>`}</span>`;
+  const value = (link.icon || '').trim();
+  const textIcon = value.length <= 16 && !value.includes('://') ? value : '';
+  const custom = !textIcon && value.startsWith('https:') ? safeUrl(value) : '';
+  const label = textIcon || [...link.name][0]?.toUpperCase() || '↗';
+  const textClass =
+    label.length > 6 ? 'icon-text-long' : label.length > 2 ? 'icon-text-medium' : '';
+  return `<span class="site-icon color-${hash}">${custom ? `<img src="${escape(custom)}" alt="" loading="lazy" referrerpolicy="no-referrer" />` : `<span class="${textClass}">${escape(label)}</span>`}</span>`;
+}
+
+export function validIcon(value: string): boolean {
+  if (!value || (value.length <= 16 && !value.includes('://'))) return true;
+  return value.length <= 500 && value.startsWith('https:') && Boolean(safeUrl(value));
+}
+export function isPublicLink(link: NavLink, categories: Category[]): boolean {
+  return Boolean(
+    link.enabled &&
+    categories.some((category) => category.id === link.categoryId && category.enabled),
+  );
 }
 export function bindImageFallback(root: ParentNode): void {
   root.querySelectorAll<HTMLImageElement>('.site-icon img').forEach((img) => {
@@ -182,6 +198,7 @@ export function bindImageFallback(root: ParentNode): void {
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(path, {
     credentials: 'same-origin',
+    signal: AbortSignal.timeout(20000),
     ...options,
     headers: { Accept: 'application/json', ...options.headers },
   });

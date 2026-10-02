@@ -934,3 +934,22 @@
 .undo-button:hover {
   color: #fff;
 }
+.backup-parts {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0;
+}
+.backup-part {
+  justify-content: flex-start;
+  text-align: left;
+  flex-wrap: wrap;
+}
+.backup-part > span {
+  margin-left: auto;
+  font-size: 10px;
+  color: #829f9b;
+}
+.backup-part.download-requested {
+  border-color: #8fbfb97a;
+  color: #b8d5c7;
+}

@@ -49,10 +49,12 @@ export function createDnsResolver(fetcher: typeof fetch): DnsResolver {
         endpoint.searchParams.set('type', String(type));
         const response = await fetcher(endpoint.href, {
           signal,
-          redirect: 'error',
+          // workerd accepts only follow/manual despite the wider web Request type.
+          // Keep resolver redirects forbidden by inspecting its response below.
+          redirect: 'manual',
           headers: { accept: 'application/dns-json' },
         });
-        if (!response.ok) {
+        if (!response.ok || response.redirected) {
           await response.body?.cancel();
           throw new ProbeError('dns_error', 'DNS_RESOLVER_UNAVAILABLE');
         }

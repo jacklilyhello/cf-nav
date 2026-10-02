@@ -16,7 +16,11 @@ import {
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 if (location.pathname.replace(/\/$/, '') === '/admin') {
-  void import('../admin/admin').then(({ mountAdmin }) => mountAdmin(app));
+  void import('../admin/admin')
+    .then(({ mountAdmin }) => mountAdmin(app))
+    .catch(() => {
+      app.innerHTML = `<main id="main" class="standalone">${brand()}<div class="empty-state">${icon('warning')}<h1>暂时无法载入管理界面</h1><p>请重新打开页面，或稍后再试。</p><a class="button secondary" href="/admin">重新加载</a></div></main>`;
+    });
 } else if (location.pathname !== '/') {
   app.innerHTML = `<main id="main" class="standalone">${brand()}<div class="empty-state">${icon('globe')}<span class="eyebrow">404 / LOST IN THE MIST</span><h1>这条小径，还未抵达。</h1><p>页面可能已移动，回到首页继续探索。</p><a class="button primary" href="/">返回导航</a></div></main>`;
 } else {
@@ -34,24 +38,49 @@ async function mountCatalog(): Promise<void> {
   const results = document.querySelector<HTMLDivElement>('#catalog-results')!;
   const menu = document.querySelector<HTMLButtonElement>('.mobile-menu')!;
   const overlay = document.querySelector<HTMLButtonElement>('.sidebar-overlay')!;
+  const sidebar = document.querySelector<HTMLElement>('#sidebar')!;
+  const workspace = document.querySelector<HTMLElement>('.workspace')!;
+  const mobile = matchMedia('(max-width: 820px)');
   const toggleMenu = (open: boolean): void => {
+    open = open && mobile.matches;
+    const wasOpen = document.body.classList.contains('menu-open');
     document.body.classList.toggle('menu-open', open);
     menu.setAttribute('aria-expanded', String(open));
     overlay.hidden = !open;
+    sidebar.inert = mobile.matches && !open;
+    workspace.inert = open;
+    if (open) sidebar.querySelector<HTMLElement>('.nav-item.active, a, button')?.focus();
+    else if (wasOpen) menu.focus();
   };
+  mobile.addEventListener('change', () => toggleMenu(false));
+  toggleMenu(false);
   menu.addEventListener('click', () => toggleMenu(menu.getAttribute('aria-expanded') !== 'true'));
   overlay.addEventListener('click', () => toggleMenu(false));
   document.addEventListener('keydown', (event) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();
+      toggleMenu(false);
       input.focus();
     }
     if (event.key === 'Escape') toggleMenu(false);
+    if (event.key === 'Tab' && document.body.classList.contains('menu-open')) {
+      const focusable = [...sidebar.querySelectorAll<HTMLElement>('a, button'), overlay];
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    }
     if (
       event.key === '/' &&
       !['INPUT', 'TEXTAREA', 'SELECT'].includes((event.target as HTMLElement).tagName)
     ) {
       event.preventDefault();
+      toggleMenu(false);
       input.focus();
     }
   });
@@ -64,7 +93,7 @@ async function mountCatalog(): Promise<void> {
     input.value = '';
     query = '';
     clear.hidden = true;
-    renderResults();
+    if (catalog) renderResults();
     input.focus();
   });
   document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((button) =>
@@ -110,6 +139,10 @@ async function mountCatalog(): Promise<void> {
         renderNav();
         renderResults();
         toggleMenu(false);
+        if (!mobile.matches)
+          document
+            .querySelector<HTMLButtonElement>(`[data-category="${CSS.escape(activeCategory)}"]`)
+            ?.focus();
         document.querySelector('.breadcrumb-active')!.textContent =
           activeCategory === 'all'
             ? '探索'

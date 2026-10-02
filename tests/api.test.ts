@@ -162,6 +162,22 @@ describe('Access cryptographic authentication', () => {
       headers: { Cookie: `CF_Authorization=${token}` },
     });
     expect((await authenticate(request, env, key)).email).toBe('owner@example.com');
+    const productionEnv = { ...env, ACCESS_AUD: 'production, preview' };
+    for (const audience of ['production', 'preview']) {
+      const productionToken = await sign('owner@example.com', audience);
+      expect(
+        (
+          await authenticate(
+            new Request(origin, {
+              headers: { Cookie: `CF_Authorization=${productionToken}` },
+            }),
+            productionEnv,
+            key,
+          )
+        ).email,
+      ).toBe('owner@example.com');
+    }
+    await expect(authenticate(request, productionEnv, key)).rejects.toThrow('登录');
     for (const invalid of [
       await sign('other@example.com'),
       await sign('owner@example.com', 'wrong'),

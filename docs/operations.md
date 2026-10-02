@@ -35,7 +35,10 @@ npm audit --omit=dev
 
 `Cloudflare Resources` is manually dispatched with `inspect` or `provision`.
 It reads existing bindings before creating only the two named cf-nav databases and the
-single-owner Access application. It does not change the production custom domain.
+three single-host, single-owner Access applications (staging, production domain and production
+workers.dev). Separate applications avoid login callbacks depending on another environment.
+It does not change the production custom domain. The production Worker accepts only its two
+production application audiences; staging has a separate audience.
 Resource IDs are in `wrangler.jsonc`, not a growing collection of GitHub variables.
 The Actions artifact contains non-secret resource IDs and the previous domain binding.
 
@@ -75,6 +78,13 @@ status. Ignore checking only when intentional. Bot restrictions require review, 
 Use administrator JSON Export before bulk edits and import its version-1 JSON to merge records
 back by ID. Export includes private notes: treat it as owner data. Import does not execute SQL,
 HTML or scripts. A changed destination is rechecked. Do not import an unreviewed third-party dump.
+
+Each import is limited to 8 MiB, 1,000 links and 100 categories. This body limit keeps parsing
+and validation within Worker memory limits; it does not promise that 1,000 records with every
+field at its maximum length fit in one file. The administrator export interface splits larger
+backups into downloadable parts, each retaining the complete `categories` array and original
+IDs. Download every part and import them in order. A single file is applied atomically; separate
+files are separate transactions. Export contains editable settings, not automatic health observations or history.
 
 For full disaster recovery, use D1 Time Travel within the plan's retention period or an explicit
 D1 SQL export. Perform remote exports/restores through an authorized Actions job and preserve

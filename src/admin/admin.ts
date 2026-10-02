@@ -11,10 +11,13 @@ import {
   safeUrl,
   siteIcon,
   toast,
+  validIcon,
+  isPublicLink,
   type Catalog,
   type Category,
   type NavLink,
 } from '../frontend/ui';
+import { createBackupParts, MAX_IMPORT_BYTES, type BackupPart } from '../frontend/backup';
 
 type ManagedLink = NavLink & { expectedKeywords?: string[] };
 type AdminCatalog = Omit<Catalog, 'links'> & { links: ManagedLink[] };
@@ -47,13 +50,16 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
   try {
     const response = await fetch('/api/admin/session', {
       credentials: 'same-origin',
+      signal: AbortSignal.timeout(20000),
       headers: { Accept: 'application/json' },
     });
     const body = (await response.json()) as Session & { error?: string; loginUrl?: string };
-    if (!response.ok || !body.authenticated) {
+    if (response.status === 401 || response.status === 403) {
       app.innerHTML = `<main class="standalone" id="main">${brand()}<section class="login-panel"><span class="login-symbol">${icon('shield')}</span><span class="eyebrow">A PRIVATE SPACE TO CURATE</span><h1>打理你的数字花园。</h1><p>这里是 Lily 寻迹的私人管理空间。<br />通过管理员身份验证后，管理资源、分类与链接健康状态。</p><a class="button primary" href="/admin/login">${icon('shield')}通过 Cloudflare Access 登录${icon('arrow')}</a><span class="login-note">仅限站点管理员 · 安全身份验证</span><a class="back-home" href="/">返回公开导航</a></section></main>`;
       return;
     }
+    if (!response.ok || !body.authenticated)
+      throw new Error(body.error || '无法验证管理员身份，请稍后重试。');
     session = body;
     data = await api<AdminCatalog>('/api/admin/data');
   } catch (error) {
@@ -168,8 +174,11 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
         .join('');
     const reviewCount = data.links.filter(needsAttention).length;
     document.querySelector('#admin-stats')!.innerHTML =
-      `<div><span>收藏资源</span><strong>${data.links.length}<small>个</small></strong></div><div><span>前台显示</span><strong>${data.links.filter((link) => link.enabled && data.categories.find((category) => category.id === link.categoryId)?.enabled).length}<small>个</small></strong></div><div><span>内容分类</span><strong>${data.categories.length}<small>组</small></strong></div><div><span>需要关注</span><strong class="attention-number">${reviewCount}<small>项</small></strong></div>`;
+      `<div><span>收藏资源</span><strong>${data.links.length}<small>个</small></strong></div><div><span>前台显示</span><strong>${data.links.filter(publiclyVisible).length}<small>个</small></strong></div><div><span>内容分类</span><strong>${data.categories.length}<small>组</small></strong></div><div><span>需要关注</span><strong class="attention-number">${reviewCount}<small>项</small></strong></div>`;
     renderList();
+  }
+  function publiclyVisible(link: ManagedLink): boolean {
+    return isPublicLink(link, data.categories);
   }
   function needsAttention(link: ManagedLink): boolean {
     const state = healthInfo(link.healthOverride || link.healthStatus).tone;
@@ -244,14 +253,14 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
             .includes(search)) &&
         (!categoryFilter || link.categoryId === categoryFilter) &&
         (!statusFilter ||
-          (statusFilter === 'enabled' && link.enabled) ||
-          (statusFilter === 'hidden' && !link.enabled) ||
+          (statusFilter === 'enabled' && publiclyVisible(link)) ||
+          (statusFilter === 'hidden' && !publiclyVisible(link)) ||
           (statusFilter === 'featured' && link.featured) ||
           (statusFilter === 'review' && needsAttention(link)))
       );
     });
     list.innerHTML = links.length
-      ? `<div class="admin-row row-label"><span>资源 / 网址</span><span>所属分类</span><span>${activeTab === 'health' ? '检测状态 / 时间' : '状态'}</span><span>操作</span></div>${links.map((link) => `<div class="admin-row"><div class="admin-item-name">${siteIcon(link)}<div><strong>${escape(link.name)}${link.featured ? `<span class="inline-star" title="精选推荐">${icon('star')}</span>` : ''}${!link.enabled ? '<span class="hidden-tag">隐藏</span>' : ''}</strong><a href="${escape(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">${escape(hostname(link.url))} ${icon('arrow')}</a></div></div><span class="row-meta row-category">${escape(data.categories.find((category) => category.id === link.categoryId)?.name || '未分类')}</span><button class="health-details" data-health="${escape(link.id)}" aria-label="查看 ${escape(link.name)} 的健康详情">${healthBadge(link)}${activeTab === 'health' ? `<small>${escape(formatDate(link.lastCheckedAt))}</small>` : ''}</button><div class="row-actions">${activeTab === 'health' ? `<button class="icon-button" data-check="${escape(link.id)}" aria-label="重新检测 ${escape(link.name)}">${icon('refresh')}</button>` : ''}<button class="icon-button" data-edit-link="${escape(link.id)}" aria-label="编辑 ${escape(link.name)}">${icon('edit')}</button><button class="icon-button danger-icon" data-delete-link="${escape(link.id)}" aria-label="删除 ${escape(link.name)}">${icon('trash')}</button></div></div>`).join('')}`
+      ? `<div class="admin-row row-label"><span>资源 / 网址</span><span>所属分类</span><span>${activeTab === 'health' ? '检测状态 / 时间' : '状态'}</span><span>操作</span></div>${links.map((link) => `<div class="admin-row"><div class="admin-item-name">${siteIcon(link)}<div><strong>${escape(link.name)}${link.featured ? `<span class="inline-star" title="精选推荐">${icon('star')}</span>` : ''}${!publiclyVisible(link) ? `<span class="hidden-tag">${link.enabled ? '分类隐藏' : '隐藏'}</span>` : ''}</strong><a href="${escape(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">${escape(hostname(link.url))} ${icon('arrow')}</a></div></div><span class="row-meta row-category">${escape(data.categories.find((category) => category.id === link.categoryId)?.name || '未分类')}</span><button class="health-details" data-health="${escape(link.id)}" aria-label="查看 ${escape(link.name)} 的健康详情">${healthBadge(link)}${activeTab === 'health' ? `<small>${escape(formatDate(link.lastCheckedAt))}</small>` : ''}</button><div class="row-actions">${activeTab === 'health' ? `<button class="icon-button" data-check="${escape(link.id)}" aria-label="重新检测 ${escape(link.name)}">${icon('refresh')}</button>` : ''}<button class="icon-button" data-edit-link="${escape(link.id)}" aria-label="编辑 ${escape(link.name)}">${icon('edit')}</button><button class="icon-button danger-icon" data-delete-link="${escape(link.id)}" aria-label="删除 ${escape(link.name)}">${icon('trash')}</button></div></div>`).join('')}`
       : empty(
           '没有找到匹配的资源',
           search || categoryFilter || statusFilter
@@ -409,21 +418,21 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
     }
     dialog(
       link ? '编辑导航资源' : '新增导航资源',
-      `<div class="form-grid">${field('网站名称', 'name', link?.name, 'text', true)}<label class="field"><span>所属分类<b>*</b></span><select name="categoryId" required>${data.categories.map((category) => `<option value="${escape(category.id)}" ${category.id === link?.categoryId ? 'selected' : ''}>${escape(category.name)}${!category.enabled ? '（隐藏）' : ''}</option>`).join('')}</select></label></div>${field('网站地址', 'url', link?.url || 'https://', 'url', true)}<label class="field"><span>简介</span><textarea name="description" rows="2" maxlength="1000">${escape(link?.description)}</textarea></label><div class="form-grid">${field('图标地址', 'icon', link?.icon || '', 'url', false, '可选 HTTPS 图标；留空显示名称首字。')}${field('排序值', 'sortOrder', String(link?.sortOrder ?? data.links.length * 10), 'number', true)}</div><div class="checkbox-row">${checkbox('前台显示', 'enabled', link?.enabled ?? true)}${checkbox('精选推荐', 'featured', link?.featured ?? false)}</div><details class="advanced-fields" ${link ? 'open' : ''}><summary>健康检测与维护</summary><div class="form-grid"><label class="field"><span>人工状态覆盖</span><select name="healthOverride"><option value="">使用自动检测结果</option>${overrides.map((state) => `<option value="${state}" ${link?.healthOverride === state ? 'selected' : ''}>${healthInfo(state).label} / ${state}</option>`).join('')}</select></label><div class="check-group">${checkbox('暂停此资源的自动检测', 'checkDisabled', link?.checkDisabled ?? false)}</div></div>${field('预期内容关键词', 'expectedKeywords', (link?.expectedKeywords || []).join(', '), 'text', false, '用英文逗号分隔，用于辅助识别服务或内容变化。')}<label class="field"><span>管理员备注</span><textarea name="notes" rows="3" maxlength="4000">${escape(link?.notes)}</textarea><small>仅管理员可见，不会展示在前台。</small></label></details>`,
+      `<div class="form-grid">${field('网站名称', 'name', link?.name, 'text', true)}<label class="field"><span>所属分类<b>*</b></span><select name="categoryId" required>${data.categories.map((category) => `<option value="${escape(category.id)}" ${category.id === link?.categoryId ? 'selected' : ''}>${escape(category.name)}${!category.enabled ? '（隐藏）' : ''}</option>`).join('')}</select></label></div>${field('网站地址', 'url', link?.url || 'https://', 'url', true)}<label class="field"><span>简介</span><textarea name="description" rows="2" maxlength="1000">${escape(link?.description)}</textarea></label><div class="form-grid">${field('图标文字或地址', 'icon', link?.icon || '', 'text', false, '支持 16 字符内的短文字或 HTTPS 图标地址；留空显示名称首字。')}${field('排序值', 'sortOrder', String(link?.sortOrder ?? data.links.length * 10), 'number', true)}</div><div class="checkbox-row">${checkbox('前台显示', 'enabled', link?.enabled ?? true)}${checkbox('精选推荐', 'featured', link?.featured ?? false)}</div><details class="advanced-fields" ${link ? 'open' : ''}><summary>健康检测与维护</summary><div class="form-grid"><label class="field"><span>人工状态覆盖</span><select name="healthOverride"><option value="">使用自动检测结果</option>${overrides.map((state) => `<option value="${state}" ${link?.healthOverride === state ? 'selected' : ''}>${healthInfo(state).label} / ${state}</option>`).join('')}</select></label><div class="check-group">${checkbox('暂停此资源的自动检测', 'checkDisabled', link?.checkDisabled ?? false)}</div></div>${field('预期内容关键词', 'expectedKeywords', (link?.expectedKeywords || []).join(', '), 'text', false, '用英文逗号分隔，用于辅助识别服务或内容变化。')}<label class="field"><span>管理员备注</span><textarea name="notes" rows="3" maxlength="4000">${escape(link?.notes)}</textarea><small>仅管理员可见，不会展示在前台。</small></label></details>`,
       '保存资源',
       async (form) => {
         const url = text(form, 'url');
         if (!safeUrl(url))
           throw new Error('请输入有效的 HTTP 或 HTTPS 地址，不要包含用户名与密码。');
-        const iconUrl = text(form, 'icon');
-        if (iconUrl && (!safeUrl(iconUrl) || !iconUrl.startsWith('https://')))
-          throw new Error('图标地址需要使用 HTTPS。');
+        const iconValue = text(form, 'icon');
+        if (!validIcon(iconValue))
+          throw new Error('图标请输入 16 字符以内的短文字，或有效的 HTTPS 地址。');
         const body = {
           name: text(form, 'name'),
           categoryId: text(form, 'categoryId'),
           url,
           description: text(form, 'description'),
-          icon: iconUrl,
+          icon: iconValue,
           sortOrder: Number(text(form, 'sortOrder')),
           enabled: checked(form, 'enabled'),
           featured: checked(form, 'featured'),
@@ -556,15 +565,42 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
     element.querySelector('.dialog-footer')!.prepend(edit);
   }
   async function exportData(): Promise<void> {
-    const exported = await api<unknown>('/api/admin/export');
-    const blob = new Blob([JSON.stringify(exported, null, 2) + '\n'], { type: 'application/json' });
+    const exported = await api<{ version: number; categories: unknown[]; links: unknown[] }>(
+      '/api/admin/export',
+    );
+    const parts = createBackupParts(exported);
+    const basename = `cf-nav-backup-${new Date().toISOString().slice(0, 10)}`;
+    if (parts.length === 1) {
+      downloadPart(parts[0]!, `${basename}.json`);
+      toast('JSON 备份已导出');
+      return;
+    }
+    const element = dialog(
+      '分片备份下载',
+      `<p class="confirm-message">此备份已拆分为 ${parts.length} 份可独立导入的 JSON 文件。</p><p class="field-note">请逐个下载并保留全部分片。恢复时按编号逐个合并导入，每份都包含完整分类，现有内容会保留。</p><div class="backup-parts">${parts.map((part, index) => `<button type="button" class="button secondary backup-part" data-part="${index}">${icon('download')}分片 ${index + 1} / ${parts.length}<span>${part.linkCount} 个资源 · ${(part.bytes / 1024 / 1024).toFixed(2)} MiB</span></button>`).join('')}</div>`,
+      '完成',
+      async () => {},
+    );
+    element.querySelectorAll<HTMLButtonElement>('[data-part]').forEach((button) =>
+      button.addEventListener('click', () => {
+        const index = Number(button.dataset.part);
+        downloadPart(
+          parts[index]!,
+          `${basename}-part-${String(index + 1).padStart(3, '0')}-of-${parts.length}.json`,
+        );
+        button.classList.add('download-requested');
+        button.setAttribute('aria-label', `分片 ${index + 1} 已请求下载，可再次下载`);
+      }),
+    );
+  }
+  function downloadPart(part: BackupPart, filename: string): void {
+    const blob = new Blob([part.contents], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = `cf-nav-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.download = filename;
     anchor.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    toast('JSON 备份已导出');
   }
   function importData(): void {
     const fileInput = document.createElement('input');
@@ -574,7 +610,8 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
       void action(async () => {
         const file = fileInput.files?.[0];
         if (!file) return;
-        if (file.size > 5 * 1024 * 1024) throw new Error('备份文件不能超过 5 MB。');
+        if (file.size > MAX_IMPORT_BYTES)
+          throw new Error('备份文件不能超过 8 MiB。大型备份请逐个选择导出时生成的分片文件。');
         let imported: { version?: number; categories?: unknown[]; links?: unknown[] };
         try {
           imported = JSON.parse(await file.text()) as typeof imported;

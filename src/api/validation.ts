@@ -7,7 +7,12 @@ const publicUrl = text(2048).transform((value, ctx) => {
     validatePublicUrl(value);
     // Fragments are meaningful for client-side routes and in-page navigation.
     // The health transport strips them only when making its HTTP probe.
-    return new URL(value).href;
+    const normalized = new URL(value).href;
+    if (normalized.length > 2048) {
+      ctx.addIssue({ code: 'custom', message: '编码后的网址不能超过 2048 个字符' });
+      return z.NEVER;
+    }
+    return normalized;
   } catch {
     ctx.addIssue({ code: 'custom', message: '仅允许公网 HTTP(S) 网址' });
     return z.NEVER;
@@ -58,6 +63,7 @@ export const linkSchema = z.object({
     .nullable()
     .default(null),
 });
+export const IMPORT_MAX_BYTES = 8 * 1024 * 1024;
 export const importSchema = z.object({
   version: z.literal(1),
   mode: z.literal('merge').default('merge'),

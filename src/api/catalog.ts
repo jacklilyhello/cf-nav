@@ -1,6 +1,6 @@
 import type { Env } from '../shared/types';
 import { HttpError, readJson, rateLimit } from './security';
-import { categorySchema, linkSchema, importSchema } from './validation';
+import { categorySchema, linkSchema, importSchema, IMPORT_MAX_BYTES } from './validation';
 import { runChecks } from '../worker/scheduler';
 
 const linkFields = [
@@ -18,6 +18,29 @@ const linkFields = [
   'healthOverride',
 ] as const;
 const categoryFields = ['name', 'slug', 'description', 'sortOrder', 'enabled'] as const;
+// D1 limits any bound string to 2,000,000 bytes. Leave ample room below that
+// ceiling and count UTF-8 bytes rather than JavaScript UTF-16 code units.
+const importChunkBytes = 512 * 1024;
+function importChunks(records: Record<string, unknown>[]): string[] {
+  const encoder = new TextEncoder();
+  const chunks: string[] = [];
+  let rows: string[] = [];
+  let bytes = 2;
+  for (const record of records) {
+    const row = JSON.stringify(record);
+    const rowBytes = encoder.encode(row).byteLength;
+    if (rowBytes + 2 > importChunkBytes) throw new HttpError(413, '单条导入记录过大');
+    if (rows.length && bytes + rowBytes + 1 > importChunkBytes) {
+      chunks.push(`[${rows.join(',')}]`);
+      rows = [];
+      bytes = 2;
+    }
+    bytes += rowBytes + (rows.length ? 1 : 0);
+    rows.push(row);
+  }
+  if (rows.length) chunks.push(`[${rows.join(',')}]`);
+  return chunks;
+}
 const healthDefaults: Record<string, string> = {
   healthStatus: "'unknown'",
   httpStatus: 'NULL',
@@ -110,14 +133,21 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
   const method = request.method;
   if (path === '/api/admin/data' && method === 'GET') return json(await catalog(env, true));
   if (path === '/api/admin/export' && method === 'GET') {
-    const data = await catalog(env, true);
+    const [categories, links] = await env.DB.batch<Record<string, unknown>>([
+      env.DB.prepare(
+        `SELECT id,${categoryFields.join(',')} FROM categories WHERE deletedAt IS NULL ORDER BY sortOrder,name`,
+      ),
+      env.DB.prepare(
+        `SELECT l.id,${linkFields.map((field) => `l.${field}`).join(',')} FROM links l JOIN categories c ON c.id=l.categoryId WHERE l.deletedAt IS NULL AND c.deletedAt IS NULL ORDER BY l.sortOrder,l.name`,
+      ),
+    ]);
     return new Response(
       JSON.stringify(
         {
           version: 1,
           exportedAt: new Date().toISOString(),
-          categories: data.categories,
-          links: data.links,
+          categories: categories.results.map(normalize),
+          links: links.results.map(normalize),
         },
         null,
         2,
@@ -135,7 +165,7 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
     return json({ ok: true, logoutUrl: '/cdn-cgi/access/logout' });
   if (method !== 'GET') await rateLimit(env.DB, 'admin-write', 120, 60);
   if (path === '/api/admin/import' && method === 'POST') {
-    const value = importSchema.parse(await readJson(request));
+    const value = importSchema.parse(await readJson(request, IMPORT_MAX_BYTES));
     const categoryIds = new Set(value.categories.map((x) => x.id));
     const linkIds = new Set(value.links.map((x) => x.id));
     if (
@@ -154,8 +184,8 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
     if (value.links.some((x) => !categoryIds.has(x.categoryId)))
       throw new HttpError(400, '导航引用了不存在的分类');
     const now = new Date().toISOString();
-    // json_each keeps a 1,000-link import to three transactional writes, below
-    // D1's free-plan per-invocation query limit and 100-parameter statement limit.
+    // One atomic batch covers all chunks. No record is committed if any later
+    // chunk fails, and every chunk statement uses only two bound parameters.
     const categoryJson = ['id', ...categoryFields].map(
       (field) => `json_extract(value,'$.${field}')`,
     );
@@ -167,14 +197,21 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
     const unchanged =
       'links.url=excluded.url AND links.name=excluded.name AND links.expectedKeywords=excluded.expectedKeywords';
     const statements = [
-      env.DB.prepare(
-        `INSERT INTO categories(id,${categoryFields.join(',')},updatedAt) SELECT ${categoryJson.join(',')},? FROM json_each(?) WHERE true ON CONFLICT(id) DO UPDATE SET ${categoryFields.map((f) => `${f}=excluded.${f}`).join(',')},updatedAt=excluded.updatedAt,deletedAt=NULL`,
-      ).bind(now, JSON.stringify(value.categories)),
-      env.DB.prepare(
-        `INSERT INTO links(id,${linkFields.join(',')},updatedAt) SELECT ${linkJson.join(',')},? FROM json_each(?) WHERE true ON CONFLICT(id) DO UPDATE SET ${linkFields.map((f) => `${f}=excluded.${f}`).join(',')},updatedAt=excluded.updatedAt,deletedAt=NULL,${resetHealth(unchanged)},checkLeaseUntil=NULL`,
-      ).bind(now, JSON.stringify(value.links)),
+      ...importChunks(value.categories).map((chunk) =>
+        env.DB.prepare(
+          `INSERT INTO categories(id,${categoryFields.join(',')},updatedAt) SELECT ${categoryJson.join(',')},? FROM json_each(?) WHERE true ON CONFLICT(id) DO UPDATE SET ${categoryFields.map((f) => `${f}=excluded.${f}`).join(',')},updatedAt=excluded.updatedAt,deletedAt=NULL`,
+        ).bind(now, chunk),
+      ),
+      ...importChunks(value.links).map((chunk) =>
+        env.DB.prepare(
+          `INSERT INTO links(id,${linkFields.join(',')},updatedAt) SELECT ${linkJson.join(',')},? FROM json_each(?) WHERE true ON CONFLICT(id) DO UPDATE SET ${linkFields.map((f) => `${f}=excluded.${f}`).join(',')},updatedAt=excluded.updatedAt,deletedAt=NULL,${resetHealth(unchanged)},checkLeaseUntil=NULL`,
+        ).bind(now, chunk),
+      ),
       audit(env.DB, 'import', 'catalog'),
     ];
+    // Reserve the rate-limit and existing-category reads within D1 Free's 50
+    // queries per request, even if future validation limits allow larger records.
+    if (statements.length > 48) throw new HttpError(413, '导入内容过大，请分批导入');
     await env.DB.batch(statements);
     return json({ ok: true, categories: value.categories.length, links: value.links.length });
   }

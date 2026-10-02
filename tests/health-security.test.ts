@@ -267,14 +267,25 @@ describe('DoH response validation', () => {
     });
   }
 
-  it('queries fixed HTTPS resolver for A and AAAA with redirect:error', async () => {
+  it('queries fixed HTTPS resolver for A and AAAA without following redirects', async () => {
     const fetcher = dnsFetcher('1.1.1.1');
     const resolver = createDnsResolver(fetcher);
     expect(await resolver('example.com', new AbortController().signal)).toEqual(['1.1.1.1']);
     for (const [input, options] of vi.mocked(fetcher).mock.calls) {
       expect(new URL(String(input)).origin).toBe('https://cloudflare-dns.com');
-      expect(options?.redirect).toBe('error');
+      expect(options?.redirect).toBe('manual');
     }
+  });
+
+  it('refuses resolver redirects instead of contacting a new resolver', async () => {
+    const fetcher = vi.fn(
+      async () =>
+        new Response('', { status: 302, headers: { location: 'https://attacker.example.com/' } }),
+    );
+    await expect(
+      createDnsResolver(fetcher)('example.com', new AbortController().signal),
+    ).rejects.toThrow('DNS_RESOLVER_UNAVAILABLE');
+    expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
   it.each([
