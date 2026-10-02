@@ -23,6 +23,7 @@ export { isPublicIp, validatePublicUrl } from './url';
 export { HEALTH_STATUSES, ProbeError } from './types';
 export type {
   DnsResolver,
+  ContentStatus,
   HealthInput,
   HealthOptions,
   HealthResult,
@@ -64,6 +65,8 @@ export async function checkLink(input: HealthInput, options: HealthOptions): Pro
     finalUrl: '',
     title: '',
     description: '',
+    contentStatus: 'unknown',
+    similarityScore: null,
     evidence: [],
     error: null,
     redirects: [],
@@ -109,13 +112,15 @@ export async function checkLink(input: HealthInput, options: HealthOptions): Pro
             checkedHosts.add(target.hostname);
           }
           if (controller.signal.aborted) throw new ProbeError('timeout', 'PROBE_DEADLINE_EXCEEDED');
+          await options.beforeRequest?.(controller.signal);
+          if (controller.signal.aborted) throw new ProbeError('timeout', 'PROBE_DEADLINE_EXCEEDED');
           const response = await fetcher(target.href, {
             method: 'GET',
             redirect: 'manual',
             signal: controller.signal,
             headers: {
               accept: 'text/html,application/xhtml+xml;q=0.9',
-              'user-agent': 'cf-nav-health/1.0 (+https://nav.lily.lat/)',
+              'user-agent': options.userAgent || 'cf-nav-health/1.0 (+https://nav.lily.lat/)',
             },
           });
           if (controller.signal.aborted) {

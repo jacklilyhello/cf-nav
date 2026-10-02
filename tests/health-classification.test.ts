@@ -131,6 +131,79 @@ describe('conservative availability and identity evidence', () => {
       ).status,
     ).toBe('moved');
   });
+
+  it('compares an explicit baseline instead of treating a retained brand as proof of purpose', () => {
+    const input = {
+      url: 'https://ui-cloud.com/',
+      name: 'UICloud',
+      expectedTitle: 'UICloud',
+      expectedDescription: 'interface design library',
+      expectedKeywords: ['interface', 'design', 'library'],
+    };
+    const observe = (html: string) =>
+      classifyPage(input, {
+        html,
+        status: 200,
+        headers: new Headers({ 'content-type': 'text/html' }),
+        url: input.url,
+        redirects: [],
+        truncated: false,
+      });
+    expect(observe('<title>UICloud interface design library</title>')).toMatchObject({
+      status: 'healthy',
+      contentStatus: 'match',
+      similarityScore: 100,
+    });
+    const replaced = observe(
+      '<title>UICloud casino rewards</title><p>Sports betting and loans</p>',
+    );
+    expect(replaced.status).not.toBe('healthy');
+    expect(replaced.contentStatus).toBe('changed');
+    expect(replaced.similarityScore).toBeLessThan(45);
+    expect(observe('<title>Premium casino rewards</title>')).toMatchObject({
+      status: 'content_changed',
+      contentStatus: 'mismatch',
+      similarityScore: 0,
+    });
+    expect(observe('<title>Just a moment</title>')).toMatchObject({
+      status: 'challenge',
+      contentStatus: 'unknown',
+      similarityScore: null,
+    });
+    expect(observe('<title>UICloud</title><h1>This domain is for sale</h1>')).toMatchObject({
+      status: 'domain_for_sale',
+      contentStatus: 'mismatch',
+      similarityScore: 0,
+    });
+  });
+
+  it('represents partial matches and lets an explicit baseline supersede old identity history', () => {
+    const input = {
+      url: 'https://example.com/',
+      name: 'Old brand',
+      previousTitle: 'Old brand company',
+      expectedTitle: 'New brand',
+      expectedDescription: 'interface design library',
+    };
+    const page = {
+      html: '<title>New brand</title><p>interface sketches</p>',
+      status: 200,
+      headers: new Headers({ 'content-type': 'text/html' }),
+      url: input.url,
+      redirects: [],
+      truncated: false,
+    };
+    expect(classifyPage(input, page)).toMatchObject({
+      contentStatus: 'partial',
+      status: 'needs_review',
+    });
+    expect(
+      classifyPage(input, {
+        ...page,
+        html: '<title>New brand</title><p>interface design library</p>',
+      }),
+    ).toMatchObject({ contentStatus: 'match', similarityScore: 100, status: 'healthy' });
+  });
 });
 
 describe('resource limits and failure recovery', () => {
@@ -228,5 +301,57 @@ describe('resource limits and failure recovery', () => {
     );
     expect(result.status).toBe('connection_refused');
     expect(JSON.stringify(result)).not.toContain('SECRET_INTERNAL_DETAIL');
+  });
+
+  it('uses the configured UA and gate for every target request, including redirects', async () => {
+    const beforeRequest = vi.fn(async () => undefined);
+    const fetcher = vi.fn(
+      async () =>
+        new Response('<title>Example service</title>', {
+          headers: { 'content-type': 'text/html' },
+        }),
+    );
+    fetcher.mockResolvedValueOnce(
+      new Response(null, { status: 301, headers: { location: '/new' } }),
+    );
+    const result = await checkLink(
+      { url: 'https://example.com/', name: 'Example' },
+      {
+        runtime: 'cloudflare-public',
+        userAgent: 'Configured-owner-probe/2.0',
+        resolver: async () => ['1.1.1.1'],
+        beforeRequest,
+        fetcher,
+      },
+    );
+    expect(result.status).toBe('redirected');
+    expect(result.httpStatus).toBe(200);
+    expect(result.redirects).toEqual([
+      { url: 'https://example.com/', status: 301, location: 'https://example.com/new' },
+    ]);
+    expect(beforeRequest).toHaveBeenCalledTimes(2);
+    for (const call of fetcher.mock.calls as unknown as [string, RequestInit][])
+      expect(new Headers(call[1].headers).get('user-agent')).toBe('Configured-owner-probe/2.0');
+  });
+
+  it('does not send another target request after the timeout expires inside pacing', async () => {
+    const fetcher = vi.fn();
+    const result = await checkLink(
+      { url: 'https://example.com/', name: 'Example' },
+      {
+        runtime: 'cloudflare-public',
+        timeoutMs: 5,
+        resolver: async () => ['1.1.1.1'],
+        beforeRequest: () => new Promise(() => undefined),
+        fetcher,
+      },
+    );
+    expect(result).toMatchObject({
+      status: 'timeout',
+      contentStatus: 'unknown',
+      similarityScore: null,
+      httpStatus: null,
+    });
+    expect(fetcher).not.toHaveBeenCalled();
   });
 });

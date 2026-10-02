@@ -26,7 +26,18 @@ function assetEnvironment() {
       });
     return new Response('missing', { status: 404 });
   });
-  return { assets, env: { ASSETS: { fetch: assets } } as unknown as Env };
+  return {
+    assets,
+    env: {
+      ASSETS: { fetch: assets },
+      DB: {
+        prepare: () => ({ first: async () => null }),
+        batch: async () => [{ results: [] }, { results: [] }],
+      },
+      APP_ENV: 'production',
+      PUBLIC_ORIGIN: 'https://nav.lily.lat',
+    } as unknown as Env,
+  };
 }
 
 describe('Worker static routing release regressions', () => {
@@ -62,7 +73,7 @@ describe('Worker static routing release regressions', () => {
     expect(await response.text()).toBe(shell);
     expect(response.headers.get('location')).toBeNull();
     expect(response.headers.get('Cache-Control')).toBe('no-store');
-    expect(response.headers.get('X-Robots-Tag')).toBe('noindex');
+    expect(response.headers.get('X-Robots-Tag')).toBe('noindex, nofollow');
     expect(assets.mock.calls.map(([request]) => new URL(request.url).pathname)).toEqual([
       '/missing-page',
       '/',

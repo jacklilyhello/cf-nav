@@ -43,3 +43,12 @@ tests and the frontend build. Real Access authentication stays enabled in deploy
 See [architecture](docs/architecture.md), [operations and rollback](docs/operations.md), and
 [project instructions](CODEX.md). Deployment credentials remain in GitHub Secrets. Staging and
 production use separate D1 databases; the initial seed never overwrites later administrator edits.
+
+## Navigation controls
+
+Administrator → **站点设置** controls search indexing and the probe User-Agent, interval and
+per-site deadline. Production uses the configured `PUBLIC_ORIGIN` for its canonical URL;
+staging and alternate hostnames remain noindex. Navigation editing supports automatic site
+icons, manual HTTPS/text overrides and maintained expected titles, keywords and purposes.
+The health view combines HTTP status, redirect chain, content similarity and recent execution
+settings. See operations for defaults, limits and interpretation.

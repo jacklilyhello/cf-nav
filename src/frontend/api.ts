@@ -15,7 +15,9 @@ export class ApiError extends Error {
 export async function api<T>(path: string, options: BrowserRequestInit = {}): Promise<T> {
   const headers = new Headers(options.headers);
   headers.set('Accept', 'application/json');
-  const timeout = AbortSignal.timeout(20000);
+  const timeout = AbortSignal.timeout(
+    /^\/api\/admin\/links\/[^/]+\/check$/.test(path) ? 45000 : 20000,
+  );
   let response: Response;
   try {
     const requestOptions: BrowserRequestInit = {

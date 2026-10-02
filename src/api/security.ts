@@ -125,7 +125,8 @@ export function secure(response: Response, request: Request) {
     result.headers.set('Strict-Transport-Security', 'max-age=31536000');
   if (
     new URL(request.url).pathname.startsWith('/admin') ||
-    new URL(request.url).pathname.startsWith('/api/admin')
+    new URL(request.url).pathname.startsWith('/api/') ||
+    result.status >= 400
   ) {
     result.headers.set('Cache-Control', 'no-store');
     result.headers.set('X-Robots-Tag', 'noindex, nofollow');

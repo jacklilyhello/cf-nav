@@ -6,6 +6,7 @@ export interface Env {
   ACCESS_AUD: string;
   ADMIN_EMAIL_HASH: string;
   APP_VERSION?: string;
+  PUBLIC_ORIGIN?: string;
 }
 export interface Category {
   id: string;
@@ -24,11 +25,18 @@ export interface Link {
   url: string;
   description: string;
   icon: string;
+  iconMode: 'auto' | 'manual' | 'none';
+  iconCheckedAt: string | null;
   sortOrder: number;
   enabled: boolean;
   featured: boolean;
   notes: string;
   expectedKeywords: string[];
+  expectedTitle: string;
+  expectedDescription: string;
+  contentStatus: 'match' | 'partial' | 'changed' | 'mismatch' | 'unknown';
+  similarityScore: number | null;
+  redirectChain: { url: string; status: number; location: string }[];
   healthStatus: string;
   healthOverride: string | null;
   checkDisabled: boolean;
