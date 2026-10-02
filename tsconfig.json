@@ -3,7 +3,7 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022"],
     "types": ["@cloudflare/workers-types", "node"],
     "strict": true,
     "noEmit": true,
@@ -11,5 +11,11 @@
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "vite.config.ts"]
+  "include": [
+    "src/worker/**/*.ts",
+    "src/api/**/*.ts",
+    "src/shared/**/*.ts",
+    "src/health/**/*.ts",
+    "tests/**/*.ts"
+  ]
 }

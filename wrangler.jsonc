@@ -1,0 +1,59 @@
+{
+  "name": "cf-nav",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1,
+  },
+  "env": {
+    "staging": {
+      "name": "cf-nav-staging",
+      "vars": {
+        "ACCESS_TEAM_DOMAIN": "lilyya.cloudflareaccess.com",
+        "ACCESS_AUD": "0b87d7add9e8cc9e21eec99bb8bfe25a78a8580722fd602e0d0aaba0c9a579fe",
+        "ADMIN_EMAIL_HASH": "854eff2fc988ea0257a58cd9c08afcaf202ac21cf48b10bfea505a8bbfcf6bb0",
+        "APP_ENV": "staging",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "cf-nav-staging-db",
+          "database_id": "cac7b01a-84bd-494e-9394-e4a2b4a7d4ea",
+          "migrations_dir": "migrations",
+        },
+      ],
+      "triggers": {
+        "crons": ["*/10 * * * *"],
+      },
+    },
+    "production": {
+      "name": "cf-nav",
+      "vars": {
+        "ACCESS_TEAM_DOMAIN": "lilyya.cloudflareaccess.com",
+        "ACCESS_AUD": "0b87d7add9e8cc9e21eec99bb8bfe25a78a8580722fd602e0d0aaba0c9a579fe",
+        "ADMIN_EMAIL_HASH": "854eff2fc988ea0257a58cd9c08afcaf202ac21cf48b10bfea505a8bbfcf6bb0",
+        "APP_ENV": "production",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "cf-nav-db",
+          "database_id": "477a74bc-ab1d-407d-800a-003c7e487cae",
+          "migrations_dir": "migrations",
+        },
+      ],
+      "triggers": {
+        "crons": ["*/10 * * * *"],
+      },
+    },
+  },
+}

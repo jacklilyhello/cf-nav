@@ -1,0 +1,5315 @@
+{
+  "source_url": "https://nav.lily.lat/",
+  "captured_date": "2026-10-02",
+  "capture_method": "Codex in-app browser read-only DOM extraction before production cutover; shell HTTP was WAF blocked.",
+  "scope": "Every navigation card, card data-url, quick-open button, desktop/mobile hidden search control, external header/friend/footer link, and inline-script navigation/API URL.",
+  "linked_page_inspection": {
+    "requested_url": "https://nav.lily.lat/about",
+    "final_url": "https://nav.lily.lat/about/",
+    "title": "Lily在线工具网",
+    "anchor_elements": 6,
+    "external_anchor_occurrences": 3,
+    "javascript_controls": 3,
+    "script_elements": 21,
+    "owner_contact_text": "Not copied: plain text contact information is not a navigation link.",
+    "removed_tracking_asset": "https://sdk.51.la/js-sdk-pro.min.js"
+  },
+  "excluded_non_navigation": {
+    "same_page_or_relative_or_javascript_anchors": 40,
+    "script_elements": 21,
+    "inline_asset_url": "https://nav.baidu.cn/wp-content/themes/onenav/images/add.png",
+    "reason": "Local UI controls, asset URLs and third-party telemetry/weather scripts are not navigation destinations and are not migrated."
+  },
+  "counts": {
+    "anchor_elements": 345,
+    "cards": 149,
+    "quick_open_buttons": 149,
+    "hidden_search_controls": 62,
+    "external_header_friend_footer_links": 7,
+    "linked_about_page_external_links": 3,
+    "inline_navigation_api_urls": 2,
+    "external_script_navigation_api_urls": 5,
+    "navigation_occurrences": 377,
+    "distinct_raw_targets_including_two_invalid_cards": 198,
+    "distinct_http_targets": 196,
+    "quick_open_mismatches": 4
+  },
+  "browser_transfer_verification": {
+    "card_text_length": 14864,
+    "card_text_rolling_checksum": 903912347,
+    "algorithm": "uint32(hash * 31 + Unicode code point), lines category/name/url/description/quickUrl joined by tabs and newline"
+  },
+  "external_script_inspection": {
+    "content-search.js": {
+      "http_status": 200,
+      "characters": 3621
+    },
+    "app-anim.js": {
+      "http_status": 200,
+      "characters": 56842
+    },
+    "excluded_documentation_link": "https://www.jsdelivr.com/using-sri-with-dynamic-files"
+  },
+  "cards": [
+    {
+      "category": "常用工具",
+      "name": "语雀",
+      "url": "https://www.yuque.com/",
+      "description": "专业的云端知识库。",
+      "quickUrl": "https://www.yuque.com/",
+      "dataUrl": "https://www.yuque.com/"
+    },
+    {
+      "category": "常用工具",
+      "name": "QQ 邮箱",
+      "url": "http://mail.qq.com/",
+      "description": "腾讯 QQ 邮箱。",
+      "quickUrl": "http://mail.qq.com/",
+      "dataUrl": "http://mail.qq.com/"
+    },
+    {
+      "category": "常用工具",
+      "name": "开源中国",
+      "url": "https://www.oschina.net/",
+      "description": "中文开源技术交流社区。",
+      "quickUrl": "https://www.oschina.net/",
+      "dataUrl": "https://www.oschina.net/"
+    },
+    {
+      "category": "常用工具",
+      "name": "公众号平台",
+      "url": "https://mp.weixin.qq.com/",
+      "description": "再小的个体也有自己的品牌。",
+      "quickUrl": "https://mp.weixin.qq.com/",
+      "dataUrl": "https://mp.weixin.qq.com/"
+    },
+    {
+      "category": "常用工具",
+      "name": "GitHub",
+      "url": "https://github.com/",
+      "description": "GitHub 开源社区。",
+      "quickUrl": "https://github.com/",
+      "dataUrl": "https://github.com/"
+    },
+    {
+      "category": "常用工具",
+      "name": "在线ps",
+      "url": "https://zaixianps.net/",
+      "description": "一键p图抠图工具",
+      "quickUrl": "https://ps.gitapp.cn/",
+      "dataUrl": "https://zaixianps.net/"
+    },
+    {
+      "category": "常用工具",
+      "name": "房贷计算器",
+      "url": "https://fangdai.gitapp.cn",
+      "description": "房贷利率计算器",
+      "quickUrl": "https://fangdaijisuanqi.vip",
+      "dataUrl": "https://fangdai.gitapp.cn"
+    },
+    {
+      "category": "常用工具",
+      "name": "m3u8在线播放器",
+      "url": "https://m3u8player.org/",
+      "description": "m3u8/hls在线播放",
+      "quickUrl": "https://m3u8player.org/",
+      "dataUrl": "https://m3u8player.org/"
+    },
+    {
+      "category": "常用工具",
+      "name": "在线工具助手",
+      "url": "https://tool.gitapp.cn",
+      "description": "一些常见的开发工具",
+      "quickUrl": "https://fktool.com",
+      "dataUrl": "https://tool.gitapp.cn"
+    },
+    {
+      "category": "常用工具",
+      "name": "远程工作",
+      "url": "https://yuancheng.works/",
+      "description": "远程职位搜索，一搜即达。",
+      "quickUrl": "https://weixin.sogou.com/",
+      "dataUrl": "https://yuancheng.works/"
+    },
+    {
+      "category": "常用工具",
+      "name": "知乎",
+      "url": "https://www.zhihu.com/",
+      "description": "知乎社区。",
+      "quickUrl": "https://www.zhihu.com/",
+      "dataUrl": "https://www.zhihu.com/"
+    },
+    {
+      "category": "常用工具",
+      "name": "V2EX",
+      "url": "https://www.v2ex.com/",
+      "description": "V2EX 创意工作者的社区。",
+      "quickUrl": "https://www.v2ex.com/",
+      "dataUrl": "https://www.v2ex.com/"
+    },
+    {
+      "category": "生物信息",
+      "name": "NCBI",
+      "url": "https://www.ncbi.nlm.nih.gov/",
+      "description": "National Center for Biotechnology Information.",
+      "quickUrl": "https://www.ncbi.nlm.nih.gov/",
+      "dataUrl": "https://www.ncbi.nlm.nih.gov/"
+    },
+    {
+      "category": "生物信息",
+      "name": "Bioconda",
+      "url": "https://anaconda.org/bioconda/",
+      "description": "Bioconda :: Anaconda.org.",
+      "quickUrl": "https://anaconda.org/bioconda/",
+      "dataUrl": "https://anaconda.org/bioconda/"
+    },
+    {
+      "category": "生物信息",
+      "name": "CPAN",
+      "url": "https://metacpan.org/",
+      "description": "Search the CPAN.",
+      "quickUrl": "https://metacpan.org/",
+      "dataUrl": "https://metacpan.org/"
+    },
+    {
+      "category": "生物信息",
+      "name": "Gitter Galaxy",
+      "url": "https://gitter.im/galaxyproject",
+      "description": "Galaxy Gitter Community.",
+      "quickUrl": "https://gitter.im/galaxyproject",
+      "dataUrl": "https://gitter.im/galaxyproject"
+    },
+    {
+      "category": "生物信息",
+      "name": "R Project",
+      "url": "https://www.r-project.org/",
+      "description": "https://www.r-project.org",
+      "quickUrl": "https://www.r-project.org/",
+      "dataUrl": "https://www.r-project.org/"
+    },
+    {
+      "category": "生物信息",
+      "name": "Bioconductor",
+      "url": "http://www.bioconductor.org/",
+      "description": "http://www.bioconductor.org",
+      "quickUrl": "http://www.bioconductor.org/",
+      "dataUrl": "http://www.bioconductor.org/"
+    },
+    {
+      "category": "云服务器",
+      "name": "阿里云",
+      "url": "https://www.aliyun.com/",
+      "description": "上云就上阿里云。",
+      "quickUrl": "https://www.aliyun.com/",
+      "dataUrl": "https://www.aliyun.com/"
+    },
+    {
+      "category": "云服务器",
+      "name": "腾讯云",
+      "url": "https://cloud.tencent.com/",
+      "description": "产业智变，云启未来。",
+      "quickUrl": "https://cloud.tencent.com/",
+      "dataUrl": "https://cloud.tencent.com/"
+    },
+    {
+      "category": "云服务器",
+      "name": "华为云",
+      "url": "https://www.huaweicloud.com/",
+      "description": "提供云计算服务+智能，见未来-华为云。",
+      "quickUrl": "https://www.huaweicloud.com/",
+      "dataUrl": "https://www.huaweicloud.com/"
+    },
+    {
+      "category": "云服务器",
+      "name": "云筏科技",
+      "url": "https://my.cloudraft.cn/",
+      "description": "云筏 - 科研云。",
+      "quickUrl": "https://my.cloudraft.cn/",
+      "dataUrl": "https://my.cloudraft.cn/"
+    },
+    {
+      "category": "云服务器",
+      "name": "极云普惠云电脑",
+      "url": "https://www.ji-cloud.cn/",
+      "description": "云电脑-云游戏-手机变电脑软件。",
+      "quickUrl": "https://www.ji-cloud.cn/",
+      "dataUrl": "https://www.ji-cloud.cn/"
+    },
+    {
+      "category": "云服务器",
+      "name": "青椒云",
+      "url": "https://www.qingjiaocloud.com/",
+      "description": "云桌面,一站式云电脑服务平台。",
+      "quickUrl": "https://www.qingjiaocloud.com/",
+      "dataUrl": "https://www.qingjiaocloud.com/"
+    },
+    {
+      "category": "办公学习",
+      "name": "有道词典",
+      "url": "https://www.youdao.com/",
+      "description": "免费，即时的多语种在线翻译。",
+      "quickUrl": "https://www.youdao.com/",
+      "dataUrl": "https://www.youdao.com/"
+    },
+    {
+      "category": "办公学习",
+      "name": "有道翻译",
+      "url": "http://fanyi.youdao.com/",
+      "description": "有道翻译。",
+      "quickUrl": "http://fanyi.youdao.com/",
+      "dataUrl": "http://fanyi.youdao.com/"
+    },
+    {
+      "category": "办公学习",
+      "name": "谷歌翻译",
+      "url": "https://translate.google.cn/",
+      "description": "谷歌翻译。",
+      "quickUrl": "https://translate.google.cn/",
+      "dataUrl": "https://translate.google.cn/"
+    },
+    {
+      "category": "办公学习",
+      "name": "ProcessOn",
+      "url": "https://www.processon.com/",
+      "description": "免费在线作图、实时协作。",
+      "quickUrl": "https://www.processon.com/",
+      "dataUrl": "https://www.processon.com/"
+    },
+    {
+      "category": "影音视频",
+      "name": "腾讯视频",
+      "url": "http://v.qq.com/",
+      "description": "腾讯视频，海量视频在线观看。",
+      "quickUrl": "http://v.qq.com/",
+      "dataUrl": "http://v.qq.com/"
+    },
+    {
+      "category": "影音视频",
+      "name": "优酷",
+      "url": "http://www.youku.com/",
+      "description": "优酷 - 这个世界很酷。",
+      "quickUrl": "http://www.youku.com/",
+      "dataUrl": "http://www.youku.com/"
+    },
+    {
+      "category": "影音视频",
+      "name": "爱奇艺",
+      "url": "https://www.iqiyi.com/",
+      "description": "爱奇艺在线视频。",
+      "quickUrl": "https://www.iqiyi.com/",
+      "dataUrl": "https://www.iqiyi.com/"
+    },
+    {
+      "category": "影音视频",
+      "name": "哔哩哔哩",
+      "url": "https://www.bilibili.com/",
+      "description": "Bilibili 视频弹幕网站。",
+      "quickUrl": "https://www.bilibili.com/",
+      "dataUrl": "https://www.bilibili.com/"
+    },
+    {
+      "category": "影音视频",
+      "name": "QQ 音乐",
+      "url": "https://y.qq.com/",
+      "description": "QQ 音乐，在线听歌。",
+      "quickUrl": "https://y.qq.com/",
+      "dataUrl": "https://y.qq.com/"
+    },
+    {
+      "category": "影音视频",
+      "name": "网易云音乐",
+      "url": "https://music.163.com/",
+      "description": "163 网易云音乐。",
+      "quickUrl": "https://music.163.com/",
+      "dataUrl": "https://music.163.com/"
+    },
+    {
+      "category": "影音视频",
+      "name": "电影天堂（DYTT8）",
+      "url": "https://www.dytt8.net/index.htm",
+      "description": "电影天堂（DYTT8），高清电影下载。",
+      "quickUrl": "https://www.dytt8.net/index.htm",
+      "dataUrl": "https://www.dytt8.net/index.htm"
+    },
+    {
+      "category": "影音视频",
+      "name": "电影天堂（DYGOD）",
+      "url": "https://www.dygod.net/",
+      "description": "电影天堂（DYGOD），高清电影下载。",
+      "quickUrl": "https://www.dygod.net/",
+      "dataUrl": "https://www.dygod.net/"
+    },
+    {
+      "category": "游戏竞技",
+      "name": "百度贴吧",
+      "url": "#ZgotmplZ",
+      "description": "百度贴吧。",
+      "quickUrl": "#ZgotmplZ",
+      "dataUrl": "#ZgotmplZ"
+    },
+    {
+      "category": "游戏竞技",
+      "name": "台服战地",
+      "url": "https://ava.mangot5.com/ava/index",
+      "description": "台服 AVA 战地之王。",
+      "quickUrl": "https://ava.mangot5.com/ava/index",
+      "dataUrl": "https://ava.mangot5.com/ava/index"
+    },
+    {
+      "category": "网盘资源",
+      "name": "百度网盘",
+      "url": "http://pan.baidu.com/",
+      "description": "https://pan.baidu.com/.",
+      "quickUrl": "http://pan.baidu.com/",
+      "dataUrl": "http://pan.baidu.com/"
+    },
+    {
+      "category": "网盘资源",
+      "name": "阿里云盘",
+      "url": "https://www.aliyundrive.com/",
+      "description": "阿里云盘，你的数字世界。",
+      "quickUrl": "https://www.aliyundrive.com/",
+      "dataUrl": "https://www.aliyundrive.com/"
+    },
+    {
+      "category": "网盘资源",
+      "name": "天翼云盘",
+      "url": "https://cloud.189.cn/",
+      "description": "家庭云|网盘|文件备份|资源分享。",
+      "quickUrl": "https://cloud.189.cn/",
+      "dataUrl": "https://cloud.189.cn/"
+    },
+    {
+      "category": "网盘资源",
+      "name": "坚果云",
+      "url": "",
+      "description": "坚果云官网。",
+      "quickUrl": "",
+      "dataUrl": ""
+    },
+    {
+      "category": "图标素材",
+      "name": "Iconfinder",
+      "url": "https://www.iconfinder.com",
+      "description": "2,100,000+ free and premium vector icons.",
+      "quickUrl": "https://www.iconfinder.com",
+      "dataUrl": "https://www.iconfinder.com"
+    },
+    {
+      "category": "图标素材",
+      "name": "iconfont",
+      "url": "http://www.iconfont.cn/",
+      "description": "阿里巴巴矢量图标库。",
+      "quickUrl": "http://www.iconfont.cn/",
+      "dataUrl": "http://www.iconfont.cn/"
+    },
+    {
+      "category": "图标素材",
+      "name": "iconmonstr",
+      "url": "https://iconmonstr.com/",
+      "description": "Free simple icons for your next project.",
+      "quickUrl": "https://iconmonstr.com/",
+      "dataUrl": "https://iconmonstr.com/"
+    },
+    {
+      "category": "图标素材",
+      "name": "Icon Archive",
+      "url": "http://www.iconarchive.com/",
+      "description": "Search 590,912 free icons.",
+      "quickUrl": "http://www.iconarchive.com/",
+      "dataUrl": "http://www.iconarchive.com/"
+    },
+    {
+      "category": "图标素材",
+      "name": "FindIcons",
+      "url": "https://findicons.com/",
+      "description": "Search through 300,000 free icons.",
+      "quickUrl": "https://findicons.com/",
+      "dataUrl": "https://findicons.com/"
+    },
+    {
+      "category": "图标素材",
+      "name": "IcoMoonApp",
+      "url": "https://icomoon.io/app/",
+      "description": "Icon Font, SVG, PDF &amp; PNG Generator.",
+      "quickUrl": "https://icomoon.io/app/",
+      "dataUrl": "https://icomoon.io/app/"
+    },
+    {
+      "category": "图标素材",
+      "name": "easyicon",
+      "url": "http://www.easyicon.net/",
+      "description": "PNG、ICO、ICNS格式图标搜索、图标下载服务。",
+      "quickUrl": "http://www.easyicon.net/",
+      "dataUrl": "http://www.easyicon.net/"
+    },
+    {
+      "category": "图标素材",
+      "name": "flaticon",
+      "url": "https://www.flaticon.com/",
+      "description": "634,000+ Free vector icons in SVG, PSD, PNG, EPS format or as ICON FONT.",
+      "quickUrl": "https://www.flaticon.com/",
+      "dataUrl": "https://www.flaticon.com/"
+    },
+    {
+      "category": "图标素材",
+      "name": "UICloud",
+      "url": "http://ui-cloud.com/",
+      "description": "The largest user interface design database in the world.",
+      "quickUrl": "http://ui-cloud.com/",
+      "dataUrl": "http://ui-cloud.com/"
+    },
+    {
+      "category": "图标素材",
+      "name": "Material icons",
+      "url": "https://material.io/icons/",
+      "description": "Access over 900 material system icons, available in a variety of sizes and densities, and as a web font.",
+      "quickUrl": "https://material.io/icons/",
+      "dataUrl": "https://material.io/icons/"
+    },
+    {
+      "category": "图标素材",
+      "name": "Font Awesome Icon",
+      "url": "https://fontawesome.com/icons/",
+      "description": "The complete set of 675 icons in Font Awesome.",
+      "quickUrl": "https://fontawesome.com/icons/",
+      "dataUrl": "https://fontawesome.com/icons/"
+    },
+    {
+      "category": "图标素材",
+      "name": "ion icons",
+      "url": "http://ionicons.com/",
+      "description": "The premium icon font for Ionic Framework.",
+      "quickUrl": "http://ionicons.com/",
+      "dataUrl": "http://ionicons.com/"
+    },
+    {
+      "category": "图标素材",
+      "name": "Simpleline Icons",
+      "url": "http://simplelineicons.com/",
+      "description": "Simple line Icons pack.",
+      "quickUrl": "http://simplelineicons.com/",
+      "dataUrl": "http://simplelineicons.com/"
+    },
+    {
+      "category": "图标设计",
+      "name": "Iconsfeed",
+      "url": "http://www.iconsfeed.com/",
+      "description": "iOS icons gallery.",
+      "quickUrl": "http://www.iconsfeed.com/",
+      "dataUrl": "http://www.iconsfeed.com/"
+    },
+    {
+      "category": "图标设计",
+      "name": "iOS Icon Gallery",
+      "url": "http://iosicongallery.com/",
+      "description": "Showcasing beautiful icon designs from the iOS App Store.",
+      "quickUrl": "http://iosicongallery.com/",
+      "dataUrl": "http://iosicongallery.com/"
+    },
+    {
+      "category": "图标设计",
+      "name": "World Vector Logo",
+      "url": "https://worldvectorlogo.com/",
+      "description": "Brand logos free to download.",
+      "quickUrl": "https://worldvectorlogo.com/",
+      "dataUrl": "https://worldvectorlogo.com/"
+    },
+    {
+      "category": "图标设计",
+      "name": "Instant Logo Search",
+      "url": "http://instantlogosearch.com/",
+      "description": "Search & download thousands of logos instantly.",
+      "quickUrl": "http://instantlogosearch.com/",
+      "dataUrl": "http://instantlogosearch.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "freepik",
+      "url": "https://www.freepik.com/",
+      "description": "More than a million free vectors, PSD, photos and free icons.",
+      "quickUrl": "https://www.freepik.com/",
+      "dataUrl": "https://www.freepik.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "wallhalla",
+      "url": "https://wallhalla.com/",
+      "description": "Find awesome high quality wallpapers for desktop and mobile in one place.",
+      "quickUrl": "https://wallhalla.com/",
+      "dataUrl": "https://wallhalla.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "365PSD",
+      "url": "https://365psd.com/",
+      "description": "Free PSD &amp; Graphics, Illustrations.",
+      "quickUrl": "https://365psd.com/",
+      "dataUrl": "https://365psd.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "Medialoot",
+      "url": "https://medialoot.com/",
+      "description": "Free &amp; Premium Design Resources &mdash; Medialoot.",
+      "quickUrl": "https://medialoot.com/",
+      "dataUrl": "https://medialoot.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "千图网",
+      "url": "http://www.58pic.com/",
+      "description": "专注免费设计素材下载的网站.",
+      "quickUrl": "http://www.58pic.com/",
+      "dataUrl": "http://www.58pic.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "千库网",
+      "url": "http://588ku.com/",
+      "description": "免费 png 图片背景素材下载。",
+      "quickUrl": "http://588ku.com/",
+      "dataUrl": "http://588ku.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "我图网",
+      "url": "http://www.ooopic.com/",
+      "description": "我图网，提供图片素材及模板下载，专注正版设计作品交易。",
+      "quickUrl": "http://www.ooopic.com/",
+      "dataUrl": "http://www.ooopic.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "90 设计",
+      "url": "http://90sheji.com/",
+      "description": "电商设计（淘宝美工）千图免费淘宝素材库。",
+      "quickUrl": "http://90sheji.com/",
+      "dataUrl": "http://90sheji.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "昵图网",
+      "url": "http://www.nipic.com/",
+      "description": "原创素材共享平台。",
+      "quickUrl": "http://www.nipic.com/",
+      "dataUrl": "http://www.nipic.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "懒人图库",
+      "url": "http://www.lanrentuku.com/",
+      "description": "懒人图库专注于提供网页素材下载。",
+      "quickUrl": "http://www.lanrentuku.com/",
+      "dataUrl": "http://www.lanrentuku.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "素材搜索",
+      "url": "http://so.ui001.com/",
+      "description": "设计素材搜索聚合。",
+      "quickUrl": "http://so.ui001.com/",
+      "dataUrl": "http://so.ui001.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "PS 饭团网",
+      "url": "http://psefan.com/",
+      "description": "不一样的设计素材库！让自己的设计与众不同！",
+      "quickUrl": "http://psefan.com/",
+      "dataUrl": "http://psefan.com/"
+    },
+    {
+      "category": "平面素材",
+      "name": "素材中国",
+      "url": "http://www.sccnn.com/",
+      "description": "免费素材共享平台。",
+      "quickUrl": "http://www.sccnn.com/",
+      "dataUrl": "http://www.sccnn.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Google Font",
+      "url": "https://fonts.google.com/",
+      "description": "Making the web more beautiful, fast, and open through great typography.",
+      "quickUrl": "https://fonts.google.com/",
+      "dataUrl": "https://fonts.google.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Typekit",
+      "url": "https://typekit.com/",
+      "description": "Quality fonts from the world’s best foundries.",
+      "quickUrl": "https://typekit.com/",
+      "dataUrl": "https://typekit.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "方正字库",
+      "url": "http://www.foundertype.com/",
+      "description": "方正字库官方网站。",
+      "quickUrl": "http://www.foundertype.com/",
+      "dataUrl": "http://www.foundertype.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "字体传奇网",
+      "url": "http://ziticq.com/",
+      "description": "中国首个字体品牌设计师交流网。",
+      "quickUrl": "http://ziticq.com/",
+      "dataUrl": "http://ziticq.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "私藏字体",
+      "url": "http://sicangziti.com/",
+      "description": "优质字体免费下载站。",
+      "quickUrl": "http://sicangziti.com/",
+      "dataUrl": "http://sicangziti.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Fontsquirrel",
+      "url": "https://www.fontsquirrel.com/",
+      "description": "FREE fonts for graphic designers.",
+      "quickUrl": "https://www.fontsquirrel.com/",
+      "dataUrl": "https://www.fontsquirrel.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Urban Fonts",
+      "url": "https://www.urbanfonts.com/",
+      "description": "Download Free Fonts and Free Dingbats.",
+      "quickUrl": "https://www.urbanfonts.com/",
+      "dataUrl": "https://www.urbanfonts.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Lost Type",
+      "url": "http://www.losttype.com/",
+      "description": "Lost Type is a Collaborative Digital Type Foundry.",
+      "quickUrl": "http://www.losttype.com/",
+      "dataUrl": "http://www.losttype.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "FONTS2U",
+      "url": "https://fonts2u.com/",
+      "description": "Download free fonts for Windows and Macintosh.",
+      "quickUrl": "https://fonts2u.com/",
+      "dataUrl": "https://fonts2u.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Fontex",
+      "url": "http://www.fontex.org/",
+      "description": "Free Fonts to Download + Premium Typefaces.",
+      "quickUrl": "http://www.fontex.org/",
+      "dataUrl": "http://www.fontex.org/"
+    },
+    {
+      "category": "字体资源",
+      "name": "FontM",
+      "url": "http://fontm.com/",
+      "description": "Free Fonts",
+      "quickUrl": "http://fontm.com/",
+      "dataUrl": "http://fontm.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "My Fonts",
+      "url": "http://www.myfonts.com/",
+      "description": "Fonts for Print, Products & Screens.",
+      "quickUrl": "http://www.myfonts.com/",
+      "dataUrl": "http://www.myfonts.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Da Font",
+      "url": "https://www.dafont.com/",
+      "description": "Archive of freely downloadable fonts.",
+      "quickUrl": "https://www.dafont.com/",
+      "dataUrl": "https://www.dafont.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "OnlineWebFonts",
+      "url": "https://www.onlinewebfonts.com/",
+      "description": "WEB Free Fonts for Windows and Mac / Font free Download.",
+      "quickUrl": "https://www.onlinewebfonts.com/",
+      "dataUrl": "https://www.onlinewebfonts.com/"
+    },
+    {
+      "category": "字体资源",
+      "name": "Abstract Fonts",
+      "url": "http://www.abstractfonts.com/",
+      "description": "Abstract Fonts (13,866 free fonts).",
+      "quickUrl": "http://www.abstractfonts.com/",
+      "dataUrl": "http://www.abstractfonts.com/"
+    },
+    {
+      "category": "PPT资源",
+      "name": "OfficePLUS",
+      "url": "http://www.officeplus.cn/Template/Home.shtml",
+      "description": "OfficePLUS，微软Office官方在线模板网站！",
+      "quickUrl": "http://www.officeplus.cn/Template/Home.shtml",
+      "dataUrl": "http://www.officeplus.cn/Template/Home.shtml"
+    },
+    {
+      "category": "PPT资源",
+      "name": "优品PPT",
+      "url": "http://www.ypppt.com/",
+      "description": "高质量的模版，而且还有PPT图表，PPT背景图等资源。",
+      "quickUrl": "http://www.ypppt.com/",
+      "dataUrl": "http://www.ypppt.com/"
+    },
+    {
+      "category": "PPT资源",
+      "name": "PPT+",
+      "url": "http://www.pptplus.cn/",
+      "description": "PPT加直播、录制和分享—PPT+语音内容分享平台。",
+      "quickUrl": "http://www.pptplus.cn/",
+      "dataUrl": "http://www.pptplus.cn/"
+    },
+    {
+      "category": "PPT资源",
+      "name": "PPTMind",
+      "url": "http://www.pptmind.com/",
+      "description": "分享高端 ppt 模板与 keynote 模板的数字作品交易平台。",
+      "quickUrl": "http://www.pptmind.com/",
+      "dataUrl": "http://www.pptmind.com/"
+    },
+    {
+      "category": "PPT资源",
+      "name": "tretars",
+      "url": "http://www.tretars.com/ppt-templates",
+      "description": "The best free Mockups from the Web.",
+      "quickUrl": "http://www.tretars.com/ppt-templates",
+      "dataUrl": "http://www.tretars.com/ppt-templates"
+    },
+    {
+      "category": "PPT资源",
+      "name": "5百丁",
+      "url": "http://ppt.500d.me/",
+      "description": "中国领先的PPT模板共享平台。",
+      "quickUrl": "http://ppt.500d.me/",
+      "dataUrl": "http://ppt.500d.me/"
+    },
+    {
+      "category": "图形创意",
+      "name": "photoshop",
+      "url": "https://www.adobe.com/cn/products/photoshop.html",
+      "description": "Photoshop不需要解释",
+      "quickUrl": "https://www.adobe.com/cn/products/photoshop.html",
+      "dataUrl": "https://www.adobe.com/cn/products/photoshop.html"
+    },
+    {
+      "category": "图形创意",
+      "name": "Affinity Designer",
+      "url": "https://affinity.serif.com/",
+      "description": "专业创意软件",
+      "quickUrl": "https://affinity.serif.com/",
+      "dataUrl": "https://affinity.serif.com/"
+    },
+    {
+      "category": "图形创意",
+      "name": "Illustrator",
+      "url": "https://www.adobe.com/cn/products/illustrator/",
+      "description": "矢量图形和插图。",
+      "quickUrl": "https://www.adobe.com/cn/products/illustrator/",
+      "dataUrl": "https://www.adobe.com/cn/products/illustrator/"
+    },
+    {
+      "category": "图形创意",
+      "name": "indesign",
+      "url": "http://www.adobe.com/cn/products/indesign.html",
+      "description": "页面设计、布局和出版。",
+      "quickUrl": "http://www.adobe.com/cn/products/indesign.html",
+      "dataUrl": "http://www.adobe.com/cn/products/indesign.html"
+    },
+    {
+      "category": "图形创意",
+      "name": "cinema-4d",
+      "url": "https://www.maxon.net/en/products/cinema-4d/overview/",
+      "description": "Cinema 4D is the perfect package for all 3D artists who want to achieve breathtaking results fast and hassle-free.",
+      "quickUrl": "https://www.maxon.net/en/products/cinema-4d/overview/",
+      "dataUrl": "https://www.maxon.net/en/products/cinema-4d/overview/"
+    },
+    {
+      "category": "图形创意",
+      "name": "3ds-max",
+      "url": "https://www.autodesk.com/products/3ds-max/overview",
+      "description": "3D modeling, animation, and rendering software",
+      "quickUrl": "https://www.autodesk.com/products/3ds-max/overview",
+      "dataUrl": "https://www.autodesk.com/products/3ds-max/overview"
+    },
+    {
+      "category": "图形创意",
+      "name": "Blender",
+      "url": "https://www.blender.org/",
+      "description": "Blender is the free and open source 3D creation suite.",
+      "quickUrl": "https://www.blender.org/",
+      "dataUrl": "https://www.blender.org/"
+    },
+    {
+      "category": "界面设计",
+      "name": "Sketch",
+      "url": "https://sketchapp.com/",
+      "description": "The digital design toolkit",
+      "quickUrl": "https://sketchapp.com/",
+      "dataUrl": "https://sketchapp.com/"
+    },
+    {
+      "category": "界面设计",
+      "name": "Adobe XD",
+      "url": "http://www.adobe.com/products/xd.html",
+      "description": "Introducing Adobe XD. Design. Prototype. Experience.",
+      "quickUrl": "http://www.adobe.com/products/xd.html",
+      "dataUrl": "http://www.adobe.com/products/xd.html"
+    },
+    {
+      "category": "界面设计",
+      "name": "invisionapp",
+      "url": "https://www.invisionapp.com/",
+      "description": "Powerful design prototyping tools",
+      "quickUrl": "https://www.invisionapp.com/",
+      "dataUrl": "https://www.invisionapp.com/"
+    },
+    {
+      "category": "界面设计",
+      "name": "marvelapp",
+      "url": "https://marvelapp.com/",
+      "description": "Simple design, prototyping and collaboration",
+      "quickUrl": "https://marvelapp.com/",
+      "dataUrl": "https://marvelapp.com/"
+    },
+    {
+      "category": "界面设计",
+      "name": "Muse CC",
+      "url": "https://creative.adobe.com/zh-cn/products/download/muse",
+      "description": "无需利用编码即可进行网站设计。",
+      "quickUrl": "https://creative.adobe.com/zh-cn/products/download/muse",
+      "dataUrl": "https://creative.adobe.com/zh-cn/products/download/muse"
+    },
+    {
+      "category": "界面设计",
+      "name": "figma",
+      "url": "https://www.figma.com/",
+      "description": "Design, prototype, and gather feedback all in one place with Figma.",
+      "quickUrl": "https://www.figma.com/",
+      "dataUrl": "https://www.figma.com/"
+    },
+    {
+      "category": "在线配色",
+      "name": "khroma",
+      "url": "http://khroma.co/generator/",
+      "description": "Khroma is the fastest way to discover, search, and save color combos you'll want to use.",
+      "quickUrl": "http://khroma.co/generator/",
+      "dataUrl": "http://khroma.co/generator/"
+    },
+    {
+      "category": "在线配色",
+      "name": "uigradients",
+      "url": "https://uigradients.com",
+      "description": "Beautiful colored gradients.",
+      "quickUrl": "https://uigradients.com",
+      "dataUrl": "https://uigradients.com"
+    },
+    {
+      "category": "在线配色",
+      "name": "gradients",
+      "url": "http://gradients.io/",
+      "description": "Curated gradients for designers and developers.",
+      "quickUrl": "http://gradients.io/",
+      "dataUrl": "http://gradients.io/"
+    },
+    {
+      "category": "在线配色",
+      "name": "Coolest",
+      "url": "https://webkul.github.io/coolhue/",
+      "description": "Coolest handpicked Gradient Hues for your next super ⚡ amazing stuff.",
+      "quickUrl": "https://webkul.github.io/coolhue/",
+      "dataUrl": "https://webkul.github.io/coolhue/"
+    },
+    {
+      "category": "在线配色",
+      "name": "webgradients",
+      "url": "https://webgradients.com/",
+      "description": "WebGradients is a free collection of 180 linear gradients that you can use as content backdrops in any part of your website.",
+      "quickUrl": "https://webgradients.com/",
+      "dataUrl": "https://webgradients.com/"
+    },
+    {
+      "category": "在线配色",
+      "name": "grabient",
+      "url": "https://www.grabient.com/",
+      "description": "2017 Grabient by unfold.",
+      "quickUrl": "https://www.grabient.com/",
+      "dataUrl": "https://www.grabient.com/"
+    },
+    {
+      "category": "在线配色",
+      "name": "thedayscolor",
+      "url": "http://www.thedayscolor.com/",
+      "description": "The daily color digest",
+      "quickUrl": "http://www.thedayscolor.com/",
+      "dataUrl": "http://www.thedayscolor.com/"
+    },
+    {
+      "category": "在线配色",
+      "name": "flatuicolors",
+      "url": "http://flatuicolors.com/",
+      "description": "Copy Paste Color Pallette from Flat UI Theme.",
+      "quickUrl": "http://flatuicolors.com/",
+      "dataUrl": "http://flatuicolors.com/"
+    },
+    {
+      "category": "在线配色",
+      "name": "coolors",
+      "url": "https://coolors.co/",
+      "description": "The super fast color schemes generator!",
+      "quickUrl": "https://coolors.co/",
+      "dataUrl": "https://coolors.co/"
+    },
+    {
+      "category": "在线配色",
+      "name": "colorhunt",
+      "url": "http://www.colorhunt.co/",
+      "description": "Beautiful Color Palettes.",
+      "quickUrl": "http://www.colorhunt.co/",
+      "dataUrl": "http://www.colorhunt.co/"
+    },
+    {
+      "category": "在线配色",
+      "name": "Adobe Color CC",
+      "url": "https://color.adobe.com/zh/create/color-wheel",
+      "description": "Create color schemes with the color wheel or browse thousands of color combinations from the Color community.",
+      "quickUrl": "https://color.adobe.com/zh/create/color-wheel",
+      "dataUrl": "https://color.adobe.com/zh/create/color-wheel"
+    },
+    {
+      "category": "在线配色",
+      "name": "flatuicolorpicker",
+      "url": "http://www.flatuicolorpicker.com/",
+      "description": "Best Flat Colors For UI Design.",
+      "quickUrl": "http://www.flatuicolorpicker.com/",
+      "dataUrl": "http://www.flatuicolorpicker.com/"
+    },
+    {
+      "category": "在线配色",
+      "name": "trianglify",
+      "url": "http://qrohlf.com/trianglify-generator/",
+      "description": "Trianglify Generator.",
+      "quickUrl": "http://qrohlf.com/trianglify-generator/",
+      "dataUrl": "http://qrohlf.com/trianglify-generator/"
+    },
+    {
+      "category": "在线配色",
+      "name": "klart",
+      "url": "https://klart.co/colors/",
+      "description": "Beautiful colors and designs to your inbox every week.",
+      "quickUrl": "https://klart.co/colors/",
+      "dataUrl": "https://klart.co/colors/"
+    },
+    {
+      "category": "在线配色",
+      "name": "vanschneider",
+      "url": "http://www.vanschneider.com/colors",
+      "description": "Color Claim was created in 2012 by Tobias van Schneider with the goal to collect & combine unique colors for my future projects.",
+      "quickUrl": "http://www.vanschneider.com/colors",
+      "dataUrl": "http://www.vanschneider.com/colors"
+    },
+    {
+      "category": "迷你工具",
+      "name": "tinypng",
+      "url": "https://tinypng.com/",
+      "description": "Optimize your images with a perfect balance in quality and file size.",
+      "quickUrl": "https://tinypng.com/",
+      "dataUrl": "https://tinypng.com/"
+    },
+    {
+      "category": "迷你工具",
+      "name": "goqr",
+      "url": "http://goqr.me/",
+      "description": "create QR codes for free (Logo, T-Shirt, vCard, EPS).",
+      "quickUrl": "http://goqr.me/",
+      "dataUrl": "http://goqr.me/"
+    },
+    {
+      "category": "迷你工具",
+      "name": "ezgif",
+      "url": "https://ezgif.com",
+      "description": "simple online GIF maker and toolset for basic animated GIF editing.",
+      "quickUrl": "https://ezgif.com",
+      "dataUrl": "https://ezgif.com"
+    },
+    {
+      "category": "迷你工具",
+      "name": "Android 9 patch",
+      "url": "http://inloop.github.io/shadow4android/",
+      "description": "Android 9-patch shadow generator fully customizable shadows.",
+      "quickUrl": "http://inloop.github.io/shadow4android/",
+      "dataUrl": "http://inloop.github.io/shadow4android/"
+    },
+    {
+      "category": "迷你工具",
+      "name": "screen sizes",
+      "url": "http://screensiz.es/",
+      "description": "Viewport Sizes and Pixel Densities for Popular Devices.",
+      "quickUrl": "http://screensiz.es/",
+      "dataUrl": "http://screensiz.es/"
+    },
+    {
+      "category": "迷你工具",
+      "name": "base64在线解码",
+      "url": "https://base64.icu",
+      "description": "base64在线解码与编码",
+      "quickUrl": "https://base64.icu",
+      "dataUrl": "https://base64.icu"
+    },
+    {
+      "category": "谷歌插件",
+      "name": "wappalyzer",
+      "url": "https://www.wappalyzer.com/",
+      "description": "Identify technology on websites.",
+      "quickUrl": "https://www.wappalyzer.com/",
+      "dataUrl": "https://www.wappalyzer.com/"
+    },
+    {
+      "category": "谷歌插件",
+      "name": "Panda",
+      "url": "http://usepanda.com/",
+      "description": "A smart news reader built for productivity.",
+      "quickUrl": "http://usepanda.com/",
+      "dataUrl": "http://usepanda.com/"
+    },
+    {
+      "category": "谷歌插件",
+      "name": "sizzy",
+      "url": "https://sizzy.co/",
+      "description": "A tool for developing responsive websites crazy-fast.",
+      "quickUrl": "https://sizzy.co/",
+      "dataUrl": "https://sizzy.co/"
+    },
+    {
+      "category": "谷歌插件",
+      "name": "csspeeper",
+      "url": "https://csspeeper.com/",
+      "description": "Smart CSS viewer tailored for Designers.",
+      "quickUrl": "https://csspeeper.com/",
+      "dataUrl": "https://csspeeper.com/"
+    },
+    {
+      "category": "谷歌插件",
+      "name": "insight",
+      "url": "http://insight.io/",
+      "description": "IDE-like code search and navigation, on the cloud.",
+      "quickUrl": "http://insight.io/",
+      "dataUrl": "http://insight.io/"
+    },
+    {
+      "category": "谷歌插件",
+      "name": "mustsee",
+      "url": "http://mustsee.earth/",
+      "description": "Discover the world's most beautiful places at every opened tab.",
+      "quickUrl": "http://mustsee.earth/",
+      "dataUrl": "http://mustsee.earth/"
+    },
+    {
+      "category": "资讯书籍",
+      "name": "微信读书",
+      "url": "https://weread.qq.com/",
+      "description": "微信读书电脑版。",
+      "quickUrl": "https://weread.qq.com/",
+      "dataUrl": "https://weread.qq.com/"
+    },
+    {
+      "category": "资讯书籍",
+      "name": "书栈网",
+      "url": "https://www.bookstack.cn/",
+      "description": "IT 互联网开源编程书籍免费阅读与下载。",
+      "quickUrl": "https://www.bookstack.cn/",
+      "dataUrl": "https://www.bookstack.cn/"
+    },
+    {
+      "category": "博客论坛",
+      "name": "Inoreader",
+      "url": "https://www.inoreader.com/",
+      "description": "重新掌控你的新闻订阅源。",
+      "quickUrl": "https://www.inoreader.com/",
+      "dataUrl": "https://www.inoreader.com/"
+    },
+    {
+      "category": "博客论坛",
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com/",
+      "description": "一家关于计算机黑客和创业公司的社会化新闻网站。",
+      "quickUrl": "https://news.ycombinator.com/",
+      "dataUrl": "https://news.ycombinator.com/"
+    },
+    {
+      "category": "博客论坛",
+      "name": "经管之家",
+      "url": "https://bbs.pinggu.org/",
+      "description": "国内活跃的经济、管理、金融、统计在线教育和咨询网站。",
+      "quickUrl": "https://bbs.pinggu.org/",
+      "dataUrl": "https://bbs.pinggu.org/"
+    },
+    {
+      "category": "博客论坛",
+      "name": "阮一峰的网络日志",
+      "url": "http://www.ruanyifeng.com/blog/",
+      "description": "阮一峰，科技爱好者周刊。",
+      "quickUrl": "http://www.ruanyifeng.com/blog/",
+      "dataUrl": "http://www.ruanyifeng.com/blog/"
+    },
+    {
+      "category": "博客论坛",
+      "name": "酷壳",
+      "url": "https://www.coolshell.cn/",
+      "description": "酷 壳 – CoolShell。",
+      "quickUrl": "https://www.coolshell.cn/",
+      "dataUrl": "https://www.coolshell.cn/"
+    },
+    {
+      "category": "设计规范",
+      "name": "Design Guidelines",
+      "url": "http://designguidelines.co/",
+      "description": "Design Guidelines &mdash; The way products are built.",
+      "quickUrl": "http://designguidelines.co/",
+      "dataUrl": "http://designguidelines.co/"
+    },
+    {
+      "category": "设计规范",
+      "name": "Awesome design systems",
+      "url": "https://github.com/alexpate/awesome-design-systems",
+      "description": "A collection of awesome design systems.",
+      "quickUrl": "https://github.com/alexpate/awesome-design-systems",
+      "dataUrl": "https://github.com/alexpate/awesome-design-systems"
+    },
+    {
+      "category": "设计规范",
+      "name": "Material Design",
+      "url": "https://material.io/guidelines/",
+      "description": "Introduction - Material Design.",
+      "quickUrl": "https://material.io/guidelines/",
+      "dataUrl": "https://material.io/guidelines/"
+    },
+    {
+      "category": "设计规范",
+      "name": "Human Interface Guidelines",
+      "url": "https://developer.apple.com/ios/human-interface-guidelines",
+      "description": "Human Interface Guidelines iOS.",
+      "quickUrl": "https://developer.apple.com/ios/human-interface-guidelines",
+      "dataUrl": "https://developer.apple.com/ios/human-interface-guidelines"
+    },
+    {
+      "category": "设计规范",
+      "name": "在线图像编辑器",
+      "url": "https://zaixianps.net/?ref=hrzhanghuan.com",
+      "description": "在线图像编辑器",
+      "quickUrl": "https://zaixianps.net/?ref=hrzhanghuan.com",
+      "dataUrl": "https://zaixianps.net/?ref=hrzhanghuan.com"
+    },
+    {
+      "category": "视频教程",
+      "name": "Photoshop Lady",
+      "url": "http://www.photoshoplady.com/",
+      "description": "Your Favourite Photoshop Tutorials in One Place.",
+      "quickUrl": "http://www.photoshoplady.com/",
+      "dataUrl": "http://www.photoshoplady.com/"
+    },
+    {
+      "category": "视频教程",
+      "name": "doyoudo",
+      "url": "http://doyoudo.com/",
+      "description": "创意设计软件学习平台。",
+      "quickUrl": "http://doyoudo.com/",
+      "dataUrl": "http://doyoudo.com/"
+    },
+    {
+      "category": "视频教程",
+      "name": "没位道",
+      "url": "http://www.c945.com/web-ui-tutorial/",
+      "description": "WEB UI免费视频公开课。",
+      "quickUrl": "http://www.c945.com/web-ui-tutorial/",
+      "dataUrl": "http://www.c945.com/web-ui-tutorial/"
+    },
+    {
+      "category": "视频教程",
+      "name": "慕课网",
+      "url": "https://www.imooc.com/",
+      "description": "程序员的梦工厂（有UI课程）。",
+      "quickUrl": "https://www.imooc.com/",
+      "dataUrl": "https://www.imooc.com/"
+    }
+  ],
+  "search_controls": [
+    {
+      "id": "type-baidu",
+      "name": "百度一下，你就知道",
+      "url": "https://www.baidu.com/s?wd="
+    },
+    {
+      "id": "type-bing",
+      "name": "微软 Bing 搜索",
+      "url": "https://cn.bing.com/search?q="
+    },
+    {
+      "id": "type-google",
+      "name": "谷歌搜索",
+      "url": "https://www.google.com/search?q="
+    },
+    {
+      "id": "type-anaconda",
+      "name": "Anaconda 软件搜索",
+      "url": "https://anaconda.org/search?q="
+    },
+    {
+      "id": "type-pubmed",
+      "name": "PubMed 搜索/文章标题/关键字",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/?term="
+    },
+    {
+      "id": "type-baidu1",
+      "name": "百度一下，你就知道",
+      "url": "https://www.baidu.com/s?wd="
+    },
+    {
+      "id": "type-google1",
+      "name": "谷歌搜索",
+      "url": "https://www.google.com/search?q="
+    },
+    {
+      "id": "type-360",
+      "name": "360 好搜",
+      "url": "https://www.so.com/s?q="
+    },
+    {
+      "id": "type-sogo",
+      "name": "搜狗搜索",
+      "url": "https://www.sogou.com/web?query="
+    },
+    {
+      "id": "type-bing1",
+      "name": "微软 Bing 搜索",
+      "url": "https://cn.bing.com/search?q="
+    },
+    {
+      "id": "type-sm",
+      "name": "UC 移动端搜索",
+      "url": "https://yz.m.sm.cn/s?q="
+    },
+    {
+      "id": "type-br",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://rank.chinaz.com/all/"
+    },
+    {
+      "id": "type-links",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://link.chinaz.com/"
+    },
+    {
+      "id": "type-whois",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://who.is/whois/"
+    },
+    {
+      "id": "type-ping",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://ping.chinaz.com/"
+    },
+    {
+      "id": "type-404",
+      "name": "请输入网址(不带https://)",
+      "url": "https://tool.chinaz.com/Links/?DAddress="
+    },
+    {
+      "id": "type-ciku",
+      "name": "请输入关键词",
+      "url": "https://www.ciku5.com/s?wd="
+    },
+    {
+      "id": "type-zhihu",
+      "name": "知乎",
+      "url": "https://www.zhihu.com/search?type=content&q="
+    },
+    {
+      "id": "type-wechat",
+      "name": "微信",
+      "url": "https://weixin.sogou.com/weixin?type=2&query="
+    },
+    {
+      "id": "type-weibo",
+      "name": "微博",
+      "url": "https://s.weibo.com/weibo/"
+    },
+    {
+      "id": "type-douban",
+      "name": "豆瓣",
+      "url": "https://www.douban.com/search?q="
+    },
+    {
+      "id": "type-taobao1",
+      "name": "淘宝",
+      "url": "https://s.taobao.com/search?q="
+    },
+    {
+      "id": "type-jd",
+      "name": "京东",
+      "url": "https://search.jd.com/Search?keyword="
+    },
+    {
+      "id": "type-xiachufang",
+      "name": "下厨房",
+      "url": "https://www.xiachufang.com/search/?keyword="
+    },
+    {
+      "id": "type-xiangha",
+      "name": "香哈菜谱",
+      "url": "https://www.xiangha.com/so/?q=caipu&s="
+    },
+    {
+      "id": "type-12306",
+      "name": "12306",
+      "url": "https://www.12306.cn/?"
+    },
+    {
+      "id": "type-qunar",
+      "name": "去哪儿",
+      "url": "https://www.qunar.com/?"
+    },
+    {
+      "id": "type-zhaopin",
+      "name": "智联招聘",
+      "url": "https://sou.zhaopin.com/jobs/searchresult.ashx?kw="
+    },
+    {
+      "id": "type-51job",
+      "name": "前程无忧",
+      "url": "https://search.51job.com/?"
+    },
+    {
+      "id": "type-lagou",
+      "name": "拉钩网",
+      "url": "https://www.lagou.com/jobs/list_"
+    },
+    {
+      "id": "type-liepin",
+      "name": "猎聘网",
+      "url": "https://www.liepin.com/zhaopin/?key="
+    },
+    {
+      "id": "m_type-baidu",
+      "name": "百度一下，你就知道",
+      "url": "https://www.baidu.com/s?wd="
+    },
+    {
+      "id": "m_type-bing",
+      "name": "微软必应搜索",
+      "url": "https://cn.bing.com/search?q="
+    },
+    {
+      "id": "m_type-google",
+      "name": "谷歌搜索",
+      "url": "https://www.google.com/search?q="
+    },
+    {
+      "id": "m_type-anaconda",
+      "name": "Anaconda 软件搜索",
+      "url": "https://anaconda.org/search?q="
+    },
+    {
+      "id": "m_type-pubmed",
+      "name": "PubMed 搜索/文章标题/关键字",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/?term="
+    },
+    {
+      "id": "m_type-baidu1",
+      "name": "百度一下，你就知道",
+      "url": "https://www.baidu.com/s?wd="
+    },
+    {
+      "id": "m_type-google1",
+      "name": "谷歌搜索",
+      "url": "https://www.google.com/search?q="
+    },
+    {
+      "id": "m_type-360",
+      "name": "360 好搜",
+      "url": "https://www.so.com/s?q="
+    },
+    {
+      "id": "m_type-sogo",
+      "name": "搜狗搜索",
+      "url": "https://www.sogou.com/web?query="
+    },
+    {
+      "id": "m_type-bing1",
+      "name": "微软必应搜索",
+      "url": "https://cn.bing.com/search?q="
+    },
+    {
+      "id": "m_type-sm",
+      "name": "UC 移动端搜索",
+      "url": "https://yz.m.sm.cn/s?q="
+    },
+    {
+      "id": "m_type-br",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://rank.chinaz.com/all/"
+    },
+    {
+      "id": "m_type-links",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://link.chinaz.com/"
+    },
+    {
+      "id": "m_type-whois",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://who.is/whois/"
+    },
+    {
+      "id": "m_type-ping",
+      "name": "请输入网址(不带 https://)",
+      "url": "https://ping.chinaz.com/"
+    },
+    {
+      "id": "m_type-404",
+      "name": "请输入网址(不带https://)",
+      "url": "https://tool.chinaz.com/Links/?DAddress="
+    },
+    {
+      "id": "m_type-ciku",
+      "name": "请输入关键词",
+      "url": "https://www.ciku5.com/s?wd="
+    },
+    {
+      "id": "m_type-zhihu",
+      "name": "知乎",
+      "url": "https://www.zhihu.com/search?type=content&q="
+    },
+    {
+      "id": "m_type-wechat",
+      "name": "微信",
+      "url": "https://weixin.sogou.com/weixin?type=2&query="
+    },
+    {
+      "id": "m_type-weibo",
+      "name": "微博",
+      "url": "https://s.weibo.com/weibo/"
+    },
+    {
+      "id": "m_type-douban",
+      "name": "豆瓣",
+      "url": "https://www.douban.com/search?q="
+    },
+    {
+      "id": "m_type-taobao1",
+      "name": "淘宝",
+      "url": "https://s.taobao.com/search?q="
+    },
+    {
+      "id": "m_type-jd",
+      "name": "京东",
+      "url": "https://search.jd.com/Search?keyword="
+    },
+    {
+      "id": "m_type-xiachufang",
+      "name": "下厨房",
+      "url": "https://www.xiachufang.com/search/?keyword="
+    },
+    {
+      "id": "m_type-xiangha",
+      "name": "香哈菜谱",
+      "url": "https://www.xiangha.com/so/?q=caipu&s="
+    },
+    {
+      "id": "m_type-12306",
+      "name": "12306",
+      "url": "https://www.12306.cn/?"
+    },
+    {
+      "id": "m_type-qunar",
+      "name": "去哪儿",
+      "url": "https://www.qunar.com/?"
+    },
+    {
+      "id": "m_type-zhaopin",
+      "name": "智联招聘",
+      "url": "https://sou.zhaopin.com/jobs/searchresult.ashx?kw="
+    },
+    {
+      "id": "m_type-51job",
+      "name": "远程职位",
+      "url": "https://yuancheng.works"
+    },
+    {
+      "id": "m_type-lagou",
+      "name": "拉钩网",
+      "url": "https://www.lagou.com/jobs/list_"
+    },
+    {
+      "id": "m_type-liepin",
+      "name": "猎聘网",
+      "url": "https://www.liepin.com/zhaopin/?key="
+    }
+  ],
+  "extra_links": [
+    {
+      "name": "一言动态引语",
+      "url": "https://hitokoto.cn/?uuid=7afccafc-a0a6-4c45-a7c4-dbd7f3dbeb58",
+      "source": "header"
+    },
+    {
+      "name": "CSDN",
+      "url": "https://csdn.net",
+      "source": "friendlink"
+    },
+    {
+      "name": "程序设计网",
+      "url": "https://gitapp.cn/",
+      "source": "friendlink"
+    },
+    {
+      "name": "掘金社区",
+      "url": "https://juejin.im",
+      "source": "friendlink"
+    },
+    {
+      "name": "阿里云社区",
+      "url": "https://aliyun.com",
+      "source": "friendlink"
+    },
+    {
+      "name": "Web_tool",
+      "url": "https://github.com/geeeeeeeek/web_tool",
+      "source": "footer"
+    },
+    {
+      "name": "旧模板备案",
+      "url": "http://beian.miit.gov.cn/",
+      "source": "footer"
+    },
+    {
+      "name": "一言 API",
+      "url": "https://v1.hitokoto.cn",
+      "source": "inline_script"
+    },
+    {
+      "name": "一言动态跳转模板",
+      "url": "https://hitokoto.cn/?uuid=",
+      "source": "inline_script"
+    },
+    {
+      "name": "百度搜索建议 API",
+      "url": "https://suggestion.baidu.com/su?wd=",
+      "source": "external_script"
+    },
+    {
+      "name": "Google 搜索建议 API",
+      "url": "https://suggestqueries.google.com/complete/search?client=firefox&callback=iowenHot",
+      "source": "external_script"
+    },
+    {
+      "name": "百度旧搜索建议 API",
+      "url": "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?cb=iowenHot",
+      "source": "external_script"
+    },
+    {
+      "name": "旧模板网站信息 API",
+      "url": "https://apiv2.iotheme.cn/webinfo/get.php",
+      "source": "external_script"
+    },
+    {
+      "name": "ShumLab 模板作者",
+      "url": "https://www.shumlab.com/",
+      "source": "external_script"
+    },
+    {
+      "name": "Lily 个人主页",
+      "url": "https://lily.lat",
+      "source": "about_page"
+    },
+    {
+      "name": "About 页占位备案链接",
+      "url": "http://lily.lat/",
+      "source": "about_page"
+    },
+    {
+      "name": "About 页 Web_tool 页脚",
+      "url": "https://github.com/",
+      "source": "about_page"
+    }
+  ],
+  "items": [
+    {
+      "name": "语雀",
+      "category": "常用工具",
+      "description": "专业的云端知识库。",
+      "url": "https://www.yuque.com/",
+      "id": "legacy-001",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-001",
+          "name": "语雀"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-001",
+          "name": "语雀"
+        }
+      ]
+    },
+    {
+      "name": "QQ 邮箱",
+      "category": "常用工具",
+      "description": "腾讯 QQ 邮箱。",
+      "url": "http://mail.qq.com/",
+      "id": "legacy-002",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-002",
+          "name": "QQ 邮箱"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-002",
+          "name": "QQ 邮箱"
+        }
+      ]
+    },
+    {
+      "name": "开源中国",
+      "category": "常用工具",
+      "description": "中文开源技术交流社区。",
+      "url": "https://www.oschina.net/",
+      "id": "legacy-003",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-003",
+          "name": "开源中国"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-003",
+          "name": "开源中国"
+        }
+      ]
+    },
+    {
+      "name": "公众号平台",
+      "category": "常用工具",
+      "description": "再小的个体也有自己的品牌。",
+      "url": "https://mp.weixin.qq.com/",
+      "id": "legacy-004",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-004",
+          "name": "公众号平台"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-004",
+          "name": "公众号平台"
+        }
+      ]
+    },
+    {
+      "name": "GitHub",
+      "category": "常用工具",
+      "description": "GitHub 开源社区。",
+      "url": "https://github.com/",
+      "id": "legacy-005",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-005",
+          "name": "GitHub"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-005",
+          "name": "GitHub"
+        },
+        {
+          "source": "about_page",
+          "source_id": "extra-17",
+          "name": "About 页 Web_tool 页脚"
+        }
+      ]
+    },
+    {
+      "name": "在线ps",
+      "category": "常用工具",
+      "description": "一键p图抠图工具",
+      "url": "https://zaixianps.net/",
+      "id": "legacy-006",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-006",
+          "name": "在线ps"
+        }
+      ]
+    },
+    {
+      "name": "在线ps",
+      "category": "常用工具",
+      "description": "一键p图抠图工具",
+      "url": "https://ps.gitapp.cn/",
+      "id": "legacy-007",
+      "occurrences": [
+        {
+          "source": "quick_open",
+          "source_id": "quick-006",
+          "name": "在线ps"
+        }
+      ]
+    },
+    {
+      "name": "房贷计算器",
+      "category": "常用工具",
+      "description": "房贷利率计算器",
+      "url": "https://fangdai.gitapp.cn",
+      "id": "legacy-008",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-007",
+          "name": "房贷计算器"
+        }
+      ]
+    },
+    {
+      "name": "房贷计算器",
+      "category": "常用工具",
+      "description": "房贷利率计算器",
+      "url": "https://fangdaijisuanqi.vip",
+      "id": "legacy-009",
+      "occurrences": [
+        {
+          "source": "quick_open",
+          "source_id": "quick-007",
+          "name": "房贷计算器"
+        }
+      ]
+    },
+    {
+      "name": "m3u8在线播放器",
+      "category": "常用工具",
+      "description": "m3u8/hls在线播放",
+      "url": "https://m3u8player.org/",
+      "id": "legacy-010",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-008",
+          "name": "m3u8在线播放器"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-008",
+          "name": "m3u8在线播放器"
+        }
+      ]
+    },
+    {
+      "name": "在线工具助手",
+      "category": "常用工具",
+      "description": "一些常见的开发工具",
+      "url": "https://tool.gitapp.cn",
+      "id": "legacy-011",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-009",
+          "name": "在线工具助手"
+        }
+      ]
+    },
+    {
+      "name": "在线工具助手",
+      "category": "常用工具",
+      "description": "一些常见的开发工具",
+      "url": "https://fktool.com",
+      "id": "legacy-012",
+      "occurrences": [
+        {
+          "source": "quick_open",
+          "source_id": "quick-009",
+          "name": "在线工具助手"
+        }
+      ]
+    },
+    {
+      "name": "远程工作",
+      "category": "常用工具",
+      "description": "远程职位搜索，一搜即达。",
+      "url": "https://yuancheng.works/",
+      "id": "legacy-013",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-010",
+          "name": "远程工作"
+        }
+      ]
+    },
+    {
+      "name": "远程工作",
+      "category": "常用工具",
+      "description": "远程职位搜索，一搜即达。",
+      "url": "https://weixin.sogou.com/",
+      "id": "legacy-014",
+      "occurrences": [
+        {
+          "source": "quick_open",
+          "source_id": "quick-010",
+          "name": "远程工作"
+        }
+      ]
+    },
+    {
+      "name": "知乎",
+      "category": "常用工具",
+      "description": "知乎社区。",
+      "url": "https://www.zhihu.com/",
+      "id": "legacy-015",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-011",
+          "name": "知乎"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-011",
+          "name": "知乎"
+        }
+      ]
+    },
+    {
+      "name": "V2EX",
+      "category": "常用工具",
+      "description": "V2EX 创意工作者的社区。",
+      "url": "https://www.v2ex.com/",
+      "id": "legacy-016",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-012",
+          "name": "V2EX"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-012",
+          "name": "V2EX"
+        }
+      ]
+    },
+    {
+      "name": "NCBI",
+      "category": "生物信息",
+      "description": "National Center for Biotechnology Information.",
+      "url": "https://www.ncbi.nlm.nih.gov/",
+      "id": "legacy-017",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-013",
+          "name": "NCBI"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-013",
+          "name": "NCBI"
+        }
+      ]
+    },
+    {
+      "name": "Bioconda",
+      "category": "生物信息",
+      "description": "Bioconda :: Anaconda.org.",
+      "url": "https://anaconda.org/bioconda/",
+      "id": "legacy-018",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-014",
+          "name": "Bioconda"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-014",
+          "name": "Bioconda"
+        }
+      ]
+    },
+    {
+      "name": "CPAN",
+      "category": "生物信息",
+      "description": "Search the CPAN.",
+      "url": "https://metacpan.org/",
+      "id": "legacy-019",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-015",
+          "name": "CPAN"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-015",
+          "name": "CPAN"
+        }
+      ]
+    },
+    {
+      "name": "Gitter Galaxy",
+      "category": "生物信息",
+      "description": "Galaxy Gitter Community.",
+      "url": "https://gitter.im/galaxyproject",
+      "id": "legacy-020",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-016",
+          "name": "Gitter Galaxy"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-016",
+          "name": "Gitter Galaxy"
+        }
+      ]
+    },
+    {
+      "name": "R Project",
+      "category": "生物信息",
+      "description": "https://www.r-project.org",
+      "url": "https://www.r-project.org/",
+      "id": "legacy-021",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-017",
+          "name": "R Project"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-017",
+          "name": "R Project"
+        }
+      ]
+    },
+    {
+      "name": "Bioconductor",
+      "category": "生物信息",
+      "description": "http://www.bioconductor.org",
+      "url": "http://www.bioconductor.org/",
+      "id": "legacy-022",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-018",
+          "name": "Bioconductor"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-018",
+          "name": "Bioconductor"
+        }
+      ]
+    },
+    {
+      "name": "阿里云",
+      "category": "云服务器",
+      "description": "上云就上阿里云。",
+      "url": "https://www.aliyun.com/",
+      "id": "legacy-023",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-019",
+          "name": "阿里云"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-019",
+          "name": "阿里云"
+        }
+      ]
+    },
+    {
+      "name": "腾讯云",
+      "category": "云服务器",
+      "description": "产业智变，云启未来。",
+      "url": "https://cloud.tencent.com/",
+      "id": "legacy-024",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-020",
+          "name": "腾讯云"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-020",
+          "name": "腾讯云"
+        }
+      ]
+    },
+    {
+      "name": "华为云",
+      "category": "云服务器",
+      "description": "提供云计算服务+智能，见未来-华为云。",
+      "url": "https://www.huaweicloud.com/",
+      "id": "legacy-025",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-021",
+          "name": "华为云"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-021",
+          "name": "华为云"
+        }
+      ]
+    },
+    {
+      "name": "云筏科技",
+      "category": "云服务器",
+      "description": "云筏 - 科研云。",
+      "url": "https://my.cloudraft.cn/",
+      "id": "legacy-026",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-022",
+          "name": "云筏科技"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-022",
+          "name": "云筏科技"
+        }
+      ]
+    },
+    {
+      "name": "极云普惠云电脑",
+      "category": "云服务器",
+      "description": "云电脑-云游戏-手机变电脑软件。",
+      "url": "https://www.ji-cloud.cn/",
+      "id": "legacy-027",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-023",
+          "name": "极云普惠云电脑"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-023",
+          "name": "极云普惠云电脑"
+        }
+      ]
+    },
+    {
+      "name": "青椒云",
+      "category": "云服务器",
+      "description": "云桌面,一站式云电脑服务平台。",
+      "url": "https://www.qingjiaocloud.com/",
+      "id": "legacy-028",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-024",
+          "name": "青椒云"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-024",
+          "name": "青椒云"
+        }
+      ]
+    },
+    {
+      "name": "有道词典",
+      "category": "办公学习",
+      "description": "免费，即时的多语种在线翻译。",
+      "url": "https://www.youdao.com/",
+      "id": "legacy-029",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-025",
+          "name": "有道词典"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-025",
+          "name": "有道词典"
+        }
+      ]
+    },
+    {
+      "name": "有道翻译",
+      "category": "办公学习",
+      "description": "有道翻译。",
+      "url": "http://fanyi.youdao.com/",
+      "id": "legacy-030",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-026",
+          "name": "有道翻译"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-026",
+          "name": "有道翻译"
+        }
+      ]
+    },
+    {
+      "name": "谷歌翻译",
+      "category": "办公学习",
+      "description": "谷歌翻译。",
+      "url": "https://translate.google.cn/",
+      "id": "legacy-031",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-027",
+          "name": "谷歌翻译"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-027",
+          "name": "谷歌翻译"
+        }
+      ]
+    },
+    {
+      "name": "ProcessOn",
+      "category": "办公学习",
+      "description": "免费在线作图、实时协作。",
+      "url": "https://www.processon.com/",
+      "id": "legacy-032",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-028",
+          "name": "ProcessOn"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-028",
+          "name": "ProcessOn"
+        }
+      ]
+    },
+    {
+      "name": "腾讯视频",
+      "category": "影音视频",
+      "description": "腾讯视频，海量视频在线观看。",
+      "url": "http://v.qq.com/",
+      "id": "legacy-033",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-029",
+          "name": "腾讯视频"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-029",
+          "name": "腾讯视频"
+        }
+      ]
+    },
+    {
+      "name": "优酷",
+      "category": "影音视频",
+      "description": "优酷 - 这个世界很酷。",
+      "url": "http://www.youku.com/",
+      "id": "legacy-034",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-030",
+          "name": "优酷"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-030",
+          "name": "优酷"
+        }
+      ]
+    },
+    {
+      "name": "爱奇艺",
+      "category": "影音视频",
+      "description": "爱奇艺在线视频。",
+      "url": "https://www.iqiyi.com/",
+      "id": "legacy-035",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-031",
+          "name": "爱奇艺"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-031",
+          "name": "爱奇艺"
+        }
+      ]
+    },
+    {
+      "name": "哔哩哔哩",
+      "category": "影音视频",
+      "description": "Bilibili 视频弹幕网站。",
+      "url": "https://www.bilibili.com/",
+      "id": "legacy-036",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-032",
+          "name": "哔哩哔哩"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-032",
+          "name": "哔哩哔哩"
+        }
+      ]
+    },
+    {
+      "name": "QQ 音乐",
+      "category": "影音视频",
+      "description": "QQ 音乐，在线听歌。",
+      "url": "https://y.qq.com/",
+      "id": "legacy-037",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-033",
+          "name": "QQ 音乐"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-033",
+          "name": "QQ 音乐"
+        }
+      ]
+    },
+    {
+      "name": "网易云音乐",
+      "category": "影音视频",
+      "description": "163 网易云音乐。",
+      "url": "https://music.163.com/",
+      "id": "legacy-038",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-034",
+          "name": "网易云音乐"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-034",
+          "name": "网易云音乐"
+        }
+      ]
+    },
+    {
+      "name": "电影天堂（DYTT8）",
+      "category": "影音视频",
+      "description": "电影天堂（DYTT8），高清电影下载。",
+      "url": "https://www.dytt8.net/index.htm",
+      "id": "legacy-039",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-035",
+          "name": "电影天堂（DYTT8）"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-035",
+          "name": "电影天堂（DYTT8）"
+        }
+      ]
+    },
+    {
+      "name": "电影天堂（DYGOD）",
+      "category": "影音视频",
+      "description": "电影天堂（DYGOD），高清电影下载。",
+      "url": "https://www.dygod.net/",
+      "id": "legacy-040",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-036",
+          "name": "电影天堂（DYGOD）"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-036",
+          "name": "电影天堂（DYGOD）"
+        }
+      ]
+    },
+    {
+      "name": "百度贴吧",
+      "category": "游戏竞技",
+      "description": "百度贴吧。",
+      "url": "#ZgotmplZ",
+      "id": "legacy-041",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-037",
+          "name": "百度贴吧"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-037",
+          "name": "百度贴吧"
+        }
+      ]
+    },
+    {
+      "name": "台服战地",
+      "category": "游戏竞技",
+      "description": "台服 AVA 战地之王。",
+      "url": "https://ava.mangot5.com/ava/index",
+      "id": "legacy-042",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-038",
+          "name": "台服战地"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-038",
+          "name": "台服战地"
+        }
+      ]
+    },
+    {
+      "name": "百度网盘",
+      "category": "网盘资源",
+      "description": "https://pan.baidu.com/.",
+      "url": "http://pan.baidu.com/",
+      "id": "legacy-043",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-039",
+          "name": "百度网盘"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-039",
+          "name": "百度网盘"
+        }
+      ]
+    },
+    {
+      "name": "阿里云盘",
+      "category": "网盘资源",
+      "description": "阿里云盘，你的数字世界。",
+      "url": "https://www.aliyundrive.com/",
+      "id": "legacy-044",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-040",
+          "name": "阿里云盘"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-040",
+          "name": "阿里云盘"
+        }
+      ]
+    },
+    {
+      "name": "天翼云盘",
+      "category": "网盘资源",
+      "description": "家庭云|网盘|文件备份|资源分享。",
+      "url": "https://cloud.189.cn/",
+      "id": "legacy-045",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-041",
+          "name": "天翼云盘"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-041",
+          "name": "天翼云盘"
+        }
+      ]
+    },
+    {
+      "name": "坚果云",
+      "category": "网盘资源",
+      "description": "坚果云官网。",
+      "url": "",
+      "id": "legacy-046",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-042",
+          "name": "坚果云"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-042",
+          "name": "坚果云"
+        }
+      ]
+    },
+    {
+      "name": "Iconfinder",
+      "category": "图标素材",
+      "description": "2,100,000+ free and premium vector icons.",
+      "url": "https://www.iconfinder.com",
+      "id": "legacy-047",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-043",
+          "name": "Iconfinder"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-043",
+          "name": "Iconfinder"
+        }
+      ]
+    },
+    {
+      "name": "iconfont",
+      "category": "图标素材",
+      "description": "阿里巴巴矢量图标库。",
+      "url": "http://www.iconfont.cn/",
+      "id": "legacy-048",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-044",
+          "name": "iconfont"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-044",
+          "name": "iconfont"
+        }
+      ]
+    },
+    {
+      "name": "iconmonstr",
+      "category": "图标素材",
+      "description": "Free simple icons for your next project.",
+      "url": "https://iconmonstr.com/",
+      "id": "legacy-049",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-045",
+          "name": "iconmonstr"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-045",
+          "name": "iconmonstr"
+        }
+      ]
+    },
+    {
+      "name": "Icon Archive",
+      "category": "图标素材",
+      "description": "Search 590,912 free icons.",
+      "url": "http://www.iconarchive.com/",
+      "id": "legacy-050",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-046",
+          "name": "Icon Archive"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-046",
+          "name": "Icon Archive"
+        }
+      ]
+    },
+    {
+      "name": "FindIcons",
+      "category": "图标素材",
+      "description": "Search through 300,000 free icons.",
+      "url": "https://findicons.com/",
+      "id": "legacy-051",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-047",
+          "name": "FindIcons"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-047",
+          "name": "FindIcons"
+        }
+      ]
+    },
+    {
+      "name": "IcoMoonApp",
+      "category": "图标素材",
+      "description": "Icon Font, SVG, PDF &amp; PNG Generator.",
+      "url": "https://icomoon.io/app/",
+      "id": "legacy-052",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-048",
+          "name": "IcoMoonApp"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-048",
+          "name": "IcoMoonApp"
+        }
+      ]
+    },
+    {
+      "name": "easyicon",
+      "category": "图标素材",
+      "description": "PNG、ICO、ICNS格式图标搜索、图标下载服务。",
+      "url": "http://www.easyicon.net/",
+      "id": "legacy-053",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-049",
+          "name": "easyicon"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-049",
+          "name": "easyicon"
+        }
+      ]
+    },
+    {
+      "name": "flaticon",
+      "category": "图标素材",
+      "description": "634,000+ Free vector icons in SVG, PSD, PNG, EPS format or as ICON FONT.",
+      "url": "https://www.flaticon.com/",
+      "id": "legacy-054",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-050",
+          "name": "flaticon"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-050",
+          "name": "flaticon"
+        }
+      ]
+    },
+    {
+      "name": "UICloud",
+      "category": "图标素材",
+      "description": "The largest user interface design database in the world.",
+      "url": "http://ui-cloud.com/",
+      "id": "legacy-055",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-051",
+          "name": "UICloud"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-051",
+          "name": "UICloud"
+        }
+      ]
+    },
+    {
+      "name": "Material icons",
+      "category": "图标素材",
+      "description": "Access over 900 material system icons, available in a variety of sizes and densities, and as a web font.",
+      "url": "https://material.io/icons/",
+      "id": "legacy-056",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-052",
+          "name": "Material icons"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-052",
+          "name": "Material icons"
+        }
+      ]
+    },
+    {
+      "name": "Font Awesome Icon",
+      "category": "图标素材",
+      "description": "The complete set of 675 icons in Font Awesome.",
+      "url": "https://fontawesome.com/icons/",
+      "id": "legacy-057",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-053",
+          "name": "Font Awesome Icon"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-053",
+          "name": "Font Awesome Icon"
+        }
+      ]
+    },
+    {
+      "name": "ion icons",
+      "category": "图标素材",
+      "description": "The premium icon font for Ionic Framework.",
+      "url": "http://ionicons.com/",
+      "id": "legacy-058",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-054",
+          "name": "ion icons"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-054",
+          "name": "ion icons"
+        }
+      ]
+    },
+    {
+      "name": "Simpleline Icons",
+      "category": "图标素材",
+      "description": "Simple line Icons pack.",
+      "url": "http://simplelineicons.com/",
+      "id": "legacy-059",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-055",
+          "name": "Simpleline Icons"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-055",
+          "name": "Simpleline Icons"
+        }
+      ]
+    },
+    {
+      "name": "Iconsfeed",
+      "category": "图标设计",
+      "description": "iOS icons gallery.",
+      "url": "http://www.iconsfeed.com/",
+      "id": "legacy-060",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-056",
+          "name": "Iconsfeed"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-056",
+          "name": "Iconsfeed"
+        }
+      ]
+    },
+    {
+      "name": "iOS Icon Gallery",
+      "category": "图标设计",
+      "description": "Showcasing beautiful icon designs from the iOS App Store.",
+      "url": "http://iosicongallery.com/",
+      "id": "legacy-061",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-057",
+          "name": "iOS Icon Gallery"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-057",
+          "name": "iOS Icon Gallery"
+        }
+      ]
+    },
+    {
+      "name": "World Vector Logo",
+      "category": "图标设计",
+      "description": "Brand logos free to download.",
+      "url": "https://worldvectorlogo.com/",
+      "id": "legacy-062",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-058",
+          "name": "World Vector Logo"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-058",
+          "name": "World Vector Logo"
+        }
+      ]
+    },
+    {
+      "name": "Instant Logo Search",
+      "category": "图标设计",
+      "description": "Search & download thousands of logos instantly.",
+      "url": "http://instantlogosearch.com/",
+      "id": "legacy-063",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-059",
+          "name": "Instant Logo Search"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-059",
+          "name": "Instant Logo Search"
+        }
+      ]
+    },
+    {
+      "name": "freepik",
+      "category": "平面素材",
+      "description": "More than a million free vectors, PSD, photos and free icons.",
+      "url": "https://www.freepik.com/",
+      "id": "legacy-064",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-060",
+          "name": "freepik"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-060",
+          "name": "freepik"
+        }
+      ]
+    },
+    {
+      "name": "wallhalla",
+      "category": "平面素材",
+      "description": "Find awesome high quality wallpapers for desktop and mobile in one place.",
+      "url": "https://wallhalla.com/",
+      "id": "legacy-065",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-061",
+          "name": "wallhalla"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-061",
+          "name": "wallhalla"
+        }
+      ]
+    },
+    {
+      "name": "365PSD",
+      "category": "平面素材",
+      "description": "Free PSD &amp; Graphics, Illustrations.",
+      "url": "https://365psd.com/",
+      "id": "legacy-066",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-062",
+          "name": "365PSD"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-062",
+          "name": "365PSD"
+        }
+      ]
+    },
+    {
+      "name": "Medialoot",
+      "category": "平面素材",
+      "description": "Free &amp; Premium Design Resources &mdash; Medialoot.",
+      "url": "https://medialoot.com/",
+      "id": "legacy-067",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-063",
+          "name": "Medialoot"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-063",
+          "name": "Medialoot"
+        }
+      ]
+    },
+    {
+      "name": "千图网",
+      "category": "平面素材",
+      "description": "专注免费设计素材下载的网站.",
+      "url": "http://www.58pic.com/",
+      "id": "legacy-068",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-064",
+          "name": "千图网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-064",
+          "name": "千图网"
+        }
+      ]
+    },
+    {
+      "name": "千库网",
+      "category": "平面素材",
+      "description": "免费 png 图片背景素材下载。",
+      "url": "http://588ku.com/",
+      "id": "legacy-069",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-065",
+          "name": "千库网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-065",
+          "name": "千库网"
+        }
+      ]
+    },
+    {
+      "name": "我图网",
+      "category": "平面素材",
+      "description": "我图网，提供图片素材及模板下载，专注正版设计作品交易。",
+      "url": "http://www.ooopic.com/",
+      "id": "legacy-070",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-066",
+          "name": "我图网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-066",
+          "name": "我图网"
+        }
+      ]
+    },
+    {
+      "name": "90 设计",
+      "category": "平面素材",
+      "description": "电商设计（淘宝美工）千图免费淘宝素材库。",
+      "url": "http://90sheji.com/",
+      "id": "legacy-071",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-067",
+          "name": "90 设计"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-067",
+          "name": "90 设计"
+        }
+      ]
+    },
+    {
+      "name": "昵图网",
+      "category": "平面素材",
+      "description": "原创素材共享平台。",
+      "url": "http://www.nipic.com/",
+      "id": "legacy-072",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-068",
+          "name": "昵图网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-068",
+          "name": "昵图网"
+        }
+      ]
+    },
+    {
+      "name": "懒人图库",
+      "category": "平面素材",
+      "description": "懒人图库专注于提供网页素材下载。",
+      "url": "http://www.lanrentuku.com/",
+      "id": "legacy-073",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-069",
+          "name": "懒人图库"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-069",
+          "name": "懒人图库"
+        }
+      ]
+    },
+    {
+      "name": "素材搜索",
+      "category": "平面素材",
+      "description": "设计素材搜索聚合。",
+      "url": "http://so.ui001.com/",
+      "id": "legacy-074",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-070",
+          "name": "素材搜索"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-070",
+          "name": "素材搜索"
+        }
+      ]
+    },
+    {
+      "name": "PS 饭团网",
+      "category": "平面素材",
+      "description": "不一样的设计素材库！让自己的设计与众不同！",
+      "url": "http://psefan.com/",
+      "id": "legacy-075",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-071",
+          "name": "PS 饭团网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-071",
+          "name": "PS 饭团网"
+        }
+      ]
+    },
+    {
+      "name": "素材中国",
+      "category": "平面素材",
+      "description": "免费素材共享平台。",
+      "url": "http://www.sccnn.com/",
+      "id": "legacy-076",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-072",
+          "name": "素材中国"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-072",
+          "name": "素材中国"
+        }
+      ]
+    },
+    {
+      "name": "Google Font",
+      "category": "字体资源",
+      "description": "Making the web more beautiful, fast, and open through great typography.",
+      "url": "https://fonts.google.com/",
+      "id": "legacy-077",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-073",
+          "name": "Google Font"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-073",
+          "name": "Google Font"
+        }
+      ]
+    },
+    {
+      "name": "Typekit",
+      "category": "字体资源",
+      "description": "Quality fonts from the world’s best foundries.",
+      "url": "https://typekit.com/",
+      "id": "legacy-078",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-074",
+          "name": "Typekit"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-074",
+          "name": "Typekit"
+        }
+      ]
+    },
+    {
+      "name": "方正字库",
+      "category": "字体资源",
+      "description": "方正字库官方网站。",
+      "url": "http://www.foundertype.com/",
+      "id": "legacy-079",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-075",
+          "name": "方正字库"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-075",
+          "name": "方正字库"
+        }
+      ]
+    },
+    {
+      "name": "字体传奇网",
+      "category": "字体资源",
+      "description": "中国首个字体品牌设计师交流网。",
+      "url": "http://ziticq.com/",
+      "id": "legacy-080",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-076",
+          "name": "字体传奇网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-076",
+          "name": "字体传奇网"
+        }
+      ]
+    },
+    {
+      "name": "私藏字体",
+      "category": "字体资源",
+      "description": "优质字体免费下载站。",
+      "url": "http://sicangziti.com/",
+      "id": "legacy-081",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-077",
+          "name": "私藏字体"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-077",
+          "name": "私藏字体"
+        }
+      ]
+    },
+    {
+      "name": "Fontsquirrel",
+      "category": "字体资源",
+      "description": "FREE fonts for graphic designers.",
+      "url": "https://www.fontsquirrel.com/",
+      "id": "legacy-082",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-078",
+          "name": "Fontsquirrel"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-078",
+          "name": "Fontsquirrel"
+        }
+      ]
+    },
+    {
+      "name": "Urban Fonts",
+      "category": "字体资源",
+      "description": "Download Free Fonts and Free Dingbats.",
+      "url": "https://www.urbanfonts.com/",
+      "id": "legacy-083",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-079",
+          "name": "Urban Fonts"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-079",
+          "name": "Urban Fonts"
+        }
+      ]
+    },
+    {
+      "name": "Lost Type",
+      "category": "字体资源",
+      "description": "Lost Type is a Collaborative Digital Type Foundry.",
+      "url": "http://www.losttype.com/",
+      "id": "legacy-084",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-080",
+          "name": "Lost Type"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-080",
+          "name": "Lost Type"
+        }
+      ]
+    },
+    {
+      "name": "FONTS2U",
+      "category": "字体资源",
+      "description": "Download free fonts for Windows and Macintosh.",
+      "url": "https://fonts2u.com/",
+      "id": "legacy-085",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-081",
+          "name": "FONTS2U"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-081",
+          "name": "FONTS2U"
+        }
+      ]
+    },
+    {
+      "name": "Fontex",
+      "category": "字体资源",
+      "description": "Free Fonts to Download + Premium Typefaces.",
+      "url": "http://www.fontex.org/",
+      "id": "legacy-086",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-082",
+          "name": "Fontex"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-082",
+          "name": "Fontex"
+        }
+      ]
+    },
+    {
+      "name": "FontM",
+      "category": "字体资源",
+      "description": "Free Fonts",
+      "url": "http://fontm.com/",
+      "id": "legacy-087",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-083",
+          "name": "FontM"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-083",
+          "name": "FontM"
+        }
+      ]
+    },
+    {
+      "name": "My Fonts",
+      "category": "字体资源",
+      "description": "Fonts for Print, Products & Screens.",
+      "url": "http://www.myfonts.com/",
+      "id": "legacy-088",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-084",
+          "name": "My Fonts"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-084",
+          "name": "My Fonts"
+        }
+      ]
+    },
+    {
+      "name": "Da Font",
+      "category": "字体资源",
+      "description": "Archive of freely downloadable fonts.",
+      "url": "https://www.dafont.com/",
+      "id": "legacy-089",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-085",
+          "name": "Da Font"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-085",
+          "name": "Da Font"
+        }
+      ]
+    },
+    {
+      "name": "OnlineWebFonts",
+      "category": "字体资源",
+      "description": "WEB Free Fonts for Windows and Mac / Font free Download.",
+      "url": "https://www.onlinewebfonts.com/",
+      "id": "legacy-090",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-086",
+          "name": "OnlineWebFonts"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-086",
+          "name": "OnlineWebFonts"
+        }
+      ]
+    },
+    {
+      "name": "Abstract Fonts",
+      "category": "字体资源",
+      "description": "Abstract Fonts (13,866 free fonts).",
+      "url": "http://www.abstractfonts.com/",
+      "id": "legacy-091",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-087",
+          "name": "Abstract Fonts"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-087",
+          "name": "Abstract Fonts"
+        }
+      ]
+    },
+    {
+      "name": "OfficePLUS",
+      "category": "PPT资源",
+      "description": "OfficePLUS，微软Office官方在线模板网站！",
+      "url": "http://www.officeplus.cn/Template/Home.shtml",
+      "id": "legacy-092",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-088",
+          "name": "OfficePLUS"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-088",
+          "name": "OfficePLUS"
+        }
+      ]
+    },
+    {
+      "name": "优品PPT",
+      "category": "PPT资源",
+      "description": "高质量的模版，而且还有PPT图表，PPT背景图等资源。",
+      "url": "http://www.ypppt.com/",
+      "id": "legacy-093",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-089",
+          "name": "优品PPT"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-089",
+          "name": "优品PPT"
+        }
+      ]
+    },
+    {
+      "name": "PPT+",
+      "category": "PPT资源",
+      "description": "PPT加直播、录制和分享—PPT+语音内容分享平台。",
+      "url": "http://www.pptplus.cn/",
+      "id": "legacy-094",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-090",
+          "name": "PPT+"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-090",
+          "name": "PPT+"
+        }
+      ]
+    },
+    {
+      "name": "PPTMind",
+      "category": "PPT资源",
+      "description": "分享高端 ppt 模板与 keynote 模板的数字作品交易平台。",
+      "url": "http://www.pptmind.com/",
+      "id": "legacy-095",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-091",
+          "name": "PPTMind"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-091",
+          "name": "PPTMind"
+        }
+      ]
+    },
+    {
+      "name": "tretars",
+      "category": "PPT资源",
+      "description": "The best free Mockups from the Web.",
+      "url": "http://www.tretars.com/ppt-templates",
+      "id": "legacy-096",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-092",
+          "name": "tretars"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-092",
+          "name": "tretars"
+        }
+      ]
+    },
+    {
+      "name": "5百丁",
+      "category": "PPT资源",
+      "description": "中国领先的PPT模板共享平台。",
+      "url": "http://ppt.500d.me/",
+      "id": "legacy-097",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-093",
+          "name": "5百丁"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-093",
+          "name": "5百丁"
+        }
+      ]
+    },
+    {
+      "name": "photoshop",
+      "category": "图形创意",
+      "description": "Photoshop不需要解释",
+      "url": "https://www.adobe.com/cn/products/photoshop.html",
+      "id": "legacy-098",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-094",
+          "name": "photoshop"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-094",
+          "name": "photoshop"
+        }
+      ]
+    },
+    {
+      "name": "Affinity Designer",
+      "category": "图形创意",
+      "description": "专业创意软件",
+      "url": "https://affinity.serif.com/",
+      "id": "legacy-099",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-095",
+          "name": "Affinity Designer"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-095",
+          "name": "Affinity Designer"
+        }
+      ]
+    },
+    {
+      "name": "Illustrator",
+      "category": "图形创意",
+      "description": "矢量图形和插图。",
+      "url": "https://www.adobe.com/cn/products/illustrator/",
+      "id": "legacy-100",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-096",
+          "name": "Illustrator"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-096",
+          "name": "Illustrator"
+        }
+      ]
+    },
+    {
+      "name": "indesign",
+      "category": "图形创意",
+      "description": "页面设计、布局和出版。",
+      "url": "http://www.adobe.com/cn/products/indesign.html",
+      "id": "legacy-101",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-097",
+          "name": "indesign"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-097",
+          "name": "indesign"
+        }
+      ]
+    },
+    {
+      "name": "cinema-4d",
+      "category": "图形创意",
+      "description": "Cinema 4D is the perfect package for all 3D artists who want to achieve breathtaking results fast and hassle-free.",
+      "url": "https://www.maxon.net/en/products/cinema-4d/overview/",
+      "id": "legacy-102",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-098",
+          "name": "cinema-4d"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-098",
+          "name": "cinema-4d"
+        }
+      ]
+    },
+    {
+      "name": "3ds-max",
+      "category": "图形创意",
+      "description": "3D modeling, animation, and rendering software",
+      "url": "https://www.autodesk.com/products/3ds-max/overview",
+      "id": "legacy-103",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-099",
+          "name": "3ds-max"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-099",
+          "name": "3ds-max"
+        }
+      ]
+    },
+    {
+      "name": "Blender",
+      "category": "图形创意",
+      "description": "Blender is the free and open source 3D creation suite.",
+      "url": "https://www.blender.org/",
+      "id": "legacy-104",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-100",
+          "name": "Blender"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-100",
+          "name": "Blender"
+        }
+      ]
+    },
+    {
+      "name": "Sketch",
+      "category": "界面设计",
+      "description": "The digital design toolkit",
+      "url": "https://sketchapp.com/",
+      "id": "legacy-105",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-101",
+          "name": "Sketch"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-101",
+          "name": "Sketch"
+        }
+      ]
+    },
+    {
+      "name": "Adobe XD",
+      "category": "界面设计",
+      "description": "Introducing Adobe XD. Design. Prototype. Experience.",
+      "url": "http://www.adobe.com/products/xd.html",
+      "id": "legacy-106",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-102",
+          "name": "Adobe XD"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-102",
+          "name": "Adobe XD"
+        }
+      ]
+    },
+    {
+      "name": "invisionapp",
+      "category": "界面设计",
+      "description": "Powerful design prototyping tools",
+      "url": "https://www.invisionapp.com/",
+      "id": "legacy-107",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-103",
+          "name": "invisionapp"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-103",
+          "name": "invisionapp"
+        }
+      ]
+    },
+    {
+      "name": "marvelapp",
+      "category": "界面设计",
+      "description": "Simple design, prototyping and collaboration",
+      "url": "https://marvelapp.com/",
+      "id": "legacy-108",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-104",
+          "name": "marvelapp"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-104",
+          "name": "marvelapp"
+        }
+      ]
+    },
+    {
+      "name": "Muse CC",
+      "category": "界面设计",
+      "description": "无需利用编码即可进行网站设计。",
+      "url": "https://creative.adobe.com/zh-cn/products/download/muse",
+      "id": "legacy-109",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-105",
+          "name": "Muse CC"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-105",
+          "name": "Muse CC"
+        }
+      ]
+    },
+    {
+      "name": "figma",
+      "category": "界面设计",
+      "description": "Design, prototype, and gather feedback all in one place with Figma.",
+      "url": "https://www.figma.com/",
+      "id": "legacy-110",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-106",
+          "name": "figma"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-106",
+          "name": "figma"
+        }
+      ]
+    },
+    {
+      "name": "khroma",
+      "category": "在线配色",
+      "description": "Khroma is the fastest way to discover, search, and save color combos you'll want to use.",
+      "url": "http://khroma.co/generator/",
+      "id": "legacy-111",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-107",
+          "name": "khroma"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-107",
+          "name": "khroma"
+        }
+      ]
+    },
+    {
+      "name": "uigradients",
+      "category": "在线配色",
+      "description": "Beautiful colored gradients.",
+      "url": "https://uigradients.com",
+      "id": "legacy-112",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-108",
+          "name": "uigradients"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-108",
+          "name": "uigradients"
+        }
+      ]
+    },
+    {
+      "name": "gradients",
+      "category": "在线配色",
+      "description": "Curated gradients for designers and developers.",
+      "url": "http://gradients.io/",
+      "id": "legacy-113",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-109",
+          "name": "gradients"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-109",
+          "name": "gradients"
+        }
+      ]
+    },
+    {
+      "name": "Coolest",
+      "category": "在线配色",
+      "description": "Coolest handpicked Gradient Hues for your next super ⚡ amazing stuff.",
+      "url": "https://webkul.github.io/coolhue/",
+      "id": "legacy-114",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-110",
+          "name": "Coolest"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-110",
+          "name": "Coolest"
+        }
+      ]
+    },
+    {
+      "name": "webgradients",
+      "category": "在线配色",
+      "description": "WebGradients is a free collection of 180 linear gradients that you can use as content backdrops in any part of your website.",
+      "url": "https://webgradients.com/",
+      "id": "legacy-115",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-111",
+          "name": "webgradients"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-111",
+          "name": "webgradients"
+        }
+      ]
+    },
+    {
+      "name": "grabient",
+      "category": "在线配色",
+      "description": "2017 Grabient by unfold.",
+      "url": "https://www.grabient.com/",
+      "id": "legacy-116",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-112",
+          "name": "grabient"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-112",
+          "name": "grabient"
+        }
+      ]
+    },
+    {
+      "name": "thedayscolor",
+      "category": "在线配色",
+      "description": "The daily color digest",
+      "url": "http://www.thedayscolor.com/",
+      "id": "legacy-117",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-113",
+          "name": "thedayscolor"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-113",
+          "name": "thedayscolor"
+        }
+      ]
+    },
+    {
+      "name": "flatuicolors",
+      "category": "在线配色",
+      "description": "Copy Paste Color Pallette from Flat UI Theme.",
+      "url": "http://flatuicolors.com/",
+      "id": "legacy-118",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-114",
+          "name": "flatuicolors"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-114",
+          "name": "flatuicolors"
+        }
+      ]
+    },
+    {
+      "name": "coolors",
+      "category": "在线配色",
+      "description": "The super fast color schemes generator!",
+      "url": "https://coolors.co/",
+      "id": "legacy-119",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-115",
+          "name": "coolors"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-115",
+          "name": "coolors"
+        }
+      ]
+    },
+    {
+      "name": "colorhunt",
+      "category": "在线配色",
+      "description": "Beautiful Color Palettes.",
+      "url": "http://www.colorhunt.co/",
+      "id": "legacy-120",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-116",
+          "name": "colorhunt"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-116",
+          "name": "colorhunt"
+        }
+      ]
+    },
+    {
+      "name": "Adobe Color CC",
+      "category": "在线配色",
+      "description": "Create color schemes with the color wheel or browse thousands of color combinations from the Color community.",
+      "url": "https://color.adobe.com/zh/create/color-wheel",
+      "id": "legacy-121",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-117",
+          "name": "Adobe Color CC"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-117",
+          "name": "Adobe Color CC"
+        }
+      ]
+    },
+    {
+      "name": "flatuicolorpicker",
+      "category": "在线配色",
+      "description": "Best Flat Colors For UI Design.",
+      "url": "http://www.flatuicolorpicker.com/",
+      "id": "legacy-122",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-118",
+          "name": "flatuicolorpicker"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-118",
+          "name": "flatuicolorpicker"
+        }
+      ]
+    },
+    {
+      "name": "trianglify",
+      "category": "在线配色",
+      "description": "Trianglify Generator.",
+      "url": "http://qrohlf.com/trianglify-generator/",
+      "id": "legacy-123",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-119",
+          "name": "trianglify"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-119",
+          "name": "trianglify"
+        }
+      ]
+    },
+    {
+      "name": "klart",
+      "category": "在线配色",
+      "description": "Beautiful colors and designs to your inbox every week.",
+      "url": "https://klart.co/colors/",
+      "id": "legacy-124",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-120",
+          "name": "klart"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-120",
+          "name": "klart"
+        }
+      ]
+    },
+    {
+      "name": "vanschneider",
+      "category": "在线配色",
+      "description": "Color Claim was created in 2012 by Tobias van Schneider with the goal to collect & combine unique colors for my future projects.",
+      "url": "http://www.vanschneider.com/colors",
+      "id": "legacy-125",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-121",
+          "name": "vanschneider"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-121",
+          "name": "vanschneider"
+        }
+      ]
+    },
+    {
+      "name": "tinypng",
+      "category": "迷你工具",
+      "description": "Optimize your images with a perfect balance in quality and file size.",
+      "url": "https://tinypng.com/",
+      "id": "legacy-126",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-122",
+          "name": "tinypng"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-122",
+          "name": "tinypng"
+        }
+      ]
+    },
+    {
+      "name": "goqr",
+      "category": "迷你工具",
+      "description": "create QR codes for free (Logo, T-Shirt, vCard, EPS).",
+      "url": "http://goqr.me/",
+      "id": "legacy-127",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-123",
+          "name": "goqr"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-123",
+          "name": "goqr"
+        }
+      ]
+    },
+    {
+      "name": "ezgif",
+      "category": "迷你工具",
+      "description": "simple online GIF maker and toolset for basic animated GIF editing.",
+      "url": "https://ezgif.com",
+      "id": "legacy-128",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-124",
+          "name": "ezgif"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-124",
+          "name": "ezgif"
+        }
+      ]
+    },
+    {
+      "name": "Android 9 patch",
+      "category": "迷你工具",
+      "description": "Android 9-patch shadow generator fully customizable shadows.",
+      "url": "http://inloop.github.io/shadow4android/",
+      "id": "legacy-129",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-125",
+          "name": "Android 9 patch"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-125",
+          "name": "Android 9 patch"
+        }
+      ]
+    },
+    {
+      "name": "screen sizes",
+      "category": "迷你工具",
+      "description": "Viewport Sizes and Pixel Densities for Popular Devices.",
+      "url": "http://screensiz.es/",
+      "id": "legacy-130",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-126",
+          "name": "screen sizes"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-126",
+          "name": "screen sizes"
+        }
+      ]
+    },
+    {
+      "name": "base64在线解码",
+      "category": "迷你工具",
+      "description": "base64在线解码与编码",
+      "url": "https://base64.icu",
+      "id": "legacy-131",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-127",
+          "name": "base64在线解码"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-127",
+          "name": "base64在线解码"
+        }
+      ]
+    },
+    {
+      "name": "wappalyzer",
+      "category": "谷歌插件",
+      "description": "Identify technology on websites.",
+      "url": "https://www.wappalyzer.com/",
+      "id": "legacy-132",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-128",
+          "name": "wappalyzer"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-128",
+          "name": "wappalyzer"
+        }
+      ]
+    },
+    {
+      "name": "Panda",
+      "category": "谷歌插件",
+      "description": "A smart news reader built for productivity.",
+      "url": "http://usepanda.com/",
+      "id": "legacy-133",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-129",
+          "name": "Panda"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-129",
+          "name": "Panda"
+        }
+      ]
+    },
+    {
+      "name": "sizzy",
+      "category": "谷歌插件",
+      "description": "A tool for developing responsive websites crazy-fast.",
+      "url": "https://sizzy.co/",
+      "id": "legacy-134",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-130",
+          "name": "sizzy"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-130",
+          "name": "sizzy"
+        }
+      ]
+    },
+    {
+      "name": "csspeeper",
+      "category": "谷歌插件",
+      "description": "Smart CSS viewer tailored for Designers.",
+      "url": "https://csspeeper.com/",
+      "id": "legacy-135",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-131",
+          "name": "csspeeper"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-131",
+          "name": "csspeeper"
+        }
+      ]
+    },
+    {
+      "name": "insight",
+      "category": "谷歌插件",
+      "description": "IDE-like code search and navigation, on the cloud.",
+      "url": "http://insight.io/",
+      "id": "legacy-136",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-132",
+          "name": "insight"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-132",
+          "name": "insight"
+        }
+      ]
+    },
+    {
+      "name": "mustsee",
+      "category": "谷歌插件",
+      "description": "Discover the world's most beautiful places at every opened tab.",
+      "url": "http://mustsee.earth/",
+      "id": "legacy-137",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-133",
+          "name": "mustsee"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-133",
+          "name": "mustsee"
+        }
+      ]
+    },
+    {
+      "name": "微信读书",
+      "category": "资讯书籍",
+      "description": "微信读书电脑版。",
+      "url": "https://weread.qq.com/",
+      "id": "legacy-138",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-134",
+          "name": "微信读书"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-134",
+          "name": "微信读书"
+        }
+      ]
+    },
+    {
+      "name": "书栈网",
+      "category": "资讯书籍",
+      "description": "IT 互联网开源编程书籍免费阅读与下载。",
+      "url": "https://www.bookstack.cn/",
+      "id": "legacy-139",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-135",
+          "name": "书栈网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-135",
+          "name": "书栈网"
+        }
+      ]
+    },
+    {
+      "name": "Inoreader",
+      "category": "博客论坛",
+      "description": "重新掌控你的新闻订阅源。",
+      "url": "https://www.inoreader.com/",
+      "id": "legacy-140",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-136",
+          "name": "Inoreader"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-136",
+          "name": "Inoreader"
+        }
+      ]
+    },
+    {
+      "name": "Hacker News",
+      "category": "博客论坛",
+      "description": "一家关于计算机黑客和创业公司的社会化新闻网站。",
+      "url": "https://news.ycombinator.com/",
+      "id": "legacy-141",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-137",
+          "name": "Hacker News"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-137",
+          "name": "Hacker News"
+        }
+      ]
+    },
+    {
+      "name": "经管之家",
+      "category": "博客论坛",
+      "description": "国内活跃的经济、管理、金融、统计在线教育和咨询网站。",
+      "url": "https://bbs.pinggu.org/",
+      "id": "legacy-142",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-138",
+          "name": "经管之家"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-138",
+          "name": "经管之家"
+        }
+      ]
+    },
+    {
+      "name": "阮一峰的网络日志",
+      "category": "博客论坛",
+      "description": "阮一峰，科技爱好者周刊。",
+      "url": "http://www.ruanyifeng.com/blog/",
+      "id": "legacy-143",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-139",
+          "name": "阮一峰的网络日志"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-139",
+          "name": "阮一峰的网络日志"
+        }
+      ]
+    },
+    {
+      "name": "酷壳",
+      "category": "博客论坛",
+      "description": "酷 壳 – CoolShell。",
+      "url": "https://www.coolshell.cn/",
+      "id": "legacy-144",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-140",
+          "name": "酷壳"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-140",
+          "name": "酷壳"
+        }
+      ]
+    },
+    {
+      "name": "Design Guidelines",
+      "category": "设计规范",
+      "description": "Design Guidelines &mdash; The way products are built.",
+      "url": "http://designguidelines.co/",
+      "id": "legacy-145",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-141",
+          "name": "Design Guidelines"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-141",
+          "name": "Design Guidelines"
+        }
+      ]
+    },
+    {
+      "name": "Awesome design systems",
+      "category": "设计规范",
+      "description": "A collection of awesome design systems.",
+      "url": "https://github.com/alexpate/awesome-design-systems",
+      "id": "legacy-146",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-142",
+          "name": "Awesome design systems"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-142",
+          "name": "Awesome design systems"
+        }
+      ]
+    },
+    {
+      "name": "Material Design",
+      "category": "设计规范",
+      "description": "Introduction - Material Design.",
+      "url": "https://material.io/guidelines/",
+      "id": "legacy-147",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-143",
+          "name": "Material Design"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-143",
+          "name": "Material Design"
+        }
+      ]
+    },
+    {
+      "name": "Human Interface Guidelines",
+      "category": "设计规范",
+      "description": "Human Interface Guidelines iOS.",
+      "url": "https://developer.apple.com/ios/human-interface-guidelines",
+      "id": "legacy-148",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-144",
+          "name": "Human Interface Guidelines"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-144",
+          "name": "Human Interface Guidelines"
+        }
+      ]
+    },
+    {
+      "name": "在线图像编辑器",
+      "category": "设计规范",
+      "description": "在线图像编辑器",
+      "url": "https://zaixianps.net/?ref=hrzhanghuan.com",
+      "id": "legacy-149",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-145",
+          "name": "在线图像编辑器"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-145",
+          "name": "在线图像编辑器"
+        }
+      ]
+    },
+    {
+      "name": "Photoshop Lady",
+      "category": "视频教程",
+      "description": "Your Favourite Photoshop Tutorials in One Place.",
+      "url": "http://www.photoshoplady.com/",
+      "id": "legacy-150",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-146",
+          "name": "Photoshop Lady"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-146",
+          "name": "Photoshop Lady"
+        }
+      ]
+    },
+    {
+      "name": "doyoudo",
+      "category": "视频教程",
+      "description": "创意设计软件学习平台。",
+      "url": "http://doyoudo.com/",
+      "id": "legacy-151",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-147",
+          "name": "doyoudo"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-147",
+          "name": "doyoudo"
+        }
+      ]
+    },
+    {
+      "name": "没位道",
+      "category": "视频教程",
+      "description": "WEB UI免费视频公开课。",
+      "url": "http://www.c945.com/web-ui-tutorial/",
+      "id": "legacy-152",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-148",
+          "name": "没位道"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-148",
+          "name": "没位道"
+        }
+      ]
+    },
+    {
+      "name": "慕课网",
+      "category": "视频教程",
+      "description": "程序员的梦工厂（有UI课程）。",
+      "url": "https://www.imooc.com/",
+      "id": "legacy-153",
+      "occurrences": [
+        {
+          "source": "card",
+          "source_id": "card-149",
+          "name": "慕课网"
+        },
+        {
+          "source": "quick_open",
+          "source_id": "quick-149",
+          "name": "慕课网"
+        }
+      ]
+    },
+    {
+      "name": "百度一下，你就知道",
+      "category": "旧搜索控件",
+      "description": "百度一下，你就知道",
+      "url": "https://www.baidu.com/s?wd=",
+      "id": "legacy-154",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-baidu",
+          "name": "百度一下，你就知道"
+        },
+        {
+          "source": "search",
+          "source_id": "type-baidu1",
+          "name": "百度一下，你就知道"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-baidu",
+          "name": "百度一下，你就知道"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-baidu1",
+          "name": "百度一下，你就知道"
+        }
+      ]
+    },
+    {
+      "name": "微软 Bing 搜索",
+      "category": "旧搜索控件",
+      "description": "微软 Bing 搜索",
+      "url": "https://cn.bing.com/search?q=",
+      "id": "legacy-155",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-bing",
+          "name": "微软 Bing 搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "type-bing1",
+          "name": "微软 Bing 搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-bing",
+          "name": "微软必应搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-bing1",
+          "name": "微软必应搜索"
+        }
+      ]
+    },
+    {
+      "name": "谷歌搜索",
+      "category": "旧搜索控件",
+      "description": "谷歌搜索",
+      "url": "https://www.google.com/search?q=",
+      "id": "legacy-156",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-google",
+          "name": "谷歌搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "type-google1",
+          "name": "谷歌搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-google",
+          "name": "谷歌搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-google1",
+          "name": "谷歌搜索"
+        }
+      ]
+    },
+    {
+      "name": "Anaconda 软件搜索",
+      "category": "旧搜索控件",
+      "description": "Anaconda 软件搜索",
+      "url": "https://anaconda.org/search?q=",
+      "id": "legacy-157",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-anaconda",
+          "name": "Anaconda 软件搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-anaconda",
+          "name": "Anaconda 软件搜索"
+        }
+      ]
+    },
+    {
+      "name": "PubMed 搜索/文章标题/关键字",
+      "category": "旧搜索控件",
+      "description": "PubMed 搜索/文章标题/关键字",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/?term=",
+      "id": "legacy-158",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-pubmed",
+          "name": "PubMed 搜索/文章标题/关键字"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-pubmed",
+          "name": "PubMed 搜索/文章标题/关键字"
+        }
+      ]
+    },
+    {
+      "name": "360 好搜",
+      "category": "旧搜索控件",
+      "description": "360 好搜",
+      "url": "https://www.so.com/s?q=",
+      "id": "legacy-159",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-360",
+          "name": "360 好搜"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-360",
+          "name": "360 好搜"
+        }
+      ]
+    },
+    {
+      "name": "搜狗搜索",
+      "category": "旧搜索控件",
+      "description": "搜狗搜索",
+      "url": "https://www.sogou.com/web?query=",
+      "id": "legacy-160",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-sogo",
+          "name": "搜狗搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-sogo",
+          "name": "搜狗搜索"
+        }
+      ]
+    },
+    {
+      "name": "UC 移动端搜索",
+      "category": "旧搜索控件",
+      "description": "UC 移动端搜索",
+      "url": "https://yz.m.sm.cn/s?q=",
+      "id": "legacy-161",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-sm",
+          "name": "UC 移动端搜索"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-sm",
+          "name": "UC 移动端搜索"
+        }
+      ]
+    },
+    {
+      "name": "请输入网址(不带 https://)",
+      "category": "旧搜索控件",
+      "description": "请输入网址(不带 https://)",
+      "url": "https://rank.chinaz.com/all/",
+      "id": "legacy-162",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-br",
+          "name": "请输入网址(不带 https://)"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-br",
+          "name": "请输入网址(不带 https://)"
+        }
+      ]
+    },
+    {
+      "name": "请输入网址(不带 https://)",
+      "category": "旧搜索控件",
+      "description": "请输入网址(不带 https://)",
+      "url": "https://link.chinaz.com/",
+      "id": "legacy-163",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-links",
+          "name": "请输入网址(不带 https://)"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-links",
+          "name": "请输入网址(不带 https://)"
+        }
+      ]
+    },
+    {
+      "name": "请输入网址(不带 https://)",
+      "category": "旧搜索控件",
+      "description": "请输入网址(不带 https://)",
+      "url": "https://who.is/whois/",
+      "id": "legacy-164",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-whois",
+          "name": "请输入网址(不带 https://)"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-whois",
+          "name": "请输入网址(不带 https://)"
+        }
+      ]
+    },
+    {
+      "name": "请输入网址(不带 https://)",
+      "category": "旧搜索控件",
+      "description": "请输入网址(不带 https://)",
+      "url": "https://ping.chinaz.com/",
+      "id": "legacy-165",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-ping",
+          "name": "请输入网址(不带 https://)"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-ping",
+          "name": "请输入网址(不带 https://)"
+        }
+      ]
+    },
+    {
+      "name": "请输入网址(不带https://)",
+      "category": "旧搜索控件",
+      "description": "请输入网址(不带https://)",
+      "url": "https://tool.chinaz.com/Links/?DAddress=",
+      "id": "legacy-166",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-404",
+          "name": "请输入网址(不带https://)"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-404",
+          "name": "请输入网址(不带https://)"
+        }
+      ]
+    },
+    {
+      "name": "请输入关键词",
+      "category": "旧搜索控件",
+      "description": "请输入关键词",
+      "url": "https://www.ciku5.com/s?wd=",
+      "id": "legacy-167",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-ciku",
+          "name": "请输入关键词"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-ciku",
+          "name": "请输入关键词"
+        }
+      ]
+    },
+    {
+      "name": "知乎",
+      "category": "旧搜索控件",
+      "description": "知乎",
+      "url": "https://www.zhihu.com/search?type=content&q=",
+      "id": "legacy-168",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-zhihu",
+          "name": "知乎"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-zhihu",
+          "name": "知乎"
+        }
+      ]
+    },
+    {
+      "name": "微信",
+      "category": "旧搜索控件",
+      "description": "微信",
+      "url": "https://weixin.sogou.com/weixin?type=2&query=",
+      "id": "legacy-169",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-wechat",
+          "name": "微信"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-wechat",
+          "name": "微信"
+        }
+      ]
+    },
+    {
+      "name": "微博",
+      "category": "旧搜索控件",
+      "description": "微博",
+      "url": "https://s.weibo.com/weibo/",
+      "id": "legacy-170",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-weibo",
+          "name": "微博"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-weibo",
+          "name": "微博"
+        }
+      ]
+    },
+    {
+      "name": "豆瓣",
+      "category": "旧搜索控件",
+      "description": "豆瓣",
+      "url": "https://www.douban.com/search?q=",
+      "id": "legacy-171",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-douban",
+          "name": "豆瓣"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-douban",
+          "name": "豆瓣"
+        }
+      ]
+    },
+    {
+      "name": "淘宝",
+      "category": "旧搜索控件",
+      "description": "淘宝",
+      "url": "https://s.taobao.com/search?q=",
+      "id": "legacy-172",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-taobao1",
+          "name": "淘宝"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-taobao1",
+          "name": "淘宝"
+        }
+      ]
+    },
+    {
+      "name": "京东",
+      "category": "旧搜索控件",
+      "description": "京东",
+      "url": "https://search.jd.com/Search?keyword=",
+      "id": "legacy-173",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-jd",
+          "name": "京东"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-jd",
+          "name": "京东"
+        }
+      ]
+    },
+    {
+      "name": "下厨房",
+      "category": "旧搜索控件",
+      "description": "下厨房",
+      "url": "https://www.xiachufang.com/search/?keyword=",
+      "id": "legacy-174",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-xiachufang",
+          "name": "下厨房"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-xiachufang",
+          "name": "下厨房"
+        }
+      ]
+    },
+    {
+      "name": "香哈菜谱",
+      "category": "旧搜索控件",
+      "description": "香哈菜谱",
+      "url": "https://www.xiangha.com/so/?q=caipu&s=",
+      "id": "legacy-175",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-xiangha",
+          "name": "香哈菜谱"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-xiangha",
+          "name": "香哈菜谱"
+        }
+      ]
+    },
+    {
+      "name": "12306",
+      "category": "旧搜索控件",
+      "description": "12306",
+      "url": "https://www.12306.cn/?",
+      "id": "legacy-176",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-12306",
+          "name": "12306"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-12306",
+          "name": "12306"
+        }
+      ]
+    },
+    {
+      "name": "去哪儿",
+      "category": "旧搜索控件",
+      "description": "去哪儿",
+      "url": "https://www.qunar.com/?",
+      "id": "legacy-177",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-qunar",
+          "name": "去哪儿"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-qunar",
+          "name": "去哪儿"
+        }
+      ]
+    },
+    {
+      "name": "智联招聘",
+      "category": "旧搜索控件",
+      "description": "智联招聘",
+      "url": "https://sou.zhaopin.com/jobs/searchresult.ashx?kw=",
+      "id": "legacy-178",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-zhaopin",
+          "name": "智联招聘"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-zhaopin",
+          "name": "智联招聘"
+        }
+      ]
+    },
+    {
+      "name": "前程无忧",
+      "category": "旧搜索控件",
+      "description": "前程无忧",
+      "url": "https://search.51job.com/?",
+      "id": "legacy-179",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-51job",
+          "name": "前程无忧"
+        }
+      ]
+    },
+    {
+      "name": "拉钩网",
+      "category": "旧搜索控件",
+      "description": "拉钩网",
+      "url": "https://www.lagou.com/jobs/list_",
+      "id": "legacy-180",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-lagou",
+          "name": "拉钩网"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-lagou",
+          "name": "拉钩网"
+        }
+      ]
+    },
+    {
+      "name": "猎聘网",
+      "category": "旧搜索控件",
+      "description": "猎聘网",
+      "url": "https://www.liepin.com/zhaopin/?key=",
+      "id": "legacy-181",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "type-liepin",
+          "name": "猎聘网"
+        },
+        {
+          "source": "search",
+          "source_id": "m_type-liepin",
+          "name": "猎聘网"
+        }
+      ]
+    },
+    {
+      "name": "远程职位",
+      "category": "旧搜索控件",
+      "description": "远程职位",
+      "url": "https://yuancheng.works",
+      "id": "legacy-182",
+      "occurrences": [
+        {
+          "source": "search",
+          "source_id": "m_type-51job",
+          "name": "远程职位"
+        }
+      ]
+    },
+    {
+      "name": "一言动态引语",
+      "category": "旧模板及附加链接",
+      "description": "一言动态引语",
+      "url": "https://hitokoto.cn/?uuid=7afccafc-a0a6-4c45-a7c4-dbd7f3dbeb58",
+      "id": "legacy-183",
+      "occurrences": [
+        {
+          "source": "header",
+          "source_id": "extra-01",
+          "name": "一言动态引语"
+        }
+      ]
+    },
+    {
+      "name": "CSDN",
+      "category": "旧模板及附加链接",
+      "description": "CSDN",
+      "url": "https://csdn.net",
+      "id": "legacy-184",
+      "occurrences": [
+        {
+          "source": "friendlink",
+          "source_id": "extra-02",
+          "name": "CSDN"
+        }
+      ]
+    },
+    {
+      "name": "程序设计网",
+      "category": "旧模板及附加链接",
+      "description": "程序设计网",
+      "url": "https://gitapp.cn/",
+      "id": "legacy-185",
+      "occurrences": [
+        {
+          "source": "friendlink",
+          "source_id": "extra-03",
+          "name": "程序设计网"
+        }
+      ]
+    },
+    {
+      "name": "掘金社区",
+      "category": "旧模板及附加链接",
+      "description": "掘金社区",
+      "url": "https://juejin.im",
+      "id": "legacy-186",
+      "occurrences": [
+        {
+          "source": "friendlink",
+          "source_id": "extra-04",
+          "name": "掘金社区"
+        }
+      ]
+    },
+    {
+      "name": "阿里云社区",
+      "category": "旧模板及附加链接",
+      "description": "阿里云社区",
+      "url": "https://aliyun.com",
+      "id": "legacy-187",
+      "occurrences": [
+        {
+          "source": "friendlink",
+          "source_id": "extra-05",
+          "name": "阿里云社区"
+        }
+      ]
+    },
+    {
+      "name": "Web_tool",
+      "category": "旧模板及附加链接",
+      "description": "Web_tool",
+      "url": "https://github.com/geeeeeeeek/web_tool",
+      "id": "legacy-188",
+      "occurrences": [
+        {
+          "source": "footer",
+          "source_id": "extra-06",
+          "name": "Web_tool"
+        }
+      ]
+    },
+    {
+      "name": "旧模板备案",
+      "category": "旧模板及附加链接",
+      "description": "旧模板备案",
+      "url": "http://beian.miit.gov.cn/",
+      "id": "legacy-189",
+      "occurrences": [
+        {
+          "source": "footer",
+          "source_id": "extra-07",
+          "name": "旧模板备案"
+        }
+      ]
+    },
+    {
+      "name": "一言 API",
+      "category": "旧模板及附加链接",
+      "description": "一言 API",
+      "url": "https://v1.hitokoto.cn",
+      "id": "legacy-190",
+      "occurrences": [
+        {
+          "source": "inline_script",
+          "source_id": "extra-08",
+          "name": "一言 API"
+        }
+      ]
+    },
+    {
+      "name": "一言动态跳转模板",
+      "category": "旧模板及附加链接",
+      "description": "一言动态跳转模板",
+      "url": "https://hitokoto.cn/?uuid=",
+      "id": "legacy-191",
+      "occurrences": [
+        {
+          "source": "inline_script",
+          "source_id": "extra-09",
+          "name": "一言动态跳转模板"
+        }
+      ]
+    },
+    {
+      "name": "百度搜索建议 API",
+      "category": "旧模板及附加链接",
+      "description": "百度搜索建议 API",
+      "url": "https://suggestion.baidu.com/su?wd=",
+      "id": "legacy-192",
+      "occurrences": [
+        {
+          "source": "external_script",
+          "source_id": "extra-10",
+          "name": "百度搜索建议 API"
+        }
+      ]
+    },
+    {
+      "name": "Google 搜索建议 API",
+      "category": "旧模板及附加链接",
+      "description": "Google 搜索建议 API",
+      "url": "https://suggestqueries.google.com/complete/search?client=firefox&callback=iowenHot",
+      "id": "legacy-193",
+      "occurrences": [
+        {
+          "source": "external_script",
+          "source_id": "extra-11",
+          "name": "Google 搜索建议 API"
+        }
+      ]
+    },
+    {
+      "name": "百度旧搜索建议 API",
+      "category": "旧模板及附加链接",
+      "description": "百度旧搜索建议 API",
+      "url": "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?cb=iowenHot",
+      "id": "legacy-194",
+      "occurrences": [
+        {
+          "source": "external_script",
+          "source_id": "extra-12",
+          "name": "百度旧搜索建议 API"
+        }
+      ]
+    },
+    {
+      "name": "旧模板网站信息 API",
+      "category": "旧模板及附加链接",
+      "description": "旧模板网站信息 API",
+      "url": "https://apiv2.iotheme.cn/webinfo/get.php",
+      "id": "legacy-195",
+      "occurrences": [
+        {
+          "source": "external_script",
+          "source_id": "extra-13",
+          "name": "旧模板网站信息 API"
+        }
+      ]
+    },
+    {
+      "name": "ShumLab 模板作者",
+      "category": "旧模板及附加链接",
+      "description": "ShumLab 模板作者",
+      "url": "https://www.shumlab.com/",
+      "id": "legacy-196",
+      "occurrences": [
+        {
+          "source": "external_script",
+          "source_id": "extra-14",
+          "name": "ShumLab 模板作者"
+        }
+      ]
+    },
+    {
+      "name": "Lily 个人主页",
+      "category": "旧模板及附加链接",
+      "description": "Lily 个人主页",
+      "url": "https://lily.lat",
+      "id": "legacy-197",
+      "occurrences": [
+        {
+          "source": "about_page",
+          "source_id": "extra-15",
+          "name": "Lily 个人主页"
+        }
+      ]
+    },
+    {
+      "name": "About 页占位备案链接",
+      "category": "旧模板及附加链接",
+      "description": "About 页占位备案链接",
+      "url": "http://lily.lat/",
+      "id": "legacy-198",
+      "occurrences": [
+        {
+          "source": "about_page",
+          "source_id": "extra-16",
+          "name": "About 页占位备案链接"
+        }
+      ]
+    }
+  ]
+}

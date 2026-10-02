@@ -1,0 +1,413 @@
+[
+  {
+    "id": "update-020",
+    "legacy_id": "legacy-020",
+    "name": "Galaxy Support",
+    "url": "https://galaxyproject.org/support/",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://galaxyproject.org/support/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Galaxy Support | Galaxy Hub",
+      "meta_description": "Galaxy Community Hub",
+      "text_excerpt": "Galaxy Support | Galaxy Hub Skip to content News Events Help Community About Applications Region Global @jxtx Missing something? View this page on the old site Galaxy Support On this page On this page Quick Start Help Resources Using Galaxy FAQs Basics Datasets and Histories Data Options Help Guides Troubleshooting Account Unexpected results Getting inputs right Quick Start Learn & Teach with Galaxy Using Galaxy Choices Help Resources Galaxy Help Chat YouTube channel Query all Galaxy resources w",
+      "content_sha256": "08446b5e79303db91ab885fee9ee330ba9478d6b757d3f597ba412bbdc73f6f0",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 1.75
+  },
+  {
+    "id": "update-031",
+    "legacy_id": "legacy-031",
+    "name": "Google Translate",
+    "url": "https://translate.google.com/",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://translate.google.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "",
+      "meta_description": "",
+      "text_excerpt": "",
+      "content_sha256": "08b6310ebd76ae1b9c3e6a80326d3ce38c239e30ead1233a295561a8a46c328d",
+      "content_sample_truncated": false
+    },
+    "health_status": "needs_review",
+    "suggested_action": "review",
+    "reason": "HTTP response succeeds, but service identity is not established from the historical name and page evidence.",
+    "duration_seconds": 0.35
+  },
+  {
+    "id": "update-041",
+    "legacy_id": "legacy-041",
+    "name": "百度贴吧",
+    "url": "https://tieba.baidu.com/",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://tieba.baidu.com/",
+      "redirects": [],
+      "http_status": 403,
+      "title": "百度安全验证",
+      "meta_description": "",
+      "text_excerpt": "百度安全验证",
+      "content_sha256": "0750502c9788300fdf338696599c26fdbcb271b7591eddb9a200d28cdec89cee",
+      "content_sample_truncated": false
+    },
+    "health_status": "bot_protection",
+    "suggested_action": "review",
+    "reason": "Bot challenge or access restriction prevents validating the current service.",
+    "duration_seconds": 1.11
+  },
+  {
+    "id": "update-046",
+    "legacy_id": "legacy-046",
+    "name": "坚果云",
+    "url": "https://www.jianguoyun.com/",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://www.jianguoyun.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "坚果云官网|网盘|云盘|云服务|团队协作软件|同步盘",
+      "meta_description": "坚果云是一款提供网盘|云盘|云服务的团队协助软件,可随时随地实现共享文件夹。坚果云网盘支持移动办公,协同办公,文件同步,数据备份,智能管理,在线编辑等功能。",
+      "text_excerpt": "坚果云官网|网盘|云盘|云服务|团队协作软件|同步盘 个人版 团队版 企业版 帮助 下载 登录 注册 坚果云，不只是存储 实时同步任意文件，随时访问 多设备实时同步，文件随手可得 无感化备份，数据安全无忧 支持任意文件夹的存储、备份、同步、分享和协作，让您轻松管理文件，提升工作和学习效率。 免费使用 观看视频 13年+ 稳定运行 2000万+ 使用人数 1000亿+ 同步文件 坚果云，人人都能轻松使用 让每个人、每个团队都能毫不费力地管理和同步文件 个人 团队 自动备份，实时同步 可备份和同步任意文件夹，编辑后的文件无需手动操作，即刻自动同步至各个设备，确保您始终拥有最新版本。 用户反馈 平时需要在家里处理工作，以前总是用传输助手和U盘，非常麻烦， 现在用坚果云，只要正常编辑就行，不需要来回传输，方便多了。 王经理 - 市场营销经理 恢复误删除文件，安全无忧 通过回收站、操作历史和文件历史版本功能，即便误删文件，也能轻松找回，无需担心意外删除带来的损失。 用户反馈 在写项目报告时，不小心覆盖了重要的分析内容，原以为要重新整理。幸亏有 历史版本！可以恢复成之前的文件。 Caleb - 数",
+      "content_sha256": "a4f302db177303165d520f85c3b6ac83a930d22d215642c4230341539b944c7a",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.93
+  },
+  {
+    "id": "update-056",
+    "legacy_id": "legacy-056",
+    "name": "Material Symbols",
+    "url": "https://fonts.google.com/icons",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://fonts.google.com/icons",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Material Symbols and Icons - Google Fonts",
+      "meta_description": "Material Symbols are our newest icons consolidating over 2,500 glyphs in a single font file with a wide range of design variants.",
+      "text_excerpt": "Material Symbols and Icons - Google Fonts",
+      "content_sha256": "a994bfa5c56d6388f123553a8115c6d05117067540a66ff935e6a5aebd1c8453",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.09
+  },
+  {
+    "id": "update-078",
+    "legacy_id": "legacy-078",
+    "name": "Adobe Fonts",
+    "url": "https://fonts.adobe.com/",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://fonts.adobe.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Adobe Fonts | Explore unlimited fonts",
+      "meta_description": "Adobe Fonts partners with the world’s leading type foundries to bring thousands of beautiful fonts to designers every day. No need to worry about licensing, and you can use fonts from Adobe Fonts on the web or in desktop applications.",
+      "text_excerpt": "Adobe Fonts | Explore unlimited fonts Skip to main content Adobe Fonts Search Browse all Recommendations Font packs Foundries About Manage fonts Scanning file — please wait Every font you need, everywhere you need it Find the perfect font New releases The latest fonts included with your subscription View more Trending now Fonts of the moment View more Hidden gems Quality fonts you may have missed View more Simplified licensing The full Adobe Fonts library can be used for both personal and commer",
+      "content_sha256": "8ea0681be0163f8d26ca837cc060dfb50d47a4e6fa1965eb07eb61ca7fdb788b",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.1
+  },
+  {
+    "id": "update-092",
+    "legacy_id": "legacy-092",
+    "name": "OfficePLUS",
+    "url": "https://www.officeplus.cn/",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://www.officeplus.cn/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "PPT模板 - PPT模板免费下载 - 免费PPT模板下载 - 微软officePLUS",
+      "meta_description": "微软officePLUS是微软官方在线ppt模板、插件网站，提供各类PPT模板、PPT模板免费下载、PPT素材、求职简历PPT、教学课件PPT、营销策划PPT、PPT模板页、PPT关系图、PPT图表",
+      "text_excerpt": "PPT模板 - PPT模板免费下载 - 免费PPT模板下载 - 微软officePLUS 查看会员权益 OfficePLUS 让创作更轻松 PPT模板 热门搜索： 中国风 职业规划 红色 简约 人物介绍 总结汇报 热门搜索： 中国风 职业规划 红色 简约 OfficePLUS 让创作更轻松 PPT模板 热门搜索： 中国风 职业规划 红色 简约 人物介绍 总结汇报 热门搜索： 中国风 职业规划 红色 简约 会员畅享 百万模板与智能提效工具 低至￥4.9/月 电商PPT模板合集 精选营销策划、分析复盘等全套PPT模板，解救你的策划烦恼 中国高校PPT模板 还在为找不到自己学校的模板发愁？快来pick你的学校吧！ 电商PPT模板合集 精选营销策划、分析复盘等全套PPT模板，解救你的策划烦恼 教学课件专题 助力教师提升课堂效果，激发学生学习兴趣与积极性 PPT模板 PPT单页 PPT单页 PPT关系图 PPT关系图 PPT图表 PPT图表 Word模板 Word模板 Excel模板 Excel模板 推荐 免费 毕业答辩 竞聘述职 教学课件 总结汇报 医疗医学 教育教学 商业计划书 更多模板 极",
+      "content_sha256": "a20da69fb97e2faf14f3a14d3982a167f1c1379dfa92ccf0484758ced04617a5",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.11
+  },
+  {
+    "id": "update-098",
+    "legacy_id": "legacy-098",
+    "name": "Photoshop",
+    "url": "https://www.adobe.com/products/photoshop.html",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://www.adobe.com/products/photoshop.html",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Official Adobe Photoshop | Free Trial and Online Photo & Design App",
+      "meta_description": "Explore quick new ways to create custom scenes, make complex edits, & combine images online or with the free Photoshop mobile app.",
+      "text_excerpt": "Official Adobe Photoshop | Free Trial and Online Photo & Design App #ffffff con-block-row-lockup (s-lockup) https://main--cc--adobecom.aem.live/cc-shared/assets/img/product-icons/svg/photoshop-40.svg {{adobe-photoshop}} mas-field: ACOM-CC / Headless / Individual / com / Photoshop → cardTitle mas-field: ACOM-CC / Headless / Individual / com / Photoshop → description mas-field: ACOM-CC / Headless / Individual / com / Photoshop → ctas[1] mas-field: ACOM-CC / Headless / Individual / com / Photoshop ",
+      "content_sha256": "b643c8e935de784bcbbbc70b5f4840a43dcc5628a8b14b99bb91acce3cb47833",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.19
+  },
+  {
+    "id": "update-099",
+    "legacy_id": "legacy-099",
+    "name": "Affinity",
+    "url": "https://www.affinity.studio/",
+    "checked_at": "2026-10-02T13:08:47+00:00",
+    "probe": {
+      "url": "https://www.affinity.studio/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Unsupported client",
+      "meta_description": "It seems you are using an old or unsupported browser. To continue enjoying our product, please update to a recent version of one of the following browsers:",
+      "text_excerpt": "Unsupported client Please update your browser It seems you are using an old or unsupported browser. To continue enjoying our product, please update to a recent version of one of the following browsers: Chrome Firefox Safari (macOS only) Edge",
+      "content_sha256": "40a60091e86528bba1df2b8628e027a9aa2f2bc8574cf836865d1b8afecbf2cc",
+      "content_sample_truncated": false
+    },
+    "health_status": "needs_review",
+    "suggested_action": "review",
+    "reason": "HTTP response succeeds, but service identity is not established from the historical name and page evidence.",
+    "duration_seconds": 0.36
+  },
+  {
+    "id": "update-100",
+    "legacy_id": "legacy-100",
+    "name": "Illustrator",
+    "url": "https://www.adobe.com/products/illustrator.html",
+    "checked_at": "2026-10-02T13:08:48+00:00",
+    "probe": {
+      "url": "https://www.adobe.com/products/illustrator.html",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Vector Graphics Software | Adobe Illustrator",
+      "meta_description": "Powered by generative AI, magically transform a text prompt into a fully editable vector graphic with Adobe Illustrator, the industry-leading vector graphics software.",
+      "text_excerpt": "Vector Graphics Software | Adobe Illustrator con-block-row-bgcolor #fff con-block-row-lockup (m-icon) https://main--da-cc--adobecom.aem.page/cc-shared/assets/img/product-icons/svg/illustrator.svg {{adobe-illustrator}} mas-field: ACOM-CC / Headless / Individual / com / Illustrator → cardTitle mas-field: ACOM-CC / Headless / Individual / com / Illustrator → description mas-field: ACOM-CC / Headless / Individual / com / Illustrator → ctas[1] mas-field: ACOM-CC / Headless / Individual / com / Illust",
+      "content_sha256": "08c7162c687d7b04445b450b3d85930e913468ad53e4e01e3f2dde5c75aa593c",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.27
+  },
+  {
+    "id": "update-101",
+    "legacy_id": "legacy-101",
+    "name": "InDesign",
+    "url": "https://www.adobe.com/products/indesign.html",
+    "checked_at": "2026-10-02T13:08:48+00:00",
+    "probe": {
+      "url": "https://www.adobe.com/products/indesign.html",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Layout design and desktop publishing software | Adobe InDesign",
+      "meta_description": "Create layout designs. Publish printed books, brochures, digital magazines, flyers, and interactive online documents with Adobe InDesign desktop publishing software.",
+      "text_excerpt": "Layout design and desktop publishing software | Adobe InDesign #f8f8f8 con-block-row-bgcolor #f8f8f8 con-block-row-lockup (s-icon) https://main--cc--adobecom.aem.live/cc-shared/assets/img/product-icons/svg/indesign-40.svg InDesign mas-field: ACOM-CC / Headless / Individual / com / InDesign → cardTitle mas-field: ACOM-CC / Headless / Individual / com / InDesign → description mas-field: ACOM-CC / Headless / Individual / com / InDesign → ctas[1] mas-field: ACOM-CC / Headless / Individual / com / In",
+      "content_sha256": "7d43404f1cc8231af912f884b8341d4307e1eaea97441fffb46ba61ac9a411c4",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.57
+  },
+  {
+    "id": "update-102",
+    "legacy_id": "legacy-102",
+    "name": "Cinema 4D",
+    "url": "https://www.maxon.net/en/cinema-4d",
+    "checked_at": "2026-10-02T13:08:48+00:00",
+    "probe": {
+      "url": "https://www.maxon.net/en/cinema-4d",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Cinema 4D | 3D Animation & Modeling Software",
+      "meta_description": "Elevate your 3D Design with Cinema 4D. Experience industry-leading 3D animation software and GPU-renderer working seamlessly together.",
+      "text_excerpt": "Cinema 4D | 3D Animation & Modeling Software Skip to main content Toggle menu Search Go Back Search: Search Maxon.net Search Maxon.net Search Cineversity Search Reset Search Search PRODUCTS Go Back PRODUCTS: MAXON + ADOBE BUNDLES MAXON ONE CINEMA 4D CINEMA 4D FOR IPAD REDSHIFT REDSHIFT FOR ARCHITECTS RED GIANT UNIVERSE AUTOGRAPH ZBRUSH ZBRUSH FOR IPAD CAPSULES MOVES CINEWARE CINEBENCH DOWNLOADS SOLUTIONS Go Back SOLUTIONS: 3D ANIMATION 3D MODELING 3D MOTION DESIGN 3D RENDERING ARCHITECTURAL VISU",
+      "content_sha256": "32a1f9767033bf0468c53a83e42495c4b87749dab318e23c5ac8817f55d4db3f",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.66
+  },
+  {
+    "id": "update-122",
+    "legacy_id": "legacy-122",
+    "name": "Flat UI Color Picker",
+    "url": "https://www.flatuicolorpicker.com/",
+    "checked_at": "2026-10-02T13:08:48+00:00",
+    "probe": {
+      "url": "https://www.flatuicolorpicker.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "flatuicolorpicker : Best Flat Colors UI Design - Flatuicolorpicker gives you the perfect colors for Flat Design",
+      "meta_description": "Flatuicolorpicker gives you the best of colors in one place. Get a constantly updating feed of colors with their color models just for you.",
+      "text_excerpt": "flatuicolorpicker : Best Flat Colors UI Design - Flatuicolorpicker gives you the perfect colors for Flat Design menu All Colors About Contact All Colors About Contact Colors Blue Brown Cyan Green Grey Magenta Orange Pink Purple Red Yellow Color Models Blue CMYK Blue HEX Blue HSL Blue HSLA Blue HSV Blue RGB Blue RGBA Brown CMYK Brown HEX Brown RGBA Brown RGB Brown HSLA Brown HSL Brown HSV Cyan CMYK Cyan HEX Cyan HSLA Cyan HSL Cyan HSV Cyan RGB Cyan RGBA Green CMYK Green HEX Green HSL Green HSLA G",
+      "content_sha256": "e76d6432a2c46fa09f27535c477276da8269fbaca7b97c9e7828fc9e77e99a52",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 1.42
+  },
+  {
+    "id": "update-147",
+    "legacy_id": "legacy-147",
+    "name": "Material Design",
+    "url": "https://m3.material.io/",
+    "checked_at": "2026-10-02T13:08:48+00:00",
+    "probe": {
+      "url": "https://m3.material.io/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "Material Design",
+      "meta_description": "Material Design 3 - Google's open-source design system, provides comprehensive guidelines, styles, &  components to create user-friendly interfaces.",
+      "text_excerpt": "Material Design",
+      "content_sha256": "1e093eb615a8ab4ec2aebf265d99f1902a9ac4757b972572d21228cccfe9204a",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 0.36
+  },
+  {
+    "id": "encoding-040",
+    "legacy_id": "legacy-040",
+    "name": "电影天堂（DYGOD）",
+    "url": "https://www.dygod.net/",
+    "checked_at": "2026-10-02T13:08:48+00:00",
+    "probe": {
+      "url": "https://www.dygod.net/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "电影天堂:高清电影下载,高品质生活",
+      "meta_description": "电影天堂，最好的迅雷电影下载网，分享最新电影,高清电影下载！",
+      "text_excerpt": "电影天堂:高清电影下载,高品质生活 最新影片 经典影片 国内电影 欧美电影 华语电视 日韩电视 欧美电视 最新综艺 旧版综艺 动漫资源 游戏下载 手机电影 收藏本站 设为主页 搜索: 网站启用A+级别的https加密,原http地址已失效,请记住本站网址http s ://www.dygod. net ，用最新版火狐或谷歌取得最佳效果,IE兼容不佳,请互相转告,致谢! 2026新片精品 更多>> 一个部门的诞生 今晚正好 灵石觉醒 寂静之地：入侵日 贱女孩 怖偶惊情 血夜行 浪子心声 中国龙 烈焰狂沙 小鞋子（印度泰米尔语版） 迅雷电影资源 更多>> 使用本站专属播放器免费观看最新高清资源，彻底解决迅雷无法下载 02-11 2021年大陆电影《猎杀外星人》正片 09-30 2019年其它电影《天方夜谭》正片 09-30 2022年大陆电影《悟・空》正片 09-30 2022年中国香港电影《重案行动之限时拯救》粤语版 09-30 2020年大陆电影《大狂蜂：起源》原片 09-30 2020年大陆电影《惊喜少年》正片 09-18 2021年大陆电影《卸岭之地下惊龙》正片 09-14 202",
+      "content_sha256": "76e340fc0d2a7a239749744f1bf3297d0812079296b81d1576fc974e8de9c2f2",
+      "content_sample_truncated": false
+    },
+    "health_status": "needs_review",
+    "suggested_action": "review",
+    "reason": "HTTP response succeeds, but service identity is not established from the historical name and page evidence.",
+    "duration_seconds": 0.72
+  },
+  {
+    "id": "encoding-068",
+    "legacy_id": "legacy-068",
+    "name": "千图网",
+    "url": "http://www.58pic.com/",
+    "checked_at": "2026-10-02T13:08:48+00:00",
+    "probe": {
+      "url": "https://www.58pic.com/",
+      "redirects": [
+        {
+          "from": "http://www.58pic.com/",
+          "to": "https://www.58pic.com/",
+          "status": 301
+        }
+      ],
+      "http_status": 200,
+      "title": "千图网-免费在线设计图片素材网站-正版商用素材图库模板大全",
+      "meta_description": "千图网(www.58pic.com) 是专注正版商用图片素材在线设计与下载的网站！提供矢量图素材、背景图片、psd素材、字体模板、设计素材、PPT模板、视频素材、插画绘画、海报设计模板、网站设计素材等下载服务。",
+      "text_excerpt": "千图网-免费在线设计图片素材网站-正版商用素材图库模板大全 展开侧边 收起侧边 可以进行个人/团队身份切换哦 企业版 企业版 所有分类 设计模板 元素 图片 视频 PPT 千图AI 千图创意图库 AI生成 也支持商用 千图AI社区 同款点一点 想象都能画 搜素材 AI创作 每日免费10点 全部 全部 设计 图片 视频 AI创作 3 个筛选 AI找相似：准确率提高3倍！ AI搜索：一句话描述，比关键词更精准哦 指定分类 AI搜索 在线编辑 普通搜索 图片生成 视频生成 最近搜索 +10 AI 图片 搜索 返回常规搜索 所有分类 智能图片2.5 Seedance2.5 工作流 全能画布 AI抠图 模板 用作参考图 参考图 0% 智能检测图像构成元素中... 最近上传 上传 从AI模板创作 模板名称 使用 加载中... 智能设计 智能设计 图片生成 视频生成 即梦5.0 选择模型 16:9 生成张数 1张 1张 2张 3张 4张 尺寸 16:9 选择分辨率 16:9 选择时长 16:9 AI生成 上传 会员特惠 企业VIP 登录/注册 更多筛选 0 更多筛选 0 排行榜 今日推荐 云设计 A",
+      "content_sha256": "495aad94e27836188b9d682b19a6f409a082d6f1d4c6d0b35ce63e4b2529da08",
+      "content_sample_truncated": false
+    },
+    "health_status": "redirected",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 2.89
+  },
+  {
+    "id": "encoding-070",
+    "legacy_id": "legacy-070",
+    "name": "我图网",
+    "url": "http://www.ooopic.com/",
+    "checked_at": "2026-10-02T13:08:49+00:00",
+    "probe": {
+      "url": "https://www.ooopic.com/",
+      "redirects": [
+        {
+          "from": "http://www.ooopic.com/",
+          "to": "https://www.ooopic.com/",
+          "status": 301
+        }
+      ],
+      "http_status": 200,
+      "title": "我图网-正版高清图片素材网站,免费平面,品牌包装,背景墙,装饰画素材下载",
+      "meta_description": "我图网提供正版高清图片设计素材,免费平面素材,为生产商提供工业品牌包装设计解决方案,包括背景墙/文化墙/装饰画/包装/样机/CAD/印花图案以及党政类的PPT/Word/Excel模板下载.",
+      "text_excerpt": "我图网-正版高清图片素材网站,免费平面,品牌包装,背景墙,装饰画素材下载 仅需一秒，快速打开我图网 将安装我图网至桌面 立即体验 所有分类 视频/配乐 new AE模板 实拍视频 背景视频 pr模板 MG动画 更多 文化墙/雕塑 文化墙 雕塑模型 展馆设计 美陈设计 宣传栏 更多 装饰画/玄关 装饰画 玄关 新中式风 现代风格 北欧风格 更多 背景墙/墙纸 电视背景 工装背景 现代壁纸 欧式壁纸 山水风景画 更多 地面/吊顶 地毯 地垫 地砖 欧式吊顶 中式吊顶 更多 平面/展板 海报设计 展板设计 宣传单 图书画册 名片卡券 更多 办公文档 PPT模板 excel表格 word文档 图形图表 办公创意 更多 手抄报/作文集 手抄报 作文集 学生表格 毕业简历 课件班会PPT 更多 元素/插画 插画 免扣元素 创意背景 字体 艺术字 更多 摄影图 创意合成 静物写真 照片 商业办公 人物情感 更多 3D模型库 元宇宙 人物IP 动物植物 游戏模型 食物饮品 装饰陈列 更多 CAD图库 建筑施工 全屋定制 家装施工 工装施工 园林景观 更多 电商/UI 电商设计 店铺首页 新媒体 UI设",
+      "content_sha256": "0f938284bbb326cba8bffb95fd18089f6449c3d58f838e2cfa055134de9d8704",
+      "content_sample_truncated": false
+    },
+    "health_status": "redirected",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 1.36
+  },
+  {
+    "id": "encoding-076",
+    "legacy_id": "legacy-076",
+    "name": "素材中国",
+    "url": "http://www.sccnn.com/",
+    "checked_at": "2026-10-02T13:08:49+00:00",
+    "probe": {
+      "url": "http://www.sccnn.com/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "素材中国www.sccnn.com_素材CNN_素材共享平台",
+      "meta_description": "素材中国,素材CNN_免费素材共享平台.图片素材图库提供海量素材,图片下载,设计素材,PSD源文件,矢量图,AI,CDR,EPS等高清图片下载",
+      "text_excerpt": "素材中国www.sccnn.com_素材CNN_素材共享平台 收藏本站 Windows按 Ctrl+D / Mac按 Command+D 收藏本站 | 注册 | 登录 | 首页 摄影图库 高精图库 矢量图库 3D图库 字库 精品专区 更多 独家 素材搜索： 所有类别 摄影图库 高精图库 矢量图库 3D图库 字库 精品素材 更多 招聘 插画 5G科技 网站模板 国潮 手机壁纸 免费商用字体 PS动作 水墨 节气 简历 暑假 毕业季 GPT创意生图玩法合集 会员中心 精品点数区 ・ 样机 ・ 科技 ・ 背景板 ・ 节气 ・ PNG免抠素材 ・ PPT模板 ・ APP模板 ・ 国庆节 ・ 平面广告 ・ 重阳节 最新更新 吉羊启岁春节海报 水墨风国庆海报 九九重阳节海报 银杏叶寒露节气海报 羊年吉祥春节海报 科技论坛峰会主KV展板 AI创新研讨峰会展板背景 盛世华诞国庆展板 秋日户外露营海报 科技智能峰会主KV宣传展板 扁平化美食节海报 扁平化食物海报 手绘橄榄枝矢量插画 超级女英雄矢量插图 圆形花卉边框矢量 手绘水疗海报 手绘美容院海报 电子商务矢量图 在线购物和电子商务横幅 在线购物与配送",
+      "content_sha256": "cab374e6a0bd07982bf8a70e74305b106f79eb8f41979ec232bed3d595dd218a",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 5.09
+  },
+  {
+    "id": "encoding-142",
+    "legacy_id": "legacy-142",
+    "name": "经管之家",
+    "url": "https://bbs.pinggu.org/",
+    "checked_at": "2026-10-02T13:08:49+00:00",
+    "probe": {
+      "url": "https://bbs.pinggu.org/",
+      "redirects": [],
+      "http_status": 200,
+      "title": "经管之家(原经济论坛)-国内活跃的经济、管理、金融、统计在线教育和咨询网站",
+      "meta_description": "经管之家是国内活跃的经管人士的网络社区平台，每个学经济学和管理学的都应该有个论坛帐号。 ",
+      "text_excerpt": "经管之家(原经济论坛)-国内活跃的经济、管理、金融、统计在线教育和咨询网站 请选择 进入手机版 | 继续访问电脑版 签到 苹果/安卓/wp 苹果/安卓/wp 客户端 0.0 0.00 推广加币 升级SVIP 注册 | 登录 经管之家AI助手 论坛BBS 提问 悬赏 求职 新闻 读书 功能一区 悬赏大厅 文献求助专区 求助成功区 其他版块 学道会 真实世界经济学(含财经时事) 经管文库（原现金交易版） 经济学人 二区 学术资源/课程/会议/讲座 论文版 国内外文献账号区 活动版 高级会员区 学术之星专栏 经管好书专栏 其他版块 学术道德监督 基金与课题申请 教师之家与经管教育 经济学论坛 三区 微观经济学 经济金融数学专区 宏观经济学 其他版块 马克思主义经济学 博弈论 制度经济学 行为经济学与实验经济学 发展经济学 区域经济学 产业经济学 公共经济学 劳动经济学 环境经济学 能源经济学 卫生经济学 经济史与经济思想史 国防经济学 教育经济学 经济社会统计专版 新商科论坛 四区（原工商管理论坛） 商学院 人力资源管理 管理信息系统 创新与战略管理 组织管理与领导力 市场营销 商务谈判 管",
+      "content_sha256": "3e1f670ee0c68329a426899b1776b33e48d89b9ba9ffe4e55a0ddecaf37b23cd",
+      "content_sample_truncated": false
+    },
+    "health_status": "healthy",
+    "suggested_action": "retain",
+    "reason": "Current page contains the historical service name; title and excerpt are retained for editorial review.",
+    "duration_seconds": 13.91
+  }
+]

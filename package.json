@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "npm run build && wrangler dev --env staging",
     "build": "vite build",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.frontend.json",
     "lint": "eslint src tests scripts vite.config.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -29,6 +29,7 @@
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.4",
     "eslint": "^10.11.0",
+    "miniflare": "^5.20261001.0-alpha",
     "prettier": "^3.9.9",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.0",

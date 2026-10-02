@@ -1,0 +1,264 @@
+{
+  "reviewedOn": "2026-10-02",
+  "policy": "每个旧目标均保留原始抽取与实际探测证据。服务身份、用途与导航价值一并审核；403、验证码、网络失败不会被标记死亡。无法确认者保留审计记录，不进入首次发布种子。",
+  "overrides": {
+    "legacy-003": {
+      "action": "retain",
+      "status": "healthy",
+      "reason": "当前标题与介绍明确为 OSCHINA 开源开发者社区，与原用途一致。",
+      "name": "OSCHINA"
+    },
+    "legacy-004": {
+      "action": "retain",
+      "status": "healthy",
+      "reason": "当前标题和介绍为微信公众平台，与原公众号管理用途一致。",
+      "name": "微信公众平台"
+    },
+    "legacy-007": {
+      "action": "remove",
+      "status": "duplicate",
+      "reason": "旧在线 PS 卡片的另一快捷入口；保留主卡片，消除一张卡两个目的地。"
+    },
+    "legacy-009": {
+      "action": "remove",
+      "status": "duplicate",
+      "reason": "房贷计算器卡片的冲突快捷入口，未验证其服务；保留已核实的主入口，403 不记死亡。"
+    },
+    "legacy-012": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "FKTool 标题、介绍和正文现为外贸 B2B 建站公司，已不是旧开发工具集合。"
+    },
+    "legacy-014": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "远程工作卡片的快捷按钮实际打开搜狗微信搜索，与就业搜索用途不符。"
+    },
+    "legacy-023": {
+      "action": "retain",
+      "status": "redirected",
+      "reason": "地域重定向到 Alibaba Cloud 官方站，仍为同一云服务；保留无追踪参数的阿里云原入口。"
+    },
+    "legacy-040": {
+      "action": "retain",
+      "status": "healthy",
+      "reason": "以网页声明字符集重新读取后，标题和内容仍为电影天堂影视下载目录。"
+    },
+    "legacy-042": {
+      "action": "retain",
+      "status": "healthy",
+      "reason": "当前页面标题为 A.V.A 戰地之王正式官網，游戏与原用途一致。",
+      "name": "A.V.A 战地之王"
+    },
+    "legacy-057": {
+      "action": "retain",
+      "status": "healthy",
+      "reason": "当前标题与 meta 为 Font Awesome 图标库，原条目名称只是旧称。",
+      "name": "Font Awesome"
+    },
+    "legacy-059": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "旧线性图标域名重定向到 Namecheap 字体生成器，目的已改变；目标验证码不作为死亡依据。"
+    },
+    "legacy-063": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "旧 Logo 搜索站重定向到 Namecheap Logo Maker，与旧即时标志搜索库不一致。"
+    },
+    "legacy-073": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "当前标题、导航和正文主营手机游戏及软件下载，已不是旧网页素材图库。"
+    },
+    "legacy-077": {
+      "action": "retain",
+      "status": "healthy",
+      "reason": "浏览器实际加载 Google Fonts 字体列表、筛选和字体详情链接；不是以空的 HTTP 200 壳页面推定健康。",
+      "name": "Google Fonts",
+      "browserTitle": "Browse Fonts - Google Fonts"
+    },
+    "legacy-097": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "旧 PPT 子域现在重定向五百丁简历主页；不将简历工具冒充旧 PPT 模板目录。"
+    },
+    "legacy-106": {
+      "action": "remove",
+      "status": "outdated",
+      "reason": "Adobe 官方帮助中心明确 XD 处于维护模式；从首次发布的活跃设计工具集合移除。",
+      "source": "https://helpx.adobe.com/xd/desktop.html"
+    },
+    "legacy-107": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "InVision 原域现在重定向到 Miro 产品主页；原设计原型服务已不能在此入口使用。"
+    },
+    "legacy-108": {
+      "action": "retain",
+      "status": "healthy",
+      "reason": "当前标题及介绍明确为 Marvel 设计、原型及协作平台，与原用途一致。",
+      "name": "Marvel"
+    },
+    "legacy-109": {
+      "action": "remove",
+      "status": "outdated",
+      "reason": "旧 Muse 下载入口跳转 Adobe 首页；Adobe 官方说明已终止 Muse 技术支持。",
+      "source": "https://helpx.adobe.com/muse/kb/adobe-muse-end-of-service.html"
+    },
+    "legacy-113": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "当前标题是 Gradients | Anyone Can Train AI，正文为 Bittensor AI 模型训练，不再是设计渐变配色网站。"
+    },
+    "legacy-121": {
+      "action": "retain",
+      "status": "redirected",
+      "reason": "当前标题和正文仍为 Adobe 的色轮配色工具；保留准确的功能介绍。",
+      "name": "Adobe Color"
+    },
+    "legacy-125": {
+      "action": "update",
+      "status": "moved",
+      "reason": "旧色彩组合页面直接重定向到 mymind 色板收藏页，实际正文仍是可复制的配色方案。",
+      "url": "https://access.mymind.com/colors",
+      "name": "mymind Colors",
+      "description": "精选配色组合，浏览并复制色值。"
+    },
+    "legacy-136": {
+      "action": "remove",
+      "status": "content_changed",
+      "reason": "旧代码搜索服务入口现为 Elastic 收购公告文章，不再提供原在线 IDE 搜索。",
+      "source": "https://www.elastic.co/blog/welcome-insight-io-to-the-elastic-team"
+    },
+    "legacy-149": {
+      "action": "remove",
+      "status": "duplicate",
+      "reason": "与在线 PS 主卡片是同一资源，URL 带旧模板作者 ref 推广参数；删除重复与 referral。"
+    },
+    "legacy-152": {
+      "action": "remove",
+      "status": "outdated",
+      "reason": "实际页面为 2016 年 WEB UI 课程聚合及作者博客，内容年代和旧模板资料结构不适合本次活跃资源集合。"
+    }
+  },
+  "updates": {
+    "legacy-020": {
+      "url": "https://galaxyproject.org/support/",
+      "name": "Galaxy Support",
+      "description": "Galaxy 生物信息平台的社区支持、论坛与即时交流入口。",
+      "reason": "旧 Gitter URL 返回 404；Galaxy 官方支持页现提供论坛与 Matrix 交流入口。",
+      "source": "https://galaxyproject.org/support/"
+    },
+    "legacy-031": {
+      "url": "https://translate.google.com/",
+      "name": "Google 翻译",
+      "description": "文本、图片、文档与网页翻译。",
+      "reason": "旧中国域仅提供地址提示；当前官方 .com 入口已由浏览器验证文本、文档、图片和网页翻译界面。",
+      "browserTitle": "Google 翻译"
+    },
+    "legacy-046": {
+      "url": "https://www.jianguoyun.com/",
+      "name": "坚果云",
+      "description": "文件同步、备份与团队协作。",
+      "reason": "旧卡片为空链接，已核实坚果云官方入口和服务内容。"
+    },
+    "legacy-056": {
+      "url": "https://fonts.google.com/icons",
+      "name": "Material Symbols",
+      "description": "Google Material 图标与符号库，支持样式与变量调整。",
+      "reason": "旧 Material 图标地址跳转旧版 Material 站；当前 Google Fonts 官方提供 Material Symbols。",
+      "source": "https://fonts.google.com/icons"
+    },
+    "legacy-078": {
+      "url": "https://fonts.adobe.com/",
+      "name": "Adobe Fonts",
+      "description": "Adobe 字体库，查找适合屏幕和印刷的字体。",
+      "reason": "旧 Typekit 官方重定向 Adobe Fonts；使用不含 ref 参数的正式入口。"
+    },
+    "legacy-092": {
+      "url": "https://www.officeplus.cn/",
+      "name": "OfficePLUS",
+      "description": "微软 OfficePLUS 演示文稿与办公模板资源。",
+      "reason": "旧 Template/Home.shtml 不可用；HTTPS 官网内容已核实为微软 OfficePLUS 模板。"
+    },
+    "legacy-098": {
+      "url": "https://www.adobe.com/products/photoshop.html",
+      "name": "Photoshop",
+      "description": "Adobe 图像编辑、合成与数字创作工具。",
+      "reason": "旧中文产品地址转到通用企业页；已核实当前独立产品官网。"
+    },
+    "legacy-099": {
+      "url": "https://www.affinity.studio/",
+      "name": "Affinity",
+      "description": "集矢量设计、图像编辑和页面排版于一体的创作工具。",
+      "reason": "旧 Serif 官方域重定向新 Affinity 站；浏览器实际验证为 Canva 旗下 Affinity 专业创意软件。",
+      "browserTitle": "Professional Creative Software | Craft In Affinity, Scale In Canva"
+    },
+    "legacy-100": {
+      "url": "https://www.adobe.com/products/illustrator.html",
+      "name": "Illustrator",
+      "description": "Adobe 矢量图形与插画设计工具。",
+      "reason": "旧中文产品地址转到通用企业页；已核实当前独立产品官网。"
+    },
+    "legacy-101": {
+      "url": "https://www.adobe.com/products/indesign.html",
+      "name": "InDesign",
+      "description": "Adobe 页面设计、排版与数字出版工具。",
+      "reason": "旧中文产品地址转到通用企业页；已核实当前独立产品官网。"
+    },
+    "legacy-102": {
+      "url": "https://www.maxon.net/en/cinema-4d",
+      "name": "Cinema 4D",
+      "description": "Maxon 三维建模、动画与动态图形创作工具。",
+      "reason": "旧产品路径返回 404；当前 Maxon 官网已核实新路径。",
+      "source": "https://www.maxon.net/en/cinema-4d"
+    },
+    "legacy-122": {
+      "url": "https://www.flatuicolorpicker.com/",
+      "name": "Flat UI Color Picker",
+      "description": "为界面设计选择柔和、清晰的扁平配色。",
+      "reason": "旧 HTTP 页面内容压缩异常；HTTPS 页面可读取并核实配色工具身份。"
+    },
+    "legacy-147": {
+      "url": "https://m3.material.io/",
+      "name": "Material Design",
+      "description": "Google Material 设计系统、组件与交互规范。",
+      "reason": "从旧版 Material 2 文档更新至当前 Material 3 官方设计系统。"
+    }
+  },
+  "renames": {
+    "legacy-019": "MetaCPAN",
+    "legacy-029": "有道词典",
+    "legacy-048": "Iconfont",
+    "legacy-050": "Icon Archive",
+    "legacy-052": "IcoMoon",
+    "legacy-058": "Ionicons",
+    "legacy-065": "Wallhalla",
+    "legacy-068": "千图网",
+    "legacy-071": "90 设计",
+    "legacy-083": "Urban Fonts",
+    "legacy-084": "Lost Type",
+    "legacy-087": "FontM",
+    "legacy-088": "MyFonts",
+    "legacy-089": "DaFont",
+    "legacy-105": "Sketch",
+    "legacy-110": "Figma",
+    "legacy-111": "Khroma",
+    "legacy-112": "uiGradients",
+    "legacy-114": "CoolHue",
+    "legacy-115": "WebGradients",
+    "legacy-116": "Grabient",
+    "legacy-117": "The Day's Color",
+    "legacy-118": "Flat UI Colors",
+    "legacy-120": "Color Hunt",
+    "legacy-126": "TinyPNG",
+    "legacy-127": "goQR",
+    "legacy-128": "Ezgif",
+    "legacy-129": "Android Shadow Generator",
+    "legacy-132": "Wappalyzer",
+    "legacy-134": "Sizzy",
+    "legacy-135": "CSS Peeper",
+    "legacy-137": "Mustsee"
+  }
+}
