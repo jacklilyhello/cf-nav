@@ -29,12 +29,15 @@ if (
   throw new Error('Wrong public page');
 for (const h of ['Content-Security-Policy', 'X-Content-Type-Options', 'Referrer-Policy'])
   if (!page.headers.get(h)) throw new Error(`Missing ${h}`);
-const admin = await request('/admin');
-if (admin.status !== 200 || !(await admin.text()).includes('Lily'))
-  throw new Error('Admin shell or redirect loop');
-for (const path of ['/api/admin/data', '/api/admin/export']) {
+for (const path of ['/admin', '/admin/']) {
+  const admin = await request(path);
+  if (admin.status !== 303 || admin.headers.get('location') !== new URL('/admin/login', base).href)
+    throw new Error('Admin must navigate to Access before loading its session');
+}
+for (const path of ['/api/admin/session', '/api/admin/data', '/api/admin/export']) {
   const r = await request(path);
-  if (r.status !== 401) throw new Error(`${path} should be unauthorized, got ${r.status}`);
+  if (r.status !== 401 || !r.headers.get('content-type')?.includes('application/json'))
+    throw new Error(`${path} must return an unauthorized JSON response, got ${r.status}`);
 }
 const missing = await request('/api/no-such-endpoint');
 if (missing.status !== 404 || !missing.headers.get('content-type')?.includes('json'))
@@ -56,7 +59,15 @@ console.log(
       ...state,
       links: catalog.links.length,
       categories: catalog.categories.length,
-      checks: ['catalog', 'assets', 'headers', 'admin-shell', 'admin-auth', 'api-404', 'page-404'],
+      checks: [
+        'catalog',
+        'assets',
+        'headers',
+        'admin-login-navigation',
+        'admin-auth',
+        'api-404',
+        'page-404',
+      ],
     },
     null,
     2,

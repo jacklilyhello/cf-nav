@@ -141,6 +141,33 @@ describe('D1 admin lifecycle and visibility', () => {
     expect(unknown.status).toBe(404);
     expect(unknown.headers.get('Content-Type')).toContain('application/json');
   });
+  it('sends anonymous and invalid admin page sessions through a fixed Access navigation', async () => {
+    for (const path of ['/admin', '/admin/']) {
+      for (const method of ['GET', 'HEAD']) {
+        for (const cookie of ['', 'CF_Authorization=invalid-session']) {
+          const response = await worker.fetch(
+            new Request(`${origin}${path}?returnTo=https://untrusted.example`, {
+              method,
+              headers: { Cookie: cookie },
+            }),
+            env,
+          );
+          expect(response.status).toBe(303);
+          expect(response.headers.get('Location')).toBe(`${origin}/admin/login`);
+          expect(response.headers.get('Cache-Control')).toBe('no-store');
+        }
+      }
+    }
+    const session = await worker.fetch(req('/api/admin/session'), env);
+    expect(session.status).toBe(401);
+    expect(await session.json()).toMatchObject({ loginUrl: '/admin/login' });
+    expect(session.headers.get('Location')).toBeNull();
+  });
+  it('does not redirect configuration failures into a login loop', async () => {
+    const response = await worker.fetch(req('/admin'), { ...env, ACCESS_AUD: '' });
+    expect(response.status).toBe(503);
+    expect(response.headers.get('Location')).toBeNull();
+  });
 });
 describe('Access cryptographic authentication', () => {
   it('validates signature, issuer, audience, expiry and the single-owner identity', async () => {

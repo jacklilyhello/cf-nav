@@ -18,6 +18,7 @@ import {
   type NavLink,
 } from '../frontend/ui';
 import { createBackupParts, MAX_IMPORT_BYTES, type BackupPart } from '../frontend/backup';
+import { ApiError } from '../frontend/api';
 
 type ManagedLink = NavLink & { expectedKeywords?: string[] };
 type AdminCatalog = Omit<Catalog, 'links'> & { links: ManagedLink[] };
@@ -48,22 +49,21 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
   let categoryFilter = '';
   let statusFilter = '';
   try {
-    const response = await fetch('/api/admin/session', {
-      credentials: 'same-origin',
-      signal: AbortSignal.timeout(20000),
-      headers: { Accept: 'application/json' },
-    });
-    const body = (await response.json()) as Session & { error?: string; loginUrl?: string };
-    if (response.status === 401 || response.status === 403) {
-      app.innerHTML = `<main class="standalone" id="main">${brand()}<section class="login-panel"><span class="login-symbol">${icon('shield')}</span><span class="eyebrow">A PRIVATE SPACE TO CURATE</span><h1>打理你的数字花园。</h1><p>这里是 Lily 寻迹的私人管理空间。<br />通过管理员身份验证后，管理资源、分类与链接健康状态。</p><a class="button primary" href="/admin/login">${icon('shield')}通过 Cloudflare Access 登录${icon('arrow')}</a><span class="login-note">仅限站点管理员 · 安全身份验证</span><a class="back-home" href="/">返回公开导航</a></section></main>`;
-      return;
-    }
-    if (!response.ok || !body.authenticated)
-      throw new Error(body.error || '无法验证管理员身份，请稍后重试。');
-    session = body;
+    session = await api<Session>('/api/admin/session');
+    if (!session.authenticated || typeof session.csrfToken !== 'string')
+      throw new ApiError('authentication', '请重新验证管理员身份。');
     data = await api<AdminCatalog>('/api/admin/data');
   } catch (error) {
-    app.innerHTML = `<main class="standalone" id="main">${brand()}<div class="empty-state">${icon('warning')}<h1>暂时无法连接管理服务</h1><p>${escape((error as Error).message)}</p><button class="button secondary" id="reload-admin">重新连接</button></div></main>`;
+    const authentication = error instanceof ApiError && error.code === 'authentication';
+    const challenge = error instanceof ApiError && error.code === 'challenge';
+    const title = authentication
+      ? '请验证管理员身份'
+      : challenge
+        ? '请先完成浏览器安全验证'
+        : '暂时无法连接管理服务';
+    const message =
+      error instanceof ApiError ? error.message : '网络连接暂时不可用，请重试或重新登录。';
+    app.innerHTML = `<main class="standalone" id="main">${brand()}<section class="login-panel"><span class="login-symbol">${icon('shield')}</span><span class="eyebrow">A PRIVATE SPACE TO CURATE</span><h1>${title}</h1><p>${escape(message)}</p><a class="button primary" href="/admin/login">${icon('shield')}通过 Cloudflare Access 登录${icon('arrow')}</a><button class="button secondary" id="reload-admin">重新连接</button><span class="login-note">仅限站点管理员 · 安全身份验证</span><a class="back-home" href="/">返回公开导航</a></section></main>`;
     document.querySelector('#reload-admin')?.addEventListener('click', () => {
       void mountAdmin(app);
     });
@@ -141,6 +141,18 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
     try {
       await callback();
     } catch (error) {
+      if (error instanceof ApiError && ['authentication', 'challenge'].includes(error.code)) {
+        toast(error.message, true);
+        if (!document.querySelector('#admin-reauthenticate')) {
+          const link = document.createElement('a');
+          link.id = 'admin-reauthenticate';
+          link.className = 'button primary';
+          link.href = '/admin/login';
+          link.textContent = '重新验证管理员身份';
+          document.querySelector('.admin-actions')?.prepend(link);
+        }
+        return;
+      }
       toast((error as Error).message, true);
     }
   }
@@ -345,6 +357,13 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
         .then(() => element.close())
         .catch((cause: Error) => {
           error.textContent = cause.message;
+          if (cause instanceof ApiError && ['authentication', 'challenge'].includes(cause.code)) {
+            const login = document.createElement('a');
+            login.className = 'button secondary';
+            login.href = '/admin/login';
+            login.textContent = '重新验证管理员身份';
+            error.append(document.createTextNode(' 重新登录前请保留尚未保存的内容。'), login);
+          }
           error.hidden = false;
           error.scrollIntoView({ block: 'nearest' });
         })

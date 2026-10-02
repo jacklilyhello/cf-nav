@@ -195,17 +195,7 @@ export function bindImageFallback(root: ParentNode): void {
     );
   });
 }
-export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(path, {
-    credentials: 'same-origin',
-    signal: AbortSignal.timeout(20000),
-    ...options,
-    headers: { Accept: 'application/json', ...options.headers },
-  });
-  const body = (await response.json().catch(() => ({}))) as { error?: string };
-  if (!response.ok) throw new Error(body.error || `请求失败（${response.status}）`);
-  return body as T;
-}
+export { api } from './api';
 export function toast(message: string, failed = false): void {
   document.querySelector('.toast')?.remove();
   const element = document.createElement('div');
