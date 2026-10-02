@@ -55,11 +55,13 @@ if (mode === 'production') {
 await mkdir('build', { recursive: true });
 await writeFile('build/domain-before.json', JSON.stringify(before, null, 2));
 const service = mode === 'production' ? worker : 'websitenavigation';
-await api(`accounts/${account}/workers/domains`, 'PUT', {
-  hostname,
-  service,
-  environment: 'production',
-  zone_id: zone,
+// Use Wrangler's scoped origins endpoint to transfer this already-verified
+// hostname atomically. Preserve other origins and refuse unrelated DNS conflicts.
+await api(`accounts/${account}/workers/scripts/${service}/domains/records`, 'PUT', {
+  override_scope: false,
+  override_existing_origin: true,
+  override_existing_dns_record: false,
+  origins: [{ hostname, zone_id: zone, enabled: true, previews_enabled: false }],
 });
 const after = (await api(`accounts/${account}/workers/domains`)).find(
   (x) => x.hostname === hostname,
