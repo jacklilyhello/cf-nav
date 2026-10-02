@@ -1,5 +1,5 @@
 import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import type { Env } from '../src/shared/types';
 import type { HealthResult } from '../src/health';
@@ -8,6 +8,14 @@ const probe = vi.hoisted(() => vi.fn());
 vi.mock('../src/health', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../src/health')>()),
   checkLink: probe,
+}));
+vi.mock('../src/icons', () => ({
+  discoverIcon: vi.fn(async () => ({
+    icon: '',
+    status: 'not_found',
+    source: null,
+    checkedAt: new Date().toISOString(),
+  })),
 }));
 
 import { adminApi, catalog } from '../src/api/catalog';
@@ -23,7 +31,10 @@ class SqliteD1 {
   calls = 0;
   constructor() {
     this.database.exec('PRAGMA foreign_keys=ON');
-    this.database.exec(readFileSync('migrations/0001_initial.sql', 'utf8'));
+    for (const migration of readdirSync('migrations')
+      .filter((name) => name.endsWith('.sql'))
+      .sort())
+      this.database.exec(readFileSync(`migrations/${migration}`, 'utf8'));
   }
   prepare(sql: string) {
     return new Statement(this, sql);
@@ -84,6 +95,8 @@ const success: HealthResult = {
   finalUrl: link.url,
   title: 'Example original service',
   description: '',
+  contentStatus: 'match',
+  similarityScore: 100,
   evidence: ['identity'],
   error: null,
   redirects: [],
@@ -221,6 +234,135 @@ describe('health lifecycle race and evidence review', () => {
     expect(await runChecks(env, 'link')).toEqual([]);
     release({ ...success });
     expect(await first).toEqual([{ id: 'link', status: 'healthy' }]);
+  });
+
+  it('serializes manual and Cron probes across different links', async () => {
+    await seed();
+    await adminApi(
+      request('/api/admin/links', 'POST', { ...link, id: 'other', url: 'https://example.org/' }),
+      env,
+    );
+    let release!: (result: HealthResult) => void;
+    probe.mockImplementation(
+      () =>
+        new Promise<HealthResult>((resolve) => {
+          release = resolve;
+        }),
+    );
+    const first = runChecks(env, 'link');
+    await vi.waitFor(() => expect(probe).toHaveBeenCalledOnce());
+    expect(await runChecks(env, 'other')).toEqual([]);
+    expect(await runChecks(env)).toEqual([]);
+    expect(probe).toHaveBeenCalledOnce();
+    release({ ...success });
+    await first;
+    probe.mockResolvedValue({ ...success });
+    expect(await runChecks(env, 'other')).toEqual([{ id: 'other', status: 'healthy' }]);
+  });
+
+  it('passes saved configuration to manual and Cron and persists used values in history', async () => {
+    await seed();
+    const settings = {
+      allowIndexing: false,
+      healthUserAgent: 'Owner-health/2.0',
+      healthIntervalSeconds: 10,
+      healthTimeoutSeconds: 2,
+    };
+    db.database
+      .prepare("INSERT INTO metadata(key,value) VALUES('siteSettings',?)")
+      .run(JSON.stringify(settings));
+    await runChecks(env, 'link');
+    db.database.prepare("UPDATE links SET nextCheckAt='1970-01-01T00:00:00.000Z'").run();
+    await runChecks(env);
+    for (const call of probe.mock.calls) {
+      expect(call[1]).toMatchObject({
+        runtime: 'cloudflare-public',
+        userAgent: settings.healthUserAgent,
+        timeoutMs: 2000,
+      });
+      expect(typeof call[1].beforeRequest).toBe('function');
+    }
+    const history = db.database.prepare('SELECT * FROM health_history').all();
+    expect(history).toHaveLength(2);
+    for (const entry of history)
+      expect(entry).toMatchObject({
+        probeUserAgent: settings.healthUserAgent,
+        probeIntervalSeconds: 10,
+        probeTimeoutSeconds: 2,
+        contentStatus: 'match',
+        similarityScore: 100,
+        redirectChain: '[]',
+      });
+  });
+
+  it('keeps a worst-case three-link Cron with four requests per link within D1 Free query limits', async () => {
+    await seed();
+    for (let index = 1; index < 3; index++)
+      await adminApi(
+        request('/api/admin/links', 'POST', {
+          ...link,
+          id: `extra-${index}`,
+          url: `https://example.com/${index}`,
+        }),
+        env,
+      );
+    vi.useFakeTimers();
+    try {
+      probe.mockImplementation(async (_input, options) => {
+        for (let hop = 0; hop < 4; hop++) await options.beforeRequest(new AbortController().signal);
+        return { ...success };
+      });
+      db.calls = 0;
+      const pending = runChecks(env);
+      await vi.runAllTimersAsync();
+      expect(await pending).toHaveLength(3);
+      expect(probe).toHaveBeenCalledTimes(3);
+      expect(db.calls).toBe(47);
+      expect(db.calls).toBeLessThanOrEqual(50);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('never overwrites explicit baselines or advances a confirmed title automatically', async () => {
+    await seed();
+    db.database
+      .prepare(
+        "UPDATE links SET expectedTitle='Owner original title', expectedDescription='Original purpose', confirmedTitle='Previously confirmed title'",
+      )
+      .run();
+    await runChecks(env, 'link');
+    expect(probe.mock.calls[0]![0]).toMatchObject({
+      expectedTitle: 'Owner original title',
+      expectedDescription: 'Original purpose',
+      previousTitle: 'Previously confirmed title',
+    });
+    expect(row()).toMatchObject({
+      expectedTitle: 'Owner original title',
+      expectedDescription: 'Original purpose',
+      confirmedTitle: 'Previously confirmed title',
+      observedTitle: success.title,
+    });
+  });
+
+  it('drops a stale result after a same-URL baseline edit during a probe', async () => {
+    await seed();
+    probe.mockImplementation(async () => {
+      await adminApi(
+        request('/api/admin/links/link', 'PUT', { ...link, expectedTitle: 'New expected site' }),
+        env,
+      );
+      return { ...success };
+    });
+    expect(await runChecks(env, 'link')).toEqual([]);
+    expect(row()).toMatchObject({
+      expectedTitle: 'New expected site',
+      contentStatus: 'unknown',
+      similarityScore: null,
+    });
+    expect(db.database.prepare('SELECT count(*) AS total FROM health_history').get()!.total).toBe(
+      0,
+    );
   });
 });
 

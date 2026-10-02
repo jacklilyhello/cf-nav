@@ -13,6 +13,8 @@ export interface NavLink {
   url: string;
   description: string;
   icon: string;
+  iconMode?: 'auto' | 'manual' | 'none';
+  iconCheckedAt?: string | null;
   sortOrder: number;
   enabled: boolean;
   featured: boolean;
@@ -27,6 +29,14 @@ export interface NavLink {
   healthOverride?: string | null;
   lastSuccessAt?: string | null;
   lastFailureAt?: string | null;
+  expectedTitle?: string;
+  expectedDescription?: string;
+  expectedKeywords?: string[];
+  observedTitle?: string | null;
+  contentStatus?: 'match' | 'partial' | 'changed' | 'mismatch' | 'unknown';
+  similarityScore?: number | null;
+  redirectChain?: Array<{ url: string; status: number; location: string | null }>;
+  healthEvidence?: string[];
 }
 export interface Catalog {
   categories: Category[];
@@ -163,20 +173,52 @@ export function healthBadge(link: NavLink): string {
   const title = `${info.label}${link.healthOverride ? ' · 人工确认' : ''} · ${formatDate(link.lastCheckedAt)}${link.httpStatus ? ` · HTTP ${link.httpStatus}` : ''}`;
   return `<span class="health health-${info.tone}" title="${escape(title)}"><span></span>${escape(info.label)}</span>`;
 }
+export function contentInfo(status?: string | null): { label: string; tone: string } {
+  const states: Record<string, [string, string]> = {
+    match: ['内容符合预期', 'good'],
+    partial: ['大致符合', 'good'],
+    changed: ['内容可能已改变', 'review'],
+    mismatch: ['明显不符合', 'bad'],
+    unknown: ['无法判断', 'neutral'],
+  };
+  const [label, tone] = states[status || 'unknown'] || states.unknown!;
+  return { label: label!, tone: tone! };
+}
+export function contentBadge(link: NavLink): string {
+  const info = contentInfo(link.contentStatus);
+  const score =
+    typeof link.similarityScore === 'number' && Number.isFinite(link.similarityScore)
+      ? ` · ${Math.round(Math.max(0, Math.min(100, link.similarityScore)))}%`
+      : '';
+  return `<span class="content-badge content-${info.tone}">${escape(info.label)}${score}</span>`;
+}
+export function httpLabel(link: NavLink): string {
+  if (link.httpStatus) return `HTTP ${link.httpStatus}`;
+  if (!link.lastCheckedAt) return '尚未检测';
+  const errors: Record<string, string> = {
+    dns_error: 'DNS Error',
+    tls_error: 'TLS Error',
+    timeout: 'Timeout',
+    connection_error: 'Connection Error',
+    connection_refused: 'Connection Error',
+  };
+  return errors[link.healthStatus] || '未取得 HTTP 状态';
+}
 export function siteIcon(link: NavLink): string {
   const hash = [...link.name].reduce((value, char) => value + char.charCodeAt(0), 0) % 6;
-  const value = (link.icon || '').trim();
+  const value = link.iconMode === 'none' ? '' : (link.icon || '').trim();
   const textIcon = value.length <= 16 && !value.includes('://') ? value : '';
   const custom = !textIcon && value.startsWith('https:') ? safeUrl(value) : '';
-  const label = textIcon || [...link.name][0]?.toUpperCase() || '↗';
+  const fallback = [...link.name][0]?.toUpperCase() || '↗';
+  const label = textIcon || fallback;
   const textClass =
     label.length > 6 ? 'icon-text-long' : label.length > 2 ? 'icon-text-medium' : '';
-  return `<span class="site-icon color-${hash}">${custom ? `<img src="${escape(custom)}" alt="" loading="lazy" referrerpolicy="no-referrer" />` : `<span class="${textClass}">${escape(label)}</span>`}</span>`;
+  return `<span class="site-icon color-${hash}">${custom ? `<img src="${escape(custom)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-fallback="${escape(fallback)}" />` : `<span class="${textClass}">${escape(label)}</span>`}</span>`;
 }
 
 export function validIcon(value: string): boolean {
   if (!value || (value.length <= 16 && !value.includes('://'))) return true;
-  return value.length <= 500 && value.startsWith('https:') && Boolean(safeUrl(value));
+  return value.length <= 2048 && value.startsWith('https:') && Boolean(safeUrl(value));
 }
 export function isPublicLink(link: NavLink, categories: Category[]): boolean {
   return Boolean(
@@ -186,13 +228,12 @@ export function isPublicLink(link: NavLink, categories: Category[]): boolean {
 }
 export function bindImageFallback(root: ParentNode): void {
   root.querySelectorAll<HTMLImageElement>('.site-icon img').forEach((img) => {
-    img.addEventListener(
-      'error',
-      () => {
-        img.replaceWith(document.createTextNode('↗'));
-      },
-      { once: true },
-    );
+    const fallback = (): void => {
+      img.replaceWith(document.createTextNode(img.dataset.fallback || '↗'));
+    };
+    img.addEventListener('error', fallback, { once: true });
+    // Cached failures can finish before the listener is installed.
+    if (img.complete && img.naturalWidth === 0) fallback();
   });
 }
 export { api } from './api';

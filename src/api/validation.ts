@@ -26,43 +26,51 @@ export const categorySchema = z.object({
   sortOrder: z.number().int().min(-10000).max(10000).default(0),
   enabled: z.boolean().default(true),
 });
-export const linkSchema = z.object({
-  id: identifier.optional(),
-  categoryId: identifier,
-  name: text(120).min(1),
-  url: publicUrl,
-  description: text(1000).default(''),
-  icon: text(500)
-    .default('')
-    .refine((value) => {
-      if (!value || (value.length <= 16 && !value.includes('://'))) return true;
-      try {
-        return validatePublicUrl(value).protocol === 'https:';
-      } catch {
-        return false;
-      }
-    }, '图标使用短文字或公网 HTTPS 地址'),
-  sortOrder: z.number().int().min(-10000).max(10000).default(0),
-  enabled: z.boolean().default(true),
-  featured: z.boolean().default(false),
-  notes: text(4000).default(''),
-  expectedKeywords: z.array(text(80).min(1)).max(12).default([]),
-  checkDisabled: z.boolean().default(false),
-  healthOverride: z
-    .enum([
-      'healthy',
-      'needs_review',
-      'moved',
-      'content_changed',
-      'domain_parking',
-      'domain_for_sale',
-      'not_found',
-      'gone',
-      'unknown',
-    ])
-    .nullable()
-    .default(null),
-});
+export const linkSchema = z
+  .object({
+    id: identifier.optional(),
+    categoryId: identifier,
+    name: text(120).min(1),
+    url: publicUrl,
+    description: text(1000).default(''),
+    icon: text(2048)
+      .default('')
+      .refine((value) => {
+        if (!value || (value.length <= 16 && !value.includes('://'))) return true;
+        try {
+          return validatePublicUrl(value).protocol === 'https:';
+        } catch {
+          return false;
+        }
+      }, '图标使用短文字或公网 HTTPS 地址'),
+    iconMode: z.enum(['auto', 'manual', 'none']).optional(),
+    sortOrder: z.number().int().min(-10000).max(10000).default(0),
+    enabled: z.boolean().default(true),
+    featured: z.boolean().default(false),
+    notes: text(4000).default(''),
+    expectedKeywords: z.array(text(80).min(1)).max(12).default([]),
+    expectedTitle: text(240).default(''),
+    expectedDescription: text(1000).default(''),
+    checkDisabled: z.boolean().default(false),
+    healthOverride: z
+      .enum([
+        'healthy',
+        'needs_review',
+        'moved',
+        'content_changed',
+        'domain_parking',
+        'domain_for_sale',
+        'not_found',
+        'gone',
+        'unknown',
+      ])
+      .nullable()
+      .default(null),
+  })
+  .transform((value) => ({
+    ...value,
+    iconMode: value.iconMode ?? (value.icon ? ('manual' as const) : ('auto' as const)),
+  }));
 export const IMPORT_MAX_BYTES = 8 * 1024 * 1024;
 export const importSchema = z.object({
   version: z.literal(1),

@@ -22,6 +22,7 @@
         "ACCESS_AUD": "0b87d7add9e8cc9e21eec99bb8bfe25a78a8580722fd602e0d0aaba0c9a579fe",
         "ADMIN_EMAIL_HASH": "854eff2fc988ea0257a58cd9c08afcaf202ac21cf48b10bfea505a8bbfcf6bb0",
         "APP_ENV": "staging",
+        "PUBLIC_ORIGIN": "https://nav.lily.lat",
       },
       "d1_databases": [
         {
@@ -42,6 +43,7 @@
         "ACCESS_AUD": "fa168e18d99bfa50548e577dbcd25075eaf045becb4434cc5f8c1d7ae1007b02,d839fd0845de38d0cee67a739360c6a43a23d1e9f39ab018cb1d6c5ae2ea5000",
         "ADMIN_EMAIL_HASH": "854eff2fc988ea0257a58cd9c08afcaf202ac21cf48b10bfea505a8bbfcf6bb0",
         "APP_ENV": "production",
+        "PUBLIC_ORIGIN": "https://nav.lily.lat",
       },
       "d1_databases": [
         {

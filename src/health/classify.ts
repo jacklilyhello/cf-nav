@@ -1,4 +1,4 @@
-import type { HealthInput, HealthStatus, RedirectHop } from './types';
+import type { ContentStatus, HealthInput, HealthStatus, RedirectHop } from './types';
 
 function decodeText(value: string): string {
   return value
@@ -67,7 +67,7 @@ function normalized(value: string): string {
     .trim();
 }
 
-function identityTokens(input: HealthInput): string[] {
+function tokens(value: string): string[] {
   const ignored = new Set([
     'the',
     'and',
@@ -76,29 +76,105 @@ function identityTokens(input: HealthInput): string[] {
     'website',
     'official',
     'tools',
-    'design',
     'free',
     'app',
     'www',
   ]);
-  const candidates = [...(input.expectedKeywords || []), input.name]
-    .flatMap((value) => [normalized(value), ...normalized(value).split(' ')])
+  const candidates = normalized(value)
+    .split(' ')
     .filter(
       (value) =>
-        value.length >= 3 ||
+        value.length >= 2 ||
         /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]{2}/u.test(value),
     )
     .filter((value) => !ignored.has(value));
   return [...new Set(candidates)].slice(0, 30);
 }
 
-function hasIdentity(value: string, identities: string[]): boolean {
-  const text = ` ${normalized(value)} `;
-  return identities.some((identity) => {
-    // Latin brand names must be complete tokens, not accidental substrings.
-    if (/^[a-z\d ]+$/.test(identity)) return text.includes(` ${identity} `);
-    return text.includes(identity);
-  });
+function hasIdentity(value: string, identity: string): boolean {
+  // Latin brand names must be complete tokens, not accidental substrings.
+  if (/^[a-z\d ]+$/.test(identity)) return value.includes(` ${identity} `);
+  return value.includes(identity);
+}
+
+function coverage(expected: string, actual: string): number {
+  const identity = normalized(expected);
+  if (!identity) return 0;
+  if (hasIdentity(actual, identity)) return 1;
+  const expectedTokens = tokens(expected);
+  if (!expectedTokens.length) return 0;
+  return (
+    expectedTokens.filter((token) => hasIdentity(actual, token)).length / expectedTokens.length
+  );
+}
+
+function compareContent(
+  input: HealthInput,
+  title: string,
+  description: string,
+  text: string,
+): { contentStatus: ContentStatus; similarityScore: number; explanation: string } {
+  // Normalize bounded page text once, not once per expected token on the Worker CPU.
+  const metadata = ` ${normalized(`${title} ${description}`)} `;
+  const visible = ` ${normalized(`${title} ${description} ${text}`)} `;
+  const manual = Boolean(
+    input.expectedTitle?.trim() ||
+    input.expectedDescription?.trim() ||
+    input.expectedKeywords?.length,
+  );
+  const signals: { label: string; weight: number; score: number }[] = [];
+  if (manual) {
+    // Explicit administrator baselines take priority over a display name or learned title.
+    if (input.expectedTitle?.trim())
+      signals.push({
+        label: 'expected title',
+        weight: 50,
+        score: coverage(input.expectedTitle, metadata),
+      });
+    if (input.expectedDescription?.trim())
+      signals.push({
+        label: 'expected purpose',
+        weight: 30,
+        score: coverage(input.expectedDescription, visible),
+      });
+    if (input.expectedKeywords?.length)
+      signals.push({
+        label: 'expected keywords',
+        weight: 35,
+        score:
+          input.expectedKeywords.reduce((sum, keyword) => sum + coverage(keyword, visible), 0) /
+          input.expectedKeywords.length,
+      });
+  } else {
+    signals.push({ label: 'saved name', weight: 65, score: coverage(input.name, metadata) });
+    if (input.previousTitle)
+      signals.push({
+        label: 'confirmed historical title',
+        weight: 35,
+        score: coverage(input.previousTitle, metadata),
+      });
+  }
+  const weight = signals.reduce((sum, signal) => sum + signal.weight, 0);
+  const similarityScore = Math.round(
+    (100 * signals.reduce((sum, signal) => sum + signal.weight * signal.score, 0)) / weight,
+  );
+  const strongBaseline = manual || Boolean(input.previousTitle);
+  let contentStatus: ContentStatus =
+    similarityScore >= 80
+      ? 'match'
+      : similarityScore >= 45
+        ? 'partial'
+        : similarityScore < 20 && strongBaseline
+          ? 'mismatch'
+          : 'changed';
+  // A retained brand name alone must not hide a completely missing manual purpose.
+  if (contentStatus === 'match' && signals.some((signal) => signal.score === 0))
+    contentStatus = 'partial';
+  return {
+    contentStatus,
+    similarityScore,
+    explanation: `Content similarity ${similarityScore}/100 from ${signals.map((signal) => signal.label).join(', ')}; this is a lightweight heuristic.`,
+  };
 }
 
 export interface PageObservation {
@@ -113,13 +189,24 @@ export interface PageObservation {
 export function classifyPage(
   input: HealthInput,
   page: PageObservation,
-): { status: HealthStatus; title: string; description: string; evidence: string[] } {
+): {
+  status: HealthStatus;
+  title: string;
+  description: string;
+  evidence: string[];
+  contentStatus: ContentStatus;
+  similarityScore: number | null;
+} {
   const { title, description, text } = extractPageEvidence(page.html);
   const evidence: string[] = [];
+  let contentStatus: ContentStatus = 'unknown';
+  let similarityScore: number | null = null;
   const result = (status: HealthStatus, reason: string) => ({
     status,
     title,
     description,
+    contentStatus,
+    similarityScore,
     evidence: [...evidence, reason],
   });
   const overview = `${title} ${description} ${text.slice(0, 4000)}`;
@@ -165,6 +252,8 @@ export function classifyPage(
       overview,
     )
   ) {
+    contentStatus = 'mismatch';
+    similarityScore = 0;
     return result(
       'domain_for_sale',
       'Explicit domain-sale wording found in visible page evidence.',
@@ -175,6 +264,8 @@ export function classifyPage(
       overview,
     )
   ) {
+    contentStatus = 'mismatch';
+    similarityScore = 0;
     return result(
       'domain_parking',
       'Explicit domain-parking wording found in visible page evidence.',
@@ -189,35 +280,16 @@ export function classifyPage(
   }
   if (!title && !description)
     return result('needs_review', 'No title or description available to verify service identity.');
-  const identities = identityTokens(input);
-  const identityMatched = hasIdentity(`${title} ${description}`, identities);
-  if (!identityMatched) {
-    if (input.previousTitle && normalized(input.previousTitle) !== normalized(title)) {
-      const previous = new Set(
-        normalized(input.previousTitle)
-          .split(' ')
-          .filter((token) => token.length > 2),
-      );
-      const current = new Set(
-        normalized(title)
-          .split(' ')
-          .filter((token) => token.length > 2),
-      );
-      const overlap = [...previous].filter((token) => current.has(token)).length;
-      if (
-        previous.size >= 2 &&
-        current.size >= 2 &&
-        overlap / Math.max(previous.size, current.size) < 0.2
-      ) {
-        return result(
-          'content_changed',
-          'Title changed substantially and expected service identity is missing; possible replacement requires review.',
-        );
-      }
-    }
+  const comparison = compareContent(input, title, description, text);
+  contentStatus = comparison.contentStatus;
+  similarityScore = comparison.similarityScore;
+  evidence.push(comparison.explanation);
+  if (contentStatus !== 'match') {
     return result(
-      'needs_review',
-      'HTTP success, but title and description do not confirm the expected service identity.',
+      contentStatus === 'mismatch' || (input.previousTitle && contentStatus === 'changed')
+        ? 'content_changed'
+        : 'needs_review',
+      'HTTP success does not establish that the page still provides the expected service; review content evidence.',
     );
   }
   evidence.push(

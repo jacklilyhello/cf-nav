@@ -120,3 +120,76 @@ review repeated failures. Provider WAFs, geographic restrictions and JavaScript-
 remain uncertain; the system never equates a 200 response with proof of the original service.
 A proxy/network-level access block can make command-line smoke differ from browser behavior;
 inspect real evidence without weakening site protection.
+
+## Indexing, icons and probe settings
+
+Open **站点设置** in the administrator menu. `allowIndexing` is persisted in D1 and read on
+requests without a stale settings cache. On the configured production `PUBLIC_ORIGIN`, the
+switch controls `X-Robots-Tag`, server-rendered robots meta, sitemap contents and the sitemap
+reference in robots.txt. Canonical points to the configured production origin. Staging and
+workers.dev alternatives always remain noindex; administrator/API/error responses are noindex.
+The public homepage includes a no-JavaScript catalog fallback. Only the real homepage is listed
+in the sitemap; category filters and external destinations are not invented local pages.
+
+When indexing is off, robots.txt still permits the public page to be crawled so crawlers can
+read `noindex`; a blanket Disallow would prevent that. Search engines act after their next crawl,
+not immediately when Save is clicked. See [Google's noindex documentation](https://developers.google.com/search/docs/crawling-indexing/block-indexing).
+
+New links default to automatic icon discovery: bounded HTTPS apple-touch/icon declarations,
+manifest icons, then favicon.ico. Candidates must actually return an image with a matching MIME
+and signature. The request budget is 20 including DNS, the deadline 8 seconds, metadata 128 KiB,
+manifest 32 KiB and images 256 KiB. URLs are persisted in D1; image bytes are served by their
+owners with no referrer. Automatic discovery runs on creation, URL/mode changes or explicit
+refresh, not on every visitor request or health check. Failed discovery/load renders the local
+initial fallback. Select manual mode to enter an HTTPS image URL or up to 16 text characters;
+manual and fallback-only choices are never overwritten by health or icon discovery.
+
+Migration 0002 preserves existing icons as manual except exact bootstrap placeholders whose
+ID/URL/icon and original seed timestamp still match and have no import/edit evidence. Those
+untouched placeholders become automatic. **补齐自动图标** processes only automatic links without
+a prior discovery timestamp, sequentially; stop is supported between requests. Imported automatic
+icons are preserved as editable data and can be explicitly refreshed. No image upload/storage
+service is added; manual URLs and text provide the supported override workflow.
+
+Probe defaults and accepted limits:
+
+| Setting          | Default                                      | Accepted range                   |
+| ---------------- | -------------------------------------------- | -------------------------------- |
+| User-Agent       | `cf-nav-health/1.0 (+https://nav.lily.lat/)` | 3–256 printable ASCII characters |
+| Request interval | 2 seconds                                    | 1–10 whole seconds               |
+| Per-site timeout | 12 seconds                                   | 2–20 whole seconds               |
+
+Manual and Cron checks share the same settings and a global D1 execution lease. At most three
+links are processed sequentially per Cron tick, never a concurrent sweep. The interval applies
+between target requests including redirects and across runs; initial pacing occurs before the
+per-site deadline. That deadline covers DNS, headers, body and redirect waits. A long interval
+can exhaust the deadline during a redirect chain; the measured result is Timeout, not healthy.
+The history panel records the actual configured UA, interval and timeout used by each run.
+
+Edit a link's expected title, keywords and purpose to maintain its identity baseline. A successful
+HTTP response alone is insufficient. A lightweight score combines expected identity in title/meta,
+keyword coverage, visible content, purpose and the first confirmed title. Scores 80–100 are a
+match, 45–79 partial, and lower scores indicate potential change; a clear baseline with score below
+20 is a mismatch. Explicit domain-sale/parking pages are mismatches; blocked, challenged, non-HTML
+or insufficient evidence is unknown. This is a heuristic score, not a calibrated probability.
+Human baselines are never rewritten by probes. Explicitly adopting an observed title is an
+administrator action. Editing baseline fields invalidates old current observations and schedules
+a new check while retaining history. Export/import includes the editable baseline and icon mode;
+site-wide settings remain separate and imports do not change them.
+
+## Upgrade and rollback
+
+Migration 0002 only adds columns and converts guarded original icon placeholders; it does not
+remove records, clear D1, reseed the catalog or change Access. The previous application remains
+compatible with the added columns. Keep the release SHA in Actions and deploy a known compatible
+revision through the existing production workflow if application rollback is needed. Do not reverse
+schema by deleting data. The legacy Worker/domain rollback remains a separate option above.
+
+## Isolated probe acceptance fixture
+
+`Temporary probe acceptance fixture` deploys or removes only `cf-nav-acceptance`. It is a
+separate temporary Worker with no application bindings, database, production routes or request
+logging. Its fixed test responses let an administrator verify automatic icons, received UA,
+redirect interval, a five-second delay and a replaced/parked page using ordinary navigation CRUD.
+Run the remove action after acceptance and soft-delete the temporary navigation records. Never
+use the fixture workflow to change the production Worker or database.

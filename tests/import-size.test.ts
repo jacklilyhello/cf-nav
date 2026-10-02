@@ -43,7 +43,10 @@ beforeAll(async () => {
     }),
   );
   database = (await mf.getD1Database('DB')) as unknown as D1Database;
-  for (const statement of readFileSync('migrations/0001_initial.sql', 'utf8')
+  for (const statement of (
+    readFileSync('migrations/0001_initial.sql', 'utf8') +
+    readFileSync('migrations/0002_navigation_controls.sql', 'utf8')
+  )
     .split(';')
     .map((sql) => sql.trim())
     .filter(Boolean))

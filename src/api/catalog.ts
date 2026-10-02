@@ -2,6 +2,8 @@ import type { Env } from '../shared/types';
 import { HttpError, readJson, rateLimit } from './security';
 import { categorySchema, linkSchema, importSchema, IMPORT_MAX_BYTES } from './validation';
 import { runChecks } from '../worker/scheduler';
+import { getSettings, settingsSchema, effectiveIndexing } from './settings';
+import { discoverIcon } from '../icons';
 
 const linkFields = [
   'categoryId',
@@ -9,11 +11,14 @@ const linkFields = [
   'url',
   'description',
   'icon',
+  'iconMode',
   'sortOrder',
   'enabled',
   'featured',
   'notes',
   'expectedKeywords',
+  'expectedTitle',
+  'expectedDescription',
   'checkDisabled',
   'healthOverride',
 ] as const;
@@ -53,6 +58,9 @@ const healthDefaults: Record<string, string> = {
   confirmedTitle: 'NULL',
   consecutiveFailures: '0',
   healthEvidence: "'[]'",
+  contentStatus: "'unknown'",
+  similarityScore: 'NULL',
+  redirectChain: "'[]'",
   nextCheckAt: "'1970-01-01T00:00:00.000Z'",
 };
 function resetHealth(unchanged: string) {
@@ -75,7 +83,7 @@ function normalize(row: Record<string, unknown>) {
   const result = { ...row };
   for (const field of ['enabled', 'featured', 'checkDisabled'])
     if (field in result) result[field] = Boolean(result[field]);
-  for (const field of ['expectedKeywords', 'healthEvidence'])
+  for (const field of ['expectedKeywords', 'healthEvidence', 'redirectChain'])
     if (field in result) {
       try {
         result[field] = JSON.parse(String(result[field]));
@@ -101,6 +109,11 @@ export async function catalog(env: Env, admin = false) {
       for (const field of [
         'notes',
         'expectedKeywords',
+        'expectedTitle',
+        'expectedDescription',
+        'redirectChain',
+        'contentStatus',
+        'similarityScore',
         'healthEvidence',
         'lastError',
         'deletedAt',
@@ -131,6 +144,14 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const path = url.pathname;
   const method = request.method;
+  if (path === '/api/admin/settings' && method === 'GET') {
+    const settings = await getSettings(env);
+    return json({
+      ...settings,
+      environment: env.APP_ENV,
+      effectiveAllowIndexing: effectiveIndexing(env, request.url, settings),
+    });
+  }
   if (path === '/api/admin/data' && method === 'GET') return json(await catalog(env, true));
   if (path === '/api/admin/export' && method === 'GET') {
     const [categories, links] = await env.DB.batch<Record<string, unknown>>([
@@ -164,6 +185,20 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
   if (path === '/api/admin/logout' && method === 'POST')
     return json({ ok: true, logoutUrl: '/cdn-cgi/access/logout' });
   if (method !== 'GET') await rateLimit(env.DB, 'admin-write', 120, 60);
+  if (path === '/api/admin/settings' && method === 'PUT') {
+    const settings = settingsSchema.parse(await readJson(request, 4096));
+    await env.DB.batch([
+      env.DB.prepare(
+        "INSERT INTO metadata(key,value) VALUES('siteSettings',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+      ).bind(JSON.stringify(settings)),
+      audit(env.DB, 'update:settings', 'site'),
+    ]);
+    return json({
+      ...settings,
+      environment: env.APP_ENV,
+      effectiveAllowIndexing: effectiveIndexing(env, request.url, settings),
+    });
+  }
   if (path === '/api/admin/import' && method === 'POST') {
     const value = importSchema.parse(await readJson(request, IMPORT_MAX_BYTES));
     const categoryIds = new Set(value.categories.map((x) => x.id));
@@ -195,7 +230,7 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
         : `json_extract(value,'$.${field}')`,
     );
     const unchanged =
-      'links.url=excluded.url AND links.name=excluded.name AND links.expectedKeywords=excluded.expectedKeywords';
+      'links.url=excluded.url AND links.name=excluded.name AND links.expectedKeywords=excluded.expectedKeywords AND links.expectedTitle=excluded.expectedTitle AND links.expectedDescription=excluded.expectedDescription';
     const statements = [
       ...importChunks(value.categories).map((chunk) =>
         env.DB.prepare(
@@ -204,7 +239,7 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
       ),
       ...importChunks(value.links).map((chunk) =>
         env.DB.prepare(
-          `INSERT INTO links(id,${linkFields.join(',')},updatedAt) SELECT ${linkJson.join(',')},? FROM json_each(?) WHERE true ON CONFLICT(id) DO UPDATE SET ${linkFields.map((f) => `${f}=excluded.${f}`).join(',')},updatedAt=excluded.updatedAt,deletedAt=NULL,${resetHealth(unchanged)},checkLeaseUntil=NULL`,
+          `INSERT INTO links(id,${linkFields.join(',')},updatedAt) SELECT ${linkJson.join(',')},? FROM json_each(?) WHERE true ON CONFLICT(id) DO UPDATE SET ${linkFields.map((f) => `${f}=excluded.${f}`).join(',')},updatedAt=excluded.updatedAt,deletedAt=NULL,iconCheckedAt=CASE WHEN links.url=excluded.url AND links.iconMode=excluded.iconMode THEN iconCheckedAt ELSE NULL END,${resetHealth(unchanged)},checkLeaseUntil=NULL`,
         ).bind(now, chunk),
       ),
       audit(env.DB, 'import', 'catalog'),
@@ -214,6 +249,18 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
     if (statements.length > 48) throw new HttpError(413, '导入内容过大，请分批导入');
     await env.DB.batch(statements);
     return json({ ok: true, categories: value.categories.length, links: value.links.length });
+  }
+  const iconRefresh = path.match(/^\/api\/admin\/links\/([a-zA-Z0-9_-]{1,80})\/icon$/);
+  if (iconRefresh && method === 'POST') {
+    const link = await env.DB.prepare(
+      'SELECT id,url,iconMode,updatedAt FROM links WHERE id=? AND deletedAt IS NULL',
+    )
+      .bind(iconRefresh[1])
+      .first<{ id: string; url: string; iconMode: string; updatedAt: string }>();
+    if (!link) throw new HttpError(404, '导航不存在');
+    if (link.iconMode !== 'auto') throw new HttpError(409, '请先切换并保存自动图标模式');
+    await rateLimit(env.DB, `icon:${link.id}`, 1, 60);
+    return json({ ok: true, ...(await refreshIcon(env, link)) });
   }
   const history = path.match(/^\/api\/admin\/links\/([a-zA-Z0-9_-]{1,80})\/history$/);
   if (history && method === 'GET')
@@ -302,13 +349,27 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
     const body = await readJson(request, 32768);
     const parsed = table === 'links' ? linkSchema.parse(body) : categorySchema.parse(body);
     const recordId = id || parsed.id || crypto.randomUUID();
-    if (
-      id &&
-      !(await env.DB.prepare(`SELECT id FROM ${table} WHERE id=? AND deletedAt IS NULL`)
-        .bind(id)
-        .first())
-    )
-      throw new HttpError(404, '记录不存在');
+    const previous = id
+      ? await env.DB.prepare(`SELECT * FROM ${table} WHERE id=? AND deletedAt IS NULL`)
+          .bind(id)
+          .first<Record<string, unknown>>()
+      : null;
+    if (id && !previous) throw new HttpError(404, '记录不存在');
+    let discover = false;
+    if ('iconMode' in parsed) {
+      discover =
+        parsed.iconMode === 'auto' &&
+        (!previous ||
+          previous.url !== parsed.url ||
+          previous.iconMode !== 'auto' ||
+          !previous.iconCheckedAt);
+      if (parsed.iconMode === 'none') parsed.icon = '';
+      if (parsed.iconMode === 'auto')
+        parsed.icon =
+          previous?.url === parsed.url && previous?.iconMode === 'auto'
+            ? String(previous.icon || '')
+            : '';
+    }
     if (
       'categoryId' in parsed &&
       !(await env.DB.prepare('SELECT id FROM categories WHERE id=? AND deletedAt IS NULL')
@@ -322,19 +383,25 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
     if (id) {
       const reset =
         table === 'links'
-          ? `,${resetHealth('url=? AND name=? AND expectedKeywords=?')},checkLeaseUntil=NULL`
+          ? `,${resetHealth('url=? AND name=? AND expectedKeywords=? AND expectedTitle=? AND expectedDescription=?')},iconCheckedAt=CASE WHEN url=? AND iconMode=? THEN iconCheckedAt ELSE NULL END,checkLeaseUntil=NULL`
           : '';
       const tail =
         table === 'links' && 'url' in parsed
-          ? Object.keys(healthDefaults).flatMap(() => [
+          ? [
+              ...Object.keys(healthDefaults).flatMap(() => [
+                parsed.url,
+                parsed.name,
+                JSON.stringify(parsed.expectedKeywords),
+                parsed.expectedTitle,
+                parsed.expectedDescription,
+              ]),
               parsed.url,
-              parsed.name,
-              JSON.stringify(parsed.expectedKeywords),
-            ])
+              parsed.iconMode,
+            ]
           : [];
       statement = env.DB.prepare(
-        `UPDATE ${table} SET ${fields.map((f) => (f === 'categoryId' ? `${f}=(SELECT id FROM categories WHERE id=? AND deletedAt IS NULL)` : `${f}=?`)).join(',')},updatedAt=?${reset} WHERE id=? AND deletedAt IS NULL`,
-      ).bind(...params(parsed, fields), now, ...tail, id);
+        `UPDATE ${table} SET ${fields.map((f) => (f === 'categoryId' ? `${f}=(SELECT id FROM categories WHERE id=? AND deletedAt IS NULL)` : `${f}=?`)).join(',')},updatedAt=?${reset} WHERE id=? AND updatedAt=? AND deletedAt IS NULL`,
+      ).bind(...params(parsed, fields), now, ...tail, id, previous!.updatedAt);
     } else {
       statement = env.DB.prepare(
         `INSERT INTO ${table}(id,${fields.join(',')},updatedAt) VALUES(?,${fields.map((f) => (f === 'categoryId' ? '(SELECT id FROM categories WHERE id=? AND deletedAt IS NULL)' : '?')).join(',')},?)`,
@@ -345,7 +412,22 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
       audit(env.DB, `${id ? 'update' : 'create'}:${table}`, recordId),
     ]);
     if (!written[0].meta.changes) throw new HttpError(409, '记录已变化，请刷新后重试');
-    return json({ ok: true, id: recordId }, id ? 200 : 201);
+    const discovery =
+      discover && 'url' in parsed
+        ? await refreshIcon(env, { id: recordId, url: parsed.url, updatedAt: now })
+        : null;
+    return json({ ok: true, id: recordId, iconDiscovery: discovery }, id ? 200 : 201);
   }
   throw new HttpError(405, '不支持此请求方法');
+}
+
+async function refreshIcon(env: Env, link: { id: string; url: string; updatedAt: string }) {
+  const result = await discoverIcon(link.url, { runtime: 'cloudflare-public' });
+  const updated = await env.DB.prepare(
+    "UPDATE links SET icon=?,iconCheckedAt=? WHERE id=? AND url=? AND updatedAt=? AND iconMode='auto' AND deletedAt IS NULL AND (iconCheckedAt IS NULL OR iconCheckedAt<=?)",
+  )
+    .bind(result.icon, result.checkedAt, link.id, link.url, link.updatedAt, result.checkedAt)
+    .run();
+  if (!updated.meta.changes) throw new HttpError(409, '记录已变化，自动图标未覆盖最新设置');
+  return result;
 }

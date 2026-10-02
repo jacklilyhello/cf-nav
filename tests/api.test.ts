@@ -1,4 +1,12 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+vi.mock('../src/icons', () => ({
+  discoverIcon: vi.fn(async () => ({
+    icon: '',
+    status: 'not_found',
+    source: null,
+    checkedAt: new Date().toISOString(),
+  })),
+}));
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { readFileSync } from 'node:fs';
 import { generateKeyPair, SignJWT, createLocalJWKSet, exportJWK } from 'jose';
@@ -26,7 +34,9 @@ beforeAll(async () => {
     }),
   );
   const db = await mf.getD1Database('DB');
-  const sql = readFileSync('migrations/0001_initial.sql', 'utf8');
+  const sql =
+    readFileSync('migrations/0001_initial.sql', 'utf8') +
+    readFileSync('migrations/0002_navigation_controls.sql', 'utf8');
   for (const statement of sql
     .split(';')
     .map((x) => x.trim())

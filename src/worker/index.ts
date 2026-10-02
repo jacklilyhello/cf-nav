@@ -3,6 +3,7 @@ import type { Env } from '../shared/types';
 import { authenticate, csrf, HttpError, secure } from '../api/security';
 import { adminApi, catalog, json } from '../api/catalog';
 import { runChecks } from './scheduler';
+import { seoRoute } from './seo';
 
 async function route(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
@@ -42,14 +43,20 @@ async function route(request: Request, env: Env): Promise<Response> {
   if (path.startsWith('/api/')) throw new HttpError(404, '接口不存在');
   if (request.method !== 'GET' && request.method !== 'HEAD')
     throw new HttpError(405, '不支持此请求方法');
-  if (path === '/robots.txt')
-    return new Response(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/admin\n`, {
-      headers: { 'Content-Type': 'text/plain' },
+  if (path === '/index.html')
+    return new Response(null, {
+      status: 308,
+      headers: {
+        Location: `${url.origin}/`,
+        'Cache-Control': 'no-store',
+        'X-Robots-Tag': 'noindex',
+      },
     });
-  if (['/', '/admin', '/admin/'].includes(path)) {
+  if (['/', '/robots.txt', '/sitemap.xml'].includes(path)) return seoRoute(request, env);
+  if (['/admin', '/admin/'].includes(path)) {
     const response = await env.ASSETS.fetch(new Request(`${url.origin}/`, request));
     const result = new Response(response.body, response);
-    result.headers.set('Cache-Control', 'no-cache');
+    result.headers.set('Cache-Control', 'no-store');
     return result;
   }
   const response = await env.ASSETS.fetch(request);

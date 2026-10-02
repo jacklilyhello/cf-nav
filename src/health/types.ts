@@ -23,11 +23,14 @@ export const HEALTH_STATUSES = [
 ] as const;
 
 export type HealthStatus = (typeof HEALTH_STATUSES)[number];
+export type ContentStatus = 'match' | 'partial' | 'changed' | 'mismatch' | 'unknown';
 
 export interface HealthInput {
   url: string;
   name: string;
   expectedKeywords?: string[];
+  expectedTitle?: string;
+  expectedDescription?: string;
   previousTitle?: string | null;
   consecutiveFailures?: number;
 }
@@ -44,6 +47,8 @@ export interface HealthResult {
   finalUrl: string;
   title: string;
   description: string;
+  contentStatus: ContentStatus;
+  similarityScore: number | null;
   evidence: string[];
   error: string | null;
   redirects: RedirectHop[];
@@ -67,6 +72,9 @@ export interface HealthOptions {
   fetcher?: typeof fetch;
   resolver?: DnsResolver;
   timeoutMs?: number;
+  userAgent?: string;
+  /** Shared scheduler limiter, called before every target request including redirects. */
+  beforeRequest?: (signal: AbortSignal) => Promise<void>;
   now?: () => number;
 }
 
