@@ -8,7 +8,7 @@ metadata. A single administrator edits content. Anonymous visitors can read enab
 
 - Workers Static Assets: fingerprinted JavaScript/CSS and local SVG branding.
 - D1: two isolated databases, `cf-nav-staging-db` and `cf-nav-db`.
-- Cron: every ten minutes, at most three due links. The catalog is never automatically
+- Cron: every minute, at most two due links or saved continuations. The catalog is never automatically
   deleted or hidden because of a failed check.
 - Cloudflare Access: existing owner identity, no additional application password.
 - No KV, R2, Queue, Durable Object, VPS or persistent server is required.
@@ -89,3 +89,11 @@ The interface uses the supplied palette: ink `#0B0F14`, dark blue `#1F2A3A`, mut
 `#3A506B`, fog `#A7B4C2`, off-white `#EDEBE6`, teal `#2F6F73` / `#7FC0C6`, and restrained
 sand `#D9C19A`. It is a modern navigation workspace with subtle landscape forms, not a
 continuation of the legacy template.
+
+Light and Dark share semantic tokens for text, surfaces, borders, controls and health states.
+Light uses warm mist, pale jade and ivory with dark teal text; Dark retains the ink landscape.
+A small same-origin, parser-blocking initializer resolves the local preference before styles
+and the application execute, without weakening the strict script CSP. Auto subscribes to
+system color-scheme changes; manual preferences persist in local storage and synchronize
+across tabs. Both the public catalog and app-owned administrator/session panels use this theme.
+The hosted Cloudflare Access sign-in remains managed by Access.

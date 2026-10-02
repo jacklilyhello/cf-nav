@@ -91,6 +91,13 @@ function normalize(row: Record<string, unknown>) {
         result[field] = [];
       }
     }
+  if (typeof result.healthPendingSettings === 'string') {
+    try {
+      result.healthPendingSettings = settingsSchema.parse(JSON.parse(result.healthPendingSettings));
+    } catch {
+      result.healthPendingSettings = null;
+    }
+  }
   delete result.checkLeaseUntil;
   return result;
 }
@@ -100,7 +107,7 @@ export async function catalog(env: Env, admin = false) {
       `SELECT * FROM categories WHERE deletedAt IS NULL ${admin ? '' : 'AND enabled=1'} ORDER BY sortOrder,name`,
     ),
     env.DB.prepare(
-      `SELECT l.* FROM links l JOIN categories c ON c.id=l.categoryId WHERE l.deletedAt IS NULL AND c.deletedAt IS NULL ${admin ? '' : 'AND l.enabled=1 AND c.enabled=1'} ORDER BY l.sortOrder,l.name`,
+      `SELECT l.*${admin ? ',j.nextRequestAt AS healthNextRequestAt,j.settings AS healthPendingSettings' : ''} FROM links l JOIN categories c ON c.id=l.categoryId ${admin ? 'LEFT JOIN health_jobs j ON j.linkId=l.id AND j.url=l.url AND j.linkUpdatedAt=l.updatedAt AND l.checkDisabled=0' : ''} WHERE l.deletedAt IS NULL AND c.deletedAt IS NULL ${admin ? '' : 'AND l.enabled=1 AND c.enabled=1'} ORDER BY l.sortOrder,l.name`,
     ),
   ]);
   const rows = links.results.map(normalize);
@@ -284,7 +291,26 @@ export async function adminApi(request: Request, env: Env): Promise<Response> {
     if (link.checkDisabled) throw new HttpError(409, '此导航已忽略检测，请先关闭忽略');
     await rateLimit(env.DB, `check:${link.id}`, 1, 60);
     const results = await runChecks(env, link.id);
-    if (!results.length) throw new HttpError(409, '检测正在进行，请稍后查看');
+    if (!results.length) {
+      const pending = await env.DB.prepare(
+        'SELECT j.nextRequestAt,j.settings FROM health_jobs j JOIN links l ON l.id=j.linkId AND l.url=j.url AND l.updatedAt=j.linkUpdatedAt WHERE j.linkId=? AND l.deletedAt IS NULL AND l.checkDisabled=0',
+      )
+        .bind(link.id)
+        .first<{ nextRequestAt: number; settings: string }>();
+      if (pending)
+        return json(
+          {
+            ok: true,
+            queued: true,
+            nextRequestAt: pending.nextRequestAt
+              ? new Date(pending.nextRequestAt).toISOString()
+              : null,
+            settings: settingsSchema.parse(JSON.parse(pending.settings)),
+          },
+          202,
+        );
+      throw new HttpError(409, '记录已变化，请刷新后重试');
+    }
     return json({ ok: true, result: results[0] });
   }
   const match = path.match(

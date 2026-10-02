@@ -15,8 +15,8 @@ export const settingsSchema = z.object({
     .min(3)
     .max(256)
     .regex(/^[\x20-\x7e]+$/, 'User-Agent 只能使用可打印 ASCII 字符'),
-  healthIntervalSeconds: z.number().int().min(1).max(10),
-  healthTimeoutSeconds: z.number().int().min(2).max(20),
+  healthIntervalSeconds: z.number().int().min(1).max(3600),
+  healthTimeoutSeconds: z.number().int().min(2).max(60),
 });
 export type SiteSettings = z.infer<typeof settingsSchema>;
 export async function getSettings(env: Env): Promise<SiteSettings> {

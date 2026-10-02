@@ -260,6 +260,40 @@ describe('health lifecycle race and evidence review', () => {
     expect(await runChecks(env, 'other')).toEqual([{ id: 'other', status: 'healthy' }]);
   });
 
+  it('cannot delete a newer owner job after the original lease expires', async () => {
+    await seed();
+    vi.useFakeTimers();
+    try {
+      const releases: ((result: HealthResult) => void)[] = [];
+      probe.mockImplementation(
+        () =>
+          new Promise<HealthResult>((resolve) => {
+            releases.push(resolve);
+          }),
+      );
+      const oldRun = runChecks(env, 'link');
+      await vi.advanceTimersByTimeAsync(0);
+      expect(probe).toHaveBeenCalledOnce();
+      await vi.advanceTimersByTimeAsync(240_001);
+      const newRun = runChecks(env, 'link');
+      await vi.advanceTimersByTimeAsync(0);
+      expect(probe).toHaveBeenCalledTimes(2);
+      const newLease = row().checkLeaseUntil;
+      releases[0]!({ ...success });
+      expect(await oldRun).toEqual([]);
+      expect(row().checkLeaseUntil).toBe(newLease);
+      expect(db.database.prepare('SELECT linkId FROM health_jobs').get()!.linkId).toBe('link');
+      releases[1]!({ ...success });
+      expect(await newRun).toEqual([{ id: 'link', status: 'healthy' }]);
+      expect(db.database.prepare('SELECT linkId FROM health_jobs').get()).toBeUndefined();
+      expect(db.database.prepare('SELECT count(*) AS total FROM health_history').get()!.total).toBe(
+        1,
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('passes saved configuration to manual and Cron and persists used values in history', async () => {
     await seed();
     const settings = {
@@ -295,9 +329,9 @@ describe('health lifecycle race and evidence review', () => {
       });
   });
 
-  it('keeps a worst-case three-link Cron with four requests per link within D1 Free query limits', async () => {
+  it('keeps a worst-case two-link Cron with four requests per link within D1 Free query limits', async () => {
     await seed();
-    for (let index = 1; index < 3; index++)
+    for (let index = 1; index < 2; index++)
       await adminApi(
         request('/api/admin/links', 'POST', {
           ...link,
@@ -315,9 +349,9 @@ describe('health lifecycle race and evidence review', () => {
       db.calls = 0;
       const pending = runChecks(env);
       await vi.runAllTimersAsync();
-      expect(await pending).toHaveLength(3);
-      expect(probe).toHaveBeenCalledTimes(3);
-      expect(db.calls).toBe(47);
+      expect(await pending).toHaveLength(2);
+      expect(probe).toHaveBeenCalledTimes(2);
+      expect(db.calls).toBe(38);
       expect(db.calls).toBeLessThanOrEqual(50);
     } finally {
       vi.useRealTimers();

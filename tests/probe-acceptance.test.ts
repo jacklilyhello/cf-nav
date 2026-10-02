@@ -70,6 +70,16 @@ describe('isolated remote probe acceptance fixture', () => {
     },
   );
 
+  it('measures a real one-hour continuation without fixture-side sleeps', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-03T00:00:00.000Z'));
+    const redirect = await get('/redirect');
+    vi.advanceTimersByTime(3_600_123);
+    expect(await (await get(redirect.headers.get('location')!)).text()).toContain(
+      'interval=3600123ms',
+    );
+  });
+
   it('waits exactly five seconds for bounded timeout acceptance', async () => {
     vi.useFakeTimers();
     let completed = false;
@@ -81,6 +91,22 @@ describe('isolated remote probe acceptance fixture', () => {
     expect(completed).toBe(false);
     await vi.advanceTimersByTimeAsync(1);
     expect(await (await pending).text()).toContain('delayed=5000ms');
+  });
+
+  it.each([
+    ['/slow-25', 25_000],
+    ['/slow-65', 65_000],
+  ])('provides fixed extended deadline fixture %s', async (path, delay) => {
+    vi.useFakeTimers();
+    let completed = false;
+    const pending = get(path as string).then((response) => {
+      completed = true;
+      return response;
+    });
+    await vi.advanceTimersByTimeAsync((delay as number) - 1);
+    expect(completed).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(await (await pending).text()).toContain(`delayed=${delay}ms`);
   });
 
   it('serves a genuine isolated icon and recognizable changed-content fixture', async () => {

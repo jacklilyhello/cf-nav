@@ -156,15 +156,35 @@ Probe defaults and accepted limits:
 | Setting          | Default                                      | Accepted range                   |
 | ---------------- | -------------------------------------------- | -------------------------------- |
 | User-Agent       | `cf-nav-health/1.0 (+https://nav.lily.lat/)` | 3–256 printable ASCII characters |
-| Request interval | 2 seconds                                    | 1–10 whole seconds               |
-| Per-site timeout | 12 seconds                                   | 2–20 whole seconds               |
+| Request interval | 2 seconds                                    | 1–3600 whole seconds             |
+| Per-site timeout | 12 seconds                                   | 2–60 whole seconds               |
 
-Manual and Cron checks share the same settings and a global D1 execution lease. At most three
-links are processed sequentially per Cron tick, never a concurrent sweep. The interval applies
-between target requests including redirects and across runs; initial pacing occurs before the
-per-site deadline. That deadline covers DNS, headers, body and redirect waits. A long interval
-can exhaust the deadline during a redirect chain; the measured result is Timeout, not healthy.
-The history panel records the actual configured UA, interval and timeout used by each run.
+Manual and Cron checks share the same settings and a global D1 execution lease. At most two
+links or saved continuations are processed sequentially per minute, never a concurrent sweep.
+The interval applies between target requests, including redirects and across Worker invocations.
+Long cooldowns persist a due time and redirect progress in D1, then return; a Worker never sleeps
+for an hour. Cron resumes eligible work on the next minute tick, so a scheduled request starts
+no earlier than its due time and may start later because of minute resolution or other queued work.
+Short waits are bounded, and each event stays within Cloudflare's execution limits.
+
+The per-site deadline bounds cumulative active DNS, connection, headers, redirect inspection
+and HTML reading. Deliberately scheduled cooldown time is excluded; a 3600-second interval
+therefore does not turn every redirect into a false timeout. Jobs retain the settings used
+when queued, and history records the actual UA, interval and timeout. Manual checks that need
+later execution return a pending result with a due time, rather than reporting a completed probe.
+Administrator edits invalidate obsolete work. An expired execution lease can be recovered
+without allowing an old owner to commit stale results.
+Reducing the current interval does not shorten a cooldown already established by an earlier
+request with a longer interval. Queued work keeps its captured parameters; new work uses the
+saved current settings.
+Short waits retained within an invocation also consume the active deadline; a cooldown that
+would exhaust the remaining budget is deferred instead. Each batch processes at most two sites,
+keeping the worst-case target/DNS requests and D1 operations within the Free plan limits.
+
+These bounds follow [Workers limits](https://developers.cloudflare.com/workers/platform/limits/):
+Cron events have a 15-minute wall-time limit; HTTP work remains active while its client is
+connected, but background work after a response has only a short `waitUntil` window. Scheduled
+checks are awaited by the Cron handler, and hour-long gaps live in D1 rather than timers.
 
 Edit a link's expected title, keywords and purpose to maintain its identity baseline. A successful
 HTTP response alone is insufficient. A lightweight score combines expected identity in title/meta,
@@ -179,10 +199,16 @@ site-wide settings remain separate and imports do not change them.
 
 ## Upgrade and rollback
 
-Migration 0002 only adds columns and converts guarded original icon placeholders; it does not
-remove records, clear D1, reseed the catalog or change Access. The previous application remains
-compatible with the added columns. Keep the release SHA in Actions and deploy a known compatible
-revision through the existing production workflow if application rollback is needed. Do not reverse
+Migration 0002 adds columns and converts guarded original icon placeholders; 0003 adds only
+`health_jobs` and its due-time index. Neither removes records, clears D1, reseeds the catalog or
+changes Access. Existing settings, icons, identity baselines and health history remain in place.
+
+Keep the release SHA in Actions and deploy a known compatible revision through the existing
+production workflow if application rollback is needed. Before rolling back to code that only
+accepts intervals up to 10 seconds and deadlines up to 20 seconds, save compatible parameters
+through the current administrator settings page (for example the defaults 2 / 12). Otherwise
+the older schema validator rejects the expanded configuration, including homepage SEO requests.
+The added table can remain; older code does not resume its saved continuations. Do not reverse
 schema by deleting data. The legacy Worker/domain rollback remains a separate option above.
 
 ## Isolated probe acceptance fixture
@@ -190,6 +216,6 @@ schema by deleting data. The legacy Worker/domain rollback remains a separate op
 `Temporary probe acceptance fixture` deploys or removes only `cf-nav-acceptance`. It is a
 separate temporary Worker with no application bindings, database, production routes or request
 logging. Its fixed test responses let an administrator verify automatic icons, received UA,
-redirect interval, a five-second delay and a replaced/parked page using ordinary navigation CRUD.
+redirect interval, fixed five/25/65-second delays and a replaced/parked page using ordinary navigation CRUD.
 Run the remove action after acceptance and soft-delete the temporary navigation records. Never
 use the fixture workflow to change the production Worker or database.

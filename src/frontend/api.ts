@@ -16,7 +16,7 @@ export async function api<T>(path: string, options: BrowserRequestInit = {}): Pr
   const headers = new Headers(options.headers);
   headers.set('Accept', 'application/json');
   const timeout = AbortSignal.timeout(
-    /^\/api\/admin\/links\/[^/]+\/check$/.test(path) ? 45000 : 20000,
+    /^\/api\/admin\/links\/[^/]+\/check$/.test(path) ? 85000 : 20000,
   );
   let response: Response;
   try {

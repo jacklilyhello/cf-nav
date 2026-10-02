@@ -58,6 +58,26 @@ export interface HealthResult {
   consecutiveFailures: number;
   nextCheckAt: string;
   isSuccess: boolean;
+  /** Present only while a scheduled redirect continuation is unfinished. */
+  continuation?: HealthCursor;
+}
+
+export interface HealthCursor {
+  targetUrl: string;
+  visited: string[];
+  redirects: RedirectHop[];
+  checkedAt: string;
+  elapsedMs: number;
+  httpStatus: number | null;
+  finalUrl: string;
+}
+
+/** Scheduling is not a transport failure and must never create failure evidence. */
+export class ProbeDeferred extends Error {
+  constructor(public readonly nextRequestAt: number) {
+    super('HEALTH_REQUEST_DEFERRED');
+    this.name = 'ProbeDeferred';
+  }
 }
 
 export type DnsResolver = (hostname: string, signal: AbortSignal) => Promise<string[]>;
@@ -74,7 +94,8 @@ export interface HealthOptions {
   timeoutMs?: number;
   userAgent?: string;
   /** Shared scheduler limiter, called before every target request including redirects. */
-  beforeRequest?: (signal: AbortSignal) => Promise<void>;
+  beforeRequest?: (signal: AbortSignal, remainingMs: number) => Promise<void>;
+  resume?: HealthCursor;
   now?: () => number;
 }
 

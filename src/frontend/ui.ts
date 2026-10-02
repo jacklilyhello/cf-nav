@@ -96,6 +96,9 @@ const icons: Record<string, string> = {
   shield: '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/>',
   heart:
     '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
+  moon: '<path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/>',
+  monitor: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/>',
   menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   plus: '<path d="M12 4v16M4 12h16"/>',
@@ -113,7 +116,7 @@ export function icon(name: string, cls = ''): string {
   return `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.folder}</svg>`;
 }
 export function brand(): string {
-  return `<a class="brand" href="/" aria-label="Lily 寻迹首页"><span class="brand-mark"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="m9 33 11-21 7 14 4-8 8 15M14 33h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="35" cy="11" r="2" fill="#D9C19A"/></svg></span><span>Lily <span class="brand-divider">/</span> 寻迹<small>EXPLORE WITH INTENT</small></span></a>`;
+  return `<a class="brand" href="/" aria-label="Lily 寻迹首页"><span class="brand-mark"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="m9 33 11-21 7 14 4-8 8 15M14 33h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="35" cy="11" r="2" class="brand-sun"/></svg></span><span>Lily <span class="brand-divider">/</span> 寻迹<small>EXPLORE WITH INTENT</small></span></a>`;
 }
 export function categoryIcon(category: Category, index = 0): string {
   const name = category.name.toLowerCase();

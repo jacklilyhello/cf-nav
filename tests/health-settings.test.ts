@@ -1,6 +1,6 @@
 import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { acquireHealthLease } from '../src/health/lease';
+import { acquireHealthLease, HEALTH_LEASE_MS } from '../src/health/lease';
 
 // Exercise the lease's conditional SQL against SQLite rather than a canned D1 mock.
 class LeaseDatabase {
@@ -99,10 +99,10 @@ describe('persistent pacing shared by manual and scheduled checks', () => {
 
   it('recovers an expired lease without allowing the previous owner to release the new one', async () => {
     const first = (await claim())!;
-    await vi.advanceTimersByTimeAsync(120_000);
+    await vi.advanceTimersByTimeAsync(HEALTH_LEASE_MS);
     const second = await claim();
     expect(second).not.toBeNull();
-    await expect(first.beforeRequest(signal())).rejects.toThrow('HEALTH_RUN_LEASE_EXPIRED');
+    await expect(first.beforeRequest(signal())).rejects.toThrow('HEALTH_REQUEST_DEFERRED');
     await first.release();
     expect(await claim()).toBeNull();
     await second!.release();
@@ -111,10 +111,58 @@ describe('persistent pacing shared by manual and scheduled checks', () => {
 
   it('refuses a new target request when the lease cannot cover its maximum timeout', async () => {
     const lease = (await claim())!;
-    await vi.advanceTimersByTimeAsync(100_001);
-    await expect(lease.beforeRequest(signal())).rejects.toThrow('HEALTH_RUN_LEASE_EXPIRED');
+    await vi.advanceTimersByTimeAsync(HEALTH_LEASE_MS - 60_000);
+    await expect(lease.beforeRequest(signal())).rejects.toThrow('HEALTH_REQUEST_DEFERRED');
     expect(await claim()).toBeNull();
-    await vi.advanceTimersByTimeAsync(19_999);
+    await vi.advanceTimersByTimeAsync(60_000);
     expect(await claim()).not.toBeNull();
+  });
+  it('defers a 3600-second cooldown without creating any long-lived timer', async () => {
+    const first = (await claim(3600))!;
+    await first.beforeRequest(signal());
+    const requestedAt = Date.now();
+    await first.release();
+    const second = (await claim(3600))!;
+    await expect(second.waitUntilReady()).rejects.toMatchObject({
+      nextRequestAt: requestedAt + 3_600_000,
+    });
+    expect(vi.getTimerCount()).toBe(0);
+    await second.release();
+    vi.setSystemTime(requestedAt + 3_599_999);
+    const early = (await claim(3600))!;
+    let completed = false;
+    const request = early.beforeRequest(signal()).then(() => {
+      completed = true;
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(completed).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    await request;
+    expect(completed).toBe(true);
+    const state = JSON.parse(
+      String(db.database.prepare('SELECT value FROM metadata').get()!.value),
+    );
+    expect(state.lastRequestAt).toBe(requestedAt + 3_600_000);
+  });
+
+  it('retains an already reserved long cooldown when new settings shorten the interval', async () => {
+    const first = (await claim(3600))!;
+    await first.beforeRequest(signal());
+    const requestedAt = Date.now();
+    await first.release();
+    const second = (await claim(1))!;
+    await expect(second.beforeRequest(signal())).rejects.toMatchObject({
+      nextRequestAt: requestedAt + 3_600_000,
+    });
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('defers a redirect when cooldown would consume the whole remaining deadline', async () => {
+    const lease = (await claim(10))!;
+    await lease.beforeRequest(signal());
+    await expect(lease.beforeRequest(signal(), 10, 2000)).rejects.toMatchObject({
+      nextRequestAt: Date.now() + 10_000,
+    });
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

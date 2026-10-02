@@ -40,6 +40,6 @@ export function nextCheckAt(
 }
 
 // Four requests maximum per redirect chain, plus two DNS queries per hostname.
-// Three sequential links keep worst-case external subrequests at 36 per event.
-export const HEALTH_BATCH_SIZE = 3;
-export const HEALTH_CRON = '*/10 * * * *';
+// Two sequential links leave room for durable job writes within D1 Free limits.
+export const HEALTH_BATCH_SIZE = 2;
+export const HEALTH_CRON = '* * * * *';

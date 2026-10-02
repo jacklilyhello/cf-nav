@@ -51,6 +51,15 @@ for (const path of assets) {
   const r = await request(path);
   if (r.status !== 200) throw new Error(`Missing asset ${path}`);
 }
+if (!html.includes('<script src="/theme-init.js"></script>'))
+  throw new Error('Parser-blocking theme initialization missing');
+const theme = await request('/theme-init.js');
+if (
+  theme.status !== 200 ||
+  !/(?:java|ecma)script/i.test(theme.headers.get('content-type') || '') ||
+  !(await theme.text()).includes('prefers-color-scheme')
+)
+  throw new Error('Theme initialization asset missing or invalid');
 console.log(
   JSON.stringify(
     {
@@ -62,6 +71,7 @@ console.log(
       checks: [
         'catalog',
         'assets',
+        'theme-initialization',
         'headers',
         'admin-login-navigation',
         'admin-auth',

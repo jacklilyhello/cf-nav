@@ -22,8 +22,13 @@ import {
 } from '../frontend/ui';
 import { createBackupParts, MAX_IMPORT_BYTES, type BackupPart } from '../frontend/backup';
 import { ApiError } from '../frontend/api';
+import { themeControl, bindThemeControls } from '../frontend/theme';
 
-type ManagedLink = NavLink & { expectedKeywords?: string[] };
+type ManagedLink = NavLink & {
+  expectedKeywords?: string[];
+  healthNextRequestAt?: number | null;
+  healthPendingSettings?: SiteSettings | null;
+};
 type AdminCatalog = Omit<Catalog, 'links'> & { links: ManagedLink[] };
 interface SiteSettings {
   allowIndexing: boolean;
@@ -64,7 +69,8 @@ const overrides = [
 
 export async function mountAdmin(app: HTMLDivElement): Promise<void> {
   document.title = '管理控制台 · Lily 寻迹';
-  app.innerHTML = `<main class="standalone" id="main">${brand()}<div class="empty-state"><span class="loading-indicator"></span><h2>正在验证管理员身份</h2><p>安全连接建立后，即可管理你的数字花园。</p></div></main>`;
+  app.innerHTML = `<main class="standalone" id="main">${brand()}<div class="standalone-theme">${themeControl()}</div><div class="empty-state"><span class="loading-indicator"></span><h2>正在验证管理员身份</h2><p>安全连接建立后，即可管理你的数字花园。</p></div></main>`;
+  bindThemeControls(app);
   let session: Session;
   let data: AdminCatalog;
   let activeTab = 'links';
@@ -89,14 +95,16 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
         : '暂时无法连接管理服务';
     const message =
       error instanceof ApiError ? error.message : '网络连接暂时不可用，请重试或重新登录。';
-    app.innerHTML = `<main class="standalone" id="main">${brand()}<section class="login-panel"><span class="login-symbol">${icon('shield')}</span><span class="eyebrow">A PRIVATE SPACE TO CURATE</span><h1>${title}</h1><p>${escape(message)}</p><a class="button primary" href="/admin/login">${icon('shield')}通过 Cloudflare Access 登录${icon('arrow')}</a><button class="button secondary" id="reload-admin">重新连接</button><span class="login-note">仅限站点管理员 · 安全身份验证</span><a class="back-home" href="/">返回公开导航</a></section></main>`;
+    app.innerHTML = `<main class="standalone" id="main">${brand()}<div class="standalone-theme">${themeControl()}</div><section class="login-panel"><span class="login-symbol">${icon('shield')}</span><span class="eyebrow">A PRIVATE SPACE TO CURATE</span><h1>${title}</h1><p>${escape(message)}</p><a class="button primary" href="/admin/login">${icon('shield')}通过 Cloudflare Access 登录${icon('arrow')}</a><button class="button secondary" id="reload-admin">重新连接</button><span class="login-note">仅限站点管理员 · 安全身份验证</span><a class="back-home" href="/">返回公开导航</a></section></main>`;
+    bindThemeControls(app);
     document.querySelector('#reload-admin')?.addEventListener('click', () => {
       void mountAdmin(app);
     });
     return;
   }
   sortData();
-  app.innerHTML = `<div class="admin-layout"><aside class="admin-sidebar">${brand()}<span class="admin-space-label">PRIVATE WORKSPACE</span><nav aria-label="管理菜单"><button class="admin-nav active" data-tab="links">${icon('link')}导航资源</button><button class="admin-nav" data-tab="categories">${icon('folder')}分类管理</button><button class="admin-nav" data-tab="health">${icon('shield')}健康检测</button><button class="admin-nav" data-tab="settings">${icon('tool')}站点设置</button></nav><div class="admin-sidebar-bottom"><a class="admin-nav" href="/">${icon('arrow')}打开前台</a><div class="session-info">${icon('shield')}<span>已安全登录<small>${escape(session.email)}</small></span></div><button class="admin-nav" id="logout">${icon('logout')}退出登录</button></div></aside><div class="admin-workspace"><header class="admin-topbar"><span>管理控制台 <span class="slash">/</span> <span id="admin-breadcrumb">导航资源</span></span><a href="/">查看站点 ${icon('arrow')}</a></header><main id="main" class="admin-main"><div class="admin-heading"><div><span class="eyebrow">CURATE YOUR DIGITAL GARDEN</span><h1 id="admin-title">导航资源</h1><p id="admin-description">让每一个收藏，都有值得留下的理由。</p></div><div class="admin-actions"><button class="button secondary" id="export-data">${icon('download')}导出</button><button class="button secondary" id="import-data">${icon('upload')}导入</button><button class="button secondary" id="discover-icons">${icon('image')}补齐自动图标</button><button class="button primary" id="add-item">${icon('plus')}新增资源</button></div></div><div class="admin-stats" id="admin-stats"></div><div class="icon-discovery-progress" id="icon-discovery-progress" hidden><p id="icon-discovery-status" role="status"></p><button type="button" class="button secondary" id="stop-icon-discovery">停止获取</button></div><div class="admin-panel"><div class="admin-filters"><div class="admin-search">${icon('search')}<label class="visually-hidden" for="admin-search">搜索资源或分类</label><input id="admin-search" type="search" placeholder="搜索名称、网址或分类…" autocomplete="off" /></div><label class="visually-hidden" for="category-filter">筛选分类</label><select id="category-filter"><option value="">全部分类</option></select><label class="visually-hidden" for="status-filter">筛选状态</label><select id="status-filter"><option value="">全部状态</option><option value="enabled">前台显示</option><option value="hidden">已隐藏</option><option value="featured">精选推荐</option><option value="review">需要关注</option></select><button class="icon-button" id="refresh-data" aria-label="刷新管理数据">${icon('refresh')}</button></div><div id="admin-list" aria-live="polite"></div><div class="admin-list-footer" id="admin-list-footer"></div></div><p class="admin-footnote">内容修改保存后即生效。健康检测结果供维护参考；访问受限不等于网站失效。</p></main></div></div>`;
+  app.innerHTML = `<div class="admin-layout"><aside class="admin-sidebar">${brand()}<span class="admin-space-label">PRIVATE WORKSPACE</span><nav aria-label="管理菜单"><button class="admin-nav active" data-tab="links">${icon('link')}导航资源</button><button class="admin-nav" data-tab="categories">${icon('folder')}分类管理</button><button class="admin-nav" data-tab="health">${icon('shield')}健康检测</button><button class="admin-nav" data-tab="settings">${icon('tool')}站点设置</button></nav><div class="admin-sidebar-bottom"><a class="admin-nav" href="/">${icon('arrow')}打开前台</a><div class="session-info">${icon('shield')}<span>已安全登录<small>${escape(session.email)}</small></span></div><button class="admin-nav" id="logout">${icon('logout')}退出登录</button></div></aside><div class="admin-workspace"><header class="admin-topbar"><span>管理控制台 <span class="slash">/</span> <span id="admin-breadcrumb">导航资源</span></span><div class="admin-topbar-actions">${themeControl()}<a href="/">查看站点 ${icon('arrow')}</a></div></header><main id="main" class="admin-main"><div class="admin-heading"><div><span class="eyebrow">CURATE YOUR DIGITAL GARDEN</span><h1 id="admin-title">导航资源</h1><p id="admin-description">让每一个收藏，都有值得留下的理由。</p></div><div class="admin-actions"><button class="button secondary" id="export-data">${icon('download')}导出</button><button class="button secondary" id="import-data">${icon('upload')}导入</button><button class="button secondary" id="discover-icons">${icon('image')}补齐自动图标</button><button class="button primary" id="add-item">${icon('plus')}新增资源</button></div></div><div class="admin-stats" id="admin-stats"></div><div class="icon-discovery-progress" id="icon-discovery-progress" hidden><p id="icon-discovery-status" role="status"></p><button type="button" class="button secondary" id="stop-icon-discovery">停止获取</button></div><div class="admin-panel"><div class="admin-filters"><div class="admin-search">${icon('search')}<label class="visually-hidden" for="admin-search">搜索资源或分类</label><input id="admin-search" type="search" placeholder="搜索名称、网址或分类…" autocomplete="off" /></div><label class="visually-hidden" for="category-filter">筛选分类</label><select id="category-filter"><option value="">全部分类</option></select><label class="visually-hidden" for="status-filter">筛选状态</label><select id="status-filter"><option value="">全部状态</option><option value="enabled">前台显示</option><option value="hidden">已隐藏</option><option value="featured">精选推荐</option><option value="review">需要关注</option></select><button class="icon-button" id="refresh-data" aria-label="刷新管理数据">${icon('refresh')}</button></div><div id="admin-list" aria-live="polite"></div><div class="admin-list-footer" id="admin-list-footer"></div></div><p class="admin-footnote">内容修改保存后即生效。健康检测结果供维护参考；访问受限不等于网站失效。</p></main></div></div>`;
+  bindThemeControls(app);
   const searchInput = document.querySelector<HTMLInputElement>('#admin-search')!;
   const categorySelect = document.querySelector<HTMLSelectElement>('#category-filter')!;
   const statusSelect = document.querySelector<HTMLSelectElement>('#status-filter')!;
@@ -306,7 +314,7 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
     const effective = settings.effectiveAllowIndexing ?? settings.allowIndexing;
     const restrictedOrigin =
       settings.environment === 'staging' || (settings.allowIndexing && !effective);
-    list.innerHTML = `<form id="settings-form" class="settings-form"><section class="settings-section"><div class="settings-section-heading"><span class="settings-symbol">${icon('globe')}</span><div><h2>搜索引擎收录</h2><p>控制公开导航是否允许被搜索引擎发现和索引。</p></div></div><div class="indexing-status"><span class="health health-${effective ? 'good' : 'neutral'}"><span></span>当前访问地址：${effective ? '允许收录' : '禁止收录'}</span>${restrictedOrigin ? '<small>测试环境与非正式域名始终禁止收录。</small>' : ''}</div><label class="field"><span>收录设置</span><select name="allowIndexing"><option value="true" ${settings.allowIndexing ? 'selected' : ''}>允许搜索引擎收录</option><option value="false" ${!settings.allowIndexing ? 'selected' : ''}>禁止搜索引擎收录</option></select><small>保存后同步应用到 robots.txt、页面 robots 标记、响应头与 sitemap。搜索引擎何时更新结果取决于重新抓取时间。</small></label><div class="settings-links"><a href="/robots.txt" target="_blank" rel="noopener noreferrer">查看 robots.txt ${icon('arrow')}</a><a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">查看 sitemap ${icon('arrow')}</a></div></section><section class="settings-section"><div class="settings-section-heading"><span class="settings-symbol">${icon('shield')}</span><div><h2>健康检测参数</h2><p>手动检测与 Cron 自动检测使用同一组设置。</p></div></div><label class="field"><span>User-Agent</span><input name="healthUserAgent" value="${escape(settings.healthUserAgent)}" required minlength="3" maxlength="256" autocomplete="off" spellcheck="false" /><small>使用 3–256 个可打印 ASCII 字符表明探测身份，例如名称、版本与网站地址。</small></label><div class="form-grid"><label class="field"><span>请求间隔（秒）</span><input name="healthIntervalSeconds" type="number" required min="1" max="10" step="1" value="${settings.healthIntervalSeconds}" /><small>1–10 秒。控制探测请求的最小间隔。</small></label><label class="field"><span>单站 Timeout（秒）</span><input name="healthTimeoutSeconds" type="number" required min="2" max="20" step="1" value="${settings.healthTimeoutSeconds}" /><small>2–20 秒。超过时限记录为检测超时。</small></label></div><p class="field-note">自动检测会分批执行。访问验证、403 或 429 会保留为需要人工判断的结果，不会自动删除收藏。</p></section><p class="form-error" role="alert" hidden></p><footer class="settings-footer"><span id="settings-save-state" role="status">设置保存在当前环境</span><button type="submit" class="button primary">${icon('check')}保存站点设置</button></footer></form>`;
+    list.innerHTML = `<form id="settings-form" class="settings-form"><section class="settings-section"><div class="settings-section-heading"><span class="settings-symbol">${icon('globe')}</span><div><h2>搜索引擎收录</h2><p>控制公开导航是否允许被搜索引擎发现和索引。</p></div></div><div class="indexing-status"><span class="health health-${effective ? 'good' : 'neutral'}"><span></span>当前访问地址：${effective ? '允许收录' : '禁止收录'}</span>${restrictedOrigin ? '<small>测试环境与非正式域名始终禁止收录。</small>' : ''}</div><label class="field"><span>收录设置</span><select name="allowIndexing"><option value="true" ${settings.allowIndexing ? 'selected' : ''}>允许搜索引擎收录</option><option value="false" ${!settings.allowIndexing ? 'selected' : ''}>禁止搜索引擎收录</option></select><small>保存后同步应用到 robots.txt、页面 robots 标记、响应头与 sitemap。搜索引擎何时更新结果取决于重新抓取时间。</small></label><div class="settings-links"><a href="/robots.txt" target="_blank" rel="noopener noreferrer">查看 robots.txt ${icon('arrow')}</a><a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">查看 sitemap ${icon('arrow')}</a></div></section><section class="settings-section"><div class="settings-section-heading"><span class="settings-symbol">${icon('shield')}</span><div><h2>健康检测参数</h2><p>手动检测与 Cron 自动检测使用同一组设置。</p></div></div><label class="field"><span>User-Agent</span><input name="healthUserAgent" value="${escape(settings.healthUserAgent)}" required minlength="3" maxlength="256" autocomplete="off" spellcheck="false" /><small>使用 3–256 个可打印 ASCII 字符表明探测身份，例如名称、版本与网站地址。</small></label><div class="form-grid"><label class="field"><span>请求间隔（秒）</span><input name="healthIntervalSeconds" type="number" required min="1" max="3600" step="1" value="${settings.healthIntervalSeconds}" /><small>1–3600 秒（最长 1 小时）。控制站点请求与跳转请求的最小间隔。长间隔会排队续查。</small></label><label class="field"><span>单站 Timeout（秒）</span><input name="healthTimeoutSeconds" type="number" required min="2" max="60" step="1" value="${settings.healthTimeoutSeconds}" /><small>2–60 秒。DNS、连接、跳转与正文共用此检测时限；长间隔排队等待不占用时限。</small></label></div><p class="field-note">自动检测每分钟恢复到期任务。排队中的检测沿用启动时的参数，新检测使用最新设置。访问验证、403 或 429 会保留为需要人工判断的结果，不会自动删除收藏。</p></section><p class="form-error" role="alert" hidden></p><footer class="settings-footer"><span id="settings-save-state" role="status">设置保存在当前环境</span><button type="submit" class="button primary">${icon('check')}保存站点设置</button></footer></form>`;
     list.querySelector<HTMLFormElement>('#settings-form')!.addEventListener('submit', (event) => {
       event.preventDefault();
       const form = event.currentTarget as HTMLFormElement;
@@ -321,6 +329,18 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
       error.hidden = true;
       if (body.healthUserAgent.length < 3 || !/^[\x20-\x7e]+$/.test(body.healthUserAgent)) {
         error.textContent = 'User-Agent 需要 3–256 个可打印 ASCII 字符。';
+        error.hidden = false;
+        return;
+      }
+      if (
+        !Number.isInteger(body.healthIntervalSeconds) ||
+        body.healthIntervalSeconds < 1 ||
+        body.healthIntervalSeconds > 3600 ||
+        !Number.isInteger(body.healthTimeoutSeconds) ||
+        body.healthTimeoutSeconds < 2 ||
+        body.healthTimeoutSeconds > 60
+      ) {
+        error.textContent = '请求间隔需要 1–3600 秒的整数，Timeout 需要 2–60 秒的整数。';
         error.hidden = false;
         return;
       }
@@ -473,12 +493,16 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
         void action(async () => {
           button.disabled = true;
           try {
-            await write(
+            const response = await write<{ queued?: boolean; nextRequestAt?: string | null }>(
               `/api/admin/links/${encodeURIComponent(button.dataset.check!)}/check`,
               'POST',
             );
             await reload();
-            toast('健康检测已完成');
+            toast(
+              response.queued
+                ? `检测已排队${response.nextRequestAt ? `，最早 ${formatDate(response.nextRequestAt)} 续查` : '，自动恢复后请刷新查看'}`
+                : '健康检测已完成',
+            );
           } finally {
             button.disabled = false;
           }
@@ -496,7 +520,7 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
     const chain = redirects.length
       ? `<span class="redirect-summary">${redirects.map((hop) => `HTTP ${hop.status}`).join(' → ')} → ${escape(httpLabel(link))}</span>`
       : '';
-    return `<article class="health-card"><header class="health-card-header"><div class="admin-item-name">${siteIcon(link)}<div><strong>${escape(link.name)}${!publiclyVisible(link) ? '<span class="hidden-tag">隐藏</span>' : ''}</strong><small>${escape(category)}${link.checkDisabled ? ' · 自动检测已暂停' : ''}</small></div></div><div class="row-actions"><button class="icon-button" data-check="${escape(link.id)}" aria-label="重新检测 ${escape(link.name)}">${icon('refresh')}</button><button class="icon-button" data-edit-link="${escape(link.id)}" aria-label="编辑 ${escape(link.name)}">${icon('edit')}</button><button class="button secondary health-open-details" data-health="${escape(link.id)}">详情 ${icon('chevron')}</button></div></header><div class="health-card-facts"><div><span class="health-fact-label">当前状态</span>${healthBadge(link)}</div><div><span class="health-fact-label">HTTP Status</span><strong class="http-status">${escape(httpLabel(link))}</strong>${chain}</div><div><span class="health-fact-label">内容相似度</span>${contentBadge(link)}</div><div><span class="health-fact-label">最后检测</span><time>${escape(formatDate(link.lastCheckedAt))}</time></div></div><div class="health-card-urls"><div><span>网址</span><a href="${escape(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">${escape(link.url)} ${icon('arrow')}</a></div>${link.finalUrl && link.finalUrl !== link.url ? `<div><span>最终 URL</span><a href="${escape(safeUrl(link.finalUrl))}" target="_blank" rel="noopener noreferrer">${escape(link.finalUrl)} ${icon('arrow')}</a></div>` : ''}</div>${link.lastError ? `<p class="health-card-error">${icon('warning')}<span>${escape(link.lastError)}</span></p>` : ''}</article>`;
+    return `<article class="health-card"><header class="health-card-header"><div class="admin-item-name">${siteIcon(link)}<div><strong>${escape(link.name)}${!publiclyVisible(link) ? '<span class="hidden-tag">隐藏</span>' : ''}</strong><small>${escape(category)}${link.checkDisabled ? ' · 自动检测已暂停' : ''}</small></div></div><div class="row-actions"><button class="icon-button" data-check="${escape(link.id)}" aria-label="重新检测 ${escape(link.name)}">${icon('refresh')}</button><button class="icon-button" data-edit-link="${escape(link.id)}" aria-label="编辑 ${escape(link.name)}">${icon('edit')}</button><button class="button secondary health-open-details" data-health="${escape(link.id)}">详情 ${icon('chevron')}</button></div></header><div class="health-card-facts"><div><span class="health-fact-label">当前状态</span>${healthBadge(link)}</div><div><span class="health-fact-label">HTTP Status</span><strong class="http-status">${escape(httpLabel(link))}</strong>${chain}</div><div><span class="health-fact-label">内容相似度</span>${contentBadge(link)}</div><div><span class="health-fact-label">最后检测</span><time>${escape(formatDate(link.lastCheckedAt))}</time></div></div><div class="health-card-urls"><div><span>网址</span><a href="${escape(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">${escape(link.url)} ${icon('arrow')}</a></div>${link.finalUrl && link.finalUrl !== link.url ? `<div><span>最终 URL</span><a href="${escape(safeUrl(link.finalUrl))}" target="_blank" rel="noopener noreferrer">${escape(link.finalUrl)} ${icon('arrow')}</a></div>` : ''}</div>${link.healthPendingSettings ? `<p class="field-note" role="status">检测已排队 · ${link.healthNextRequestAt ? `最早 ${escape(formatDate(new Date(link.healthNextRequestAt).toISOString()))} 续查` : '等待自动恢复'} · 使用启动时的参数 ${escape(link.healthPendingSettings.healthIntervalSeconds)} 秒间隔 / ${escape(link.healthPendingSettings.healthTimeoutSeconds)} 秒 Timeout</p>` : ''}${link.lastError ? `<p class="health-card-error">${icon('warning')}<span>${escape(link.lastError)}</span></p>` : ''}</article>`;
   }
   function empty(title: string, description: string): string {
     return `<div class="empty-state">${icon('folder')}<h2>${title}</h2><p>${description}</p></div>`;
@@ -820,6 +844,12 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
       ['检测状态', `${healthInfo(link.healthStatus).label} (${link.healthStatus || 'unknown'})`],
       ['人工覆盖', link.healthOverride ? healthInfo(link.healthOverride).label : '未设置'],
       ['自动检测', link.checkDisabled ? '已暂停' : '已启用'],
+      [
+        '排队状态',
+        link.healthPendingSettings
+          ? `${link.healthNextRequestAt ? `最早 ${formatDate(new Date(link.healthNextRequestAt).toISOString())} 续查` : '等待自动恢复'}；启动参数 ${link.healthPendingSettings.healthIntervalSeconds} 秒间隔 / ${link.healthPendingSettings.healthTimeoutSeconds} 秒 Timeout`
+          : '无待执行任务',
+      ],
       ['上次检测', formatDate(link.lastCheckedAt)],
       ['HTTP 状态', httpLabel(link)],
       [
@@ -842,9 +872,16 @@ export async function mountAdmin(app: HTMLDivElement): Promise<void> {
       `<dl class="health-detail-list">${rows.map(([key, value]) => `<div><dt>${escape(key)}</dt><dd>${escape(value)}</dd></div>`).join('')}</dl>${link.redirectChain?.length ? `<section class="health-detail-section"><h3>HTTP 跳转记录</h3><ol class="redirect-chain">${link.redirectChain.map((hop) => `<li><strong>HTTP ${hop.status}</strong><span>${escape(hop.url)}</span>${hop.location ? `<small>→ ${escape(hop.location)}</small>` : ''}</li>`).join('')}</ol></section>` : ''}${link.healthEvidence?.length ? `<section class="health-detail-section"><h3>判断依据</h3><ul class="health-evidence">${link.healthEvidence.map((item) => `<li>${escape(item)}</li>`).join('')}</ul></section>` : ''}<details class="health-history"><summary>最近检测历史与实际使用参数</summary><div id="health-history-results"><p class="field-note">正在读取历史…</p></div></details><p class="field-note">相似度是轻量内容线索，不是网站真实性保证。403、429、验证码或机器人防护并不代表网站已失效。自动判断不确定时，请结合实际访问进行人工复核。</p>`,
       '重新检测',
       async () => {
-        await write(`/api/admin/links/${encodeURIComponent(link.id)}/check`, 'POST');
+        const response = await write<{ queued?: boolean; nextRequestAt?: string | null }>(
+          `/api/admin/links/${encodeURIComponent(link.id)}/check`,
+          'POST',
+        );
         await reload();
-        toast('健康检测已完成');
+        toast(
+          response.queued
+            ? `检测已排队${response.nextRequestAt ? `，最早 ${formatDate(response.nextRequestAt)} 续查` : '，自动恢复后请刷新查看'}`
+            : '健康检测已完成',
+        );
       },
     );
     const edit = document.createElement('button');

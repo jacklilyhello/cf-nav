@@ -52,3 +52,11 @@ staging and alternate hostnames remain noindex. Navigation editing supports auto
 icons, manual HTTPS/text overrides and maintained expected titles, keywords and purposes.
 The health view combines HTTP status, redirect chain, content similarity and recent execution
 settings. See operations for defaults, limits and interpretation.
+
+## Appearance
+
+The public catalog and administrator workspace offer **自动 / 浅色 / 深色** from the header,
+including on mobile. Auto follows the device's `prefers-color-scheme` and updates when it
+changes. A manual choice is stored locally and survives reloads; choosing Auto returns control
+to the device. Light uses warm mist, pale jade and ivory surfaces; Dark retains the ink and
+muted teal palette. The theme is resolved before the application stylesheet is painted.

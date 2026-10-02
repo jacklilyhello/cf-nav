@@ -1,14 +1,16 @@
-import { ProbeError } from './types';
+import { ProbeDeferred, ProbeError } from './types';
 
 const LEASE_KEY = 'healthRunLease';
-// Three sites * (20-second timeout + 10-second initial pacing), with DB headroom.
-const LEASE_MS = 120_000;
-const MAX_PROBE_MS = 20_000;
+// Two 60-second probes, short cooldowns and DB headroom; below Cron's 15 minutes.
+export const HEALTH_LEASE_MS = 240_000;
+const MAX_PROBE_MS = 60_000;
+export const MAX_HEALTH_WAIT_MS = 10_000;
 
 interface LeaseState {
   owner: string;
   expiresAt: number;
   lastRequestAt: number;
+  lastIntervalSeconds?: number;
 }
 
 async function pause(milliseconds: number, signal?: AbortSignal): Promise<void> {
@@ -37,48 +39,67 @@ export async function acquireHealthLease(db: D1Database, intervalSeconds: number
     )
     .bind(
       LEASE_KEY,
-      JSON.stringify({ owner, expiresAt: now + LEASE_MS, lastRequestAt: 0 }),
+      JSON.stringify({ owner, expiresAt: now + HEALTH_LEASE_MS, lastRequestAt: 0 }),
       owner,
-      now + LEASE_MS,
+      now + HEALTH_LEASE_MS,
       now,
     )
     .run();
   if (!claimed.meta.changes) return null;
 
-  async function waitUntilReady(signal?: AbortSignal) {
+  async function waitUntilReady(
+    signal?: AbortSignal,
+    interval = intervalSeconds,
+    maxWaitMs = MAX_HEALTH_WAIT_MS,
+  ) {
     const row = await db
       .prepare('SELECT value FROM metadata WHERE key=?')
       .bind(LEASE_KEY)
       .first<{ value: string }>();
     const state = row ? (JSON.parse(row.value) as LeaseState) : null;
     if (!state || state.owner !== owner || state.expiresAt <= Date.now())
-      throw new ProbeError('unknown', 'HEALTH_RUN_LEASE_EXPIRED');
-    const delay = Math.max(0, state.lastRequestAt + intervalSeconds * 1000 - Date.now());
-    if (Date.now() + delay >= state.expiresAt)
-      throw new ProbeError('unknown', 'HEALTH_RUN_LEASE_EXPIRED');
+      throw new ProbeDeferred(Math.max(Date.now(), state?.expiresAt || Date.now()));
+    const nextRequestAt = state.lastRequestAt
+      ? state.lastRequestAt + Math.max(interval, state.lastIntervalSeconds || 0) * 1000
+      : 0;
+    const delay = Math.max(0, nextRequestAt - Date.now());
+    // Persist a wake time instead of sleeping through a long interval or spending
+    // all of a site's active deadline before its next redirect can even begin.
+    if (
+      delay > Math.min(MAX_HEALTH_WAIT_MS, maxWaitMs) ||
+      Date.now() + delay + MAX_PROBE_MS >= state.expiresAt
+    )
+      throw new ProbeDeferred(
+        Math.max(
+          nextRequestAt,
+          state.expiresAt <= Date.now() + delay + MAX_PROBE_MS ? state.expiresAt : 0,
+        ),
+      );
     await pause(delay, signal);
     if (signal?.aborted) throw new ProbeError('timeout', 'PROBE_DEADLINE_EXCEEDED');
   }
 
   return {
-    // Initial pacing happens before starting the per-site timeout, so a 10-second
-    // interval and a 2-second timeout still allow a direct site to be checked.
     waitUntilReady,
-    async beforeRequest(signal: AbortSignal) {
-      await waitUntilReady(signal);
+    async beforeRequest(
+      signal: AbortSignal,
+      interval = intervalSeconds,
+      remainingMs = MAX_PROBE_MS,
+    ) {
+      await waitUntilReady(signal, interval, Math.max(0, remainingMs - 1));
       const now = Date.now();
       const marked = await db
         .prepare(
-          `UPDATE metadata SET value=json_set(value,'$.lastRequestAt',?) WHERE key=? AND json_extract(value,'$.owner')=? AND CAST(json_extract(value,'$.expiresAt') AS INTEGER)>?`,
+          `UPDATE metadata SET value=json_set(value,'$.lastRequestAt',?,'$.lastIntervalSeconds',?) WHERE key=? AND json_extract(value,'$.owner')=? AND CAST(json_extract(value,'$.expiresAt') AS INTEGER)>?`,
         )
-        // Never start a request that could outlive this lease and overlap a new owner.
-        .bind(now, LEASE_KEY, owner, now + MAX_PROBE_MS)
+        // Never start a request that could outlive the lease and overlap a new owner.
+        .bind(now, interval, LEASE_KEY, owner, now + MAX_PROBE_MS)
         .run();
-      if (!marked.meta.changes) throw new ProbeError('unknown', 'HEALTH_RUN_LEASE_EXPIRED');
+      if (!marked.meta.changes) throw new ProbeDeferred(now + MAX_PROBE_MS);
       if (signal.aborted) throw new ProbeError('timeout', 'PROBE_DEADLINE_EXCEEDED');
     },
     async release() {
-      // Preserve the previous request time so the next invocation observes pacing.
+      // Preserve previous request time and cooldown across invocation boundaries.
       await db
         .prepare(
           `UPDATE metadata SET value=json_set(value,'$.expiresAt',0) WHERE key=? AND json_extract(value,'$.owner')=?`,
