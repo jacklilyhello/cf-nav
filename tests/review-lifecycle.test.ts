@@ -343,7 +343,10 @@ describe('health lifecycle race and evidence review', () => {
     vi.useFakeTimers();
     try {
       probe.mockImplementation(async (_input, options) => {
-        for (let hop = 0; hop < 4; hop++) await options.beforeRequest(new AbortController().signal);
+        for (let hop = 0; hop < 4; hop++) {
+          await options.beforeRequest(new AbortController().signal);
+          await options.afterRequest();
+        }
         return { ...success };
       });
       db.calls = 0;
@@ -351,7 +354,7 @@ describe('health lifecycle race and evidence review', () => {
       await vi.runAllTimersAsync();
       expect(await pending).toHaveLength(2);
       expect(probe).toHaveBeenCalledTimes(2);
-      expect(db.calls).toBe(38);
+      expect(db.calls).toBe(46);
       expect(db.calls).toBeLessThanOrEqual(50);
     } finally {
       vi.useRealTimers();

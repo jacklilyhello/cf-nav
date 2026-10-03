@@ -114,8 +114,9 @@ operation; a successful API or workflow alone is not acceptance.
 
 ## Monitoring and known detection limits
 
-`/api/health` reports Worker identity, source version, environment and last successful Cron batch.
-Investigate an old Cron timestamp using Workers logs and schedules. Use D1 health history to
+`/api/health` reports Worker identity, source version, environment and last Cron invocation.
+The timestamp includes cooldown-only or subsequently failed attempts; completed probes are
+recorded in health history. Investigate an old Cron timestamp using Workers logs and schedules. Use D1 health history to
 review repeated failures. Provider WAFs, geographic restrictions and JavaScript-only pages may
 remain uncertain; the system never equates a 200 response with proof of the original service.
 A proxy/network-level access block can make command-line smoke differ from browser behavior;
@@ -162,6 +163,8 @@ Probe defaults and accepted limits:
 Manual and Cron checks share the same settings and a global D1 execution lease. At most two
 links or saved continuations are processed sequentially per minute, never a concurrent sweep.
 The interval applies between target requests, including redirects and across Worker invocations.
+Cooldown is conservatively anchored to receipt of the previous request's response headers (or
+its terminal error/abort), so varying D1 write latency cannot start the next target too early.
 Long cooldowns persist a due time and redirect progress in D1, then return; a Worker never sleeps
 for an hour. Cron resumes eligible work on the next minute tick, so a scheduled request starts
 no earlier than its due time and may start later because of minute resolution or other queued work.

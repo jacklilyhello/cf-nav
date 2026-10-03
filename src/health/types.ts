@@ -95,6 +95,8 @@ export interface HealthOptions {
   userAgent?: string;
   /** Shared scheduler limiter, called before every target request including redirects. */
   beforeRequest?: (signal: AbortSignal, remainingMs: number) => Promise<void>;
+  /** Persist response-header receipt or terminal failure before releasing pacing. */
+  afterRequest?: () => Promise<void>;
   resume?: HealthCursor;
   now?: () => number;
 }

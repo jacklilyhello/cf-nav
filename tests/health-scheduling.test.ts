@@ -11,6 +11,7 @@ import type { Env } from '../src/shared/types';
 // scheduler invocations. Only the public network is replaced, not the probe.
 class SqliteD1 {
   database = new DatabaseSync(':memory:');
+  latency: ((sql: string) => number) | null = null;
   constructor() {
     this.database.exec('PRAGMA foreign_keys=ON');
     for (const migration of readdirSync('migrations').sort())
@@ -18,6 +19,7 @@ class SqliteD1 {
   }
   prepare(sql: string) {
     const database = this.database;
+    const queryLatency = () => this.latency?.(sql) || 0;
     let values: SQLInputValue[] = [];
     const execute = () => {
       const results = database.prepare(sql).all(...values);
@@ -39,6 +41,8 @@ class SqliteD1 {
         return execute();
       },
       async run() {
+        const latency = queryLatency();
+        if (latency) await delay(latency);
         return execute();
       },
     };
@@ -215,6 +219,67 @@ describe('durable health scheduling and active deadlines', () => {
     expect(String(history()[0]!.evidence)).toContain('INVALID_HEALTH_CURSOR');
   });
 
+  it('enforces remotely observed spacing despite unequal D1 commit latency', async () => {
+    saveSettings(1, 60);
+    let reservations = 0;
+    db.latency = (sql) =>
+      sql.includes("'$.lastIntervalSeconds'") ? (++reservations === 1 ? 300 : 20) : 0;
+    target = async (request) => {
+      await delay(20);
+      return new URL(request.url).pathname === '/'
+        ? new Response('', { status: 302, headers: { Location: '/arrived' } })
+        : html();
+    };
+    const pending = runChecks(env, 'site');
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(await pending).toEqual([{ id: 'site', status: 'redirected' }]);
+    expect(targetCalls).toHaveLength(2);
+    expect(targetCalls[0]!.time).toBe(startedAt + 300);
+    expect(targetCalls[1]!.time - targetCalls[0]!.time).toBeGreaterThanOrEqual(1000);
+  });
+
+  it('keeps remote spacing after a delayed reservation and failed completion write', async () => {
+    let reservations = 0;
+    let failCompletion = true;
+    db.latency = (sql) => {
+      if (sql.includes("'$.pendingUntil',0") && failCompletion) {
+        failCompletion = false;
+        throw new Error('simulated completion-write failure');
+      }
+      return sql.includes("'$.lastIntervalSeconds'") ? (++reservations === 1 ? 300 : 20) : 0;
+    };
+    const first = runChecks(env, 'site');
+    const rejected = expect(first).rejects.toThrow('simulated completion-write failure');
+    await vi.advanceTimersByTimeAsync(300);
+    await rejected;
+    expect(targetCalls[0]!.time).toBe(startedAt + 300);
+    vi.setSystemTime(startedAt + 3_600_300);
+    expect(await runChecks({ ...env }, 'site')).toEqual([]);
+    expect(targetCalls).toHaveLength(1);
+    expect(job()!.nextRequestAt).toBe(startedAt + 3_660_000);
+    expect(vi.getTimerCount()).toBe(0);
+    vi.setSystemTime(startedAt + 3_660_000);
+    const retry = runChecks({ ...env }, 'site');
+    await vi.advanceTimersByTimeAsync(20);
+    expect(await retry).toEqual([{ id: 'site', status: 'healthy' }]);
+    expect(targetCalls[1]!.time - targetCalls[0]!.time).toBeGreaterThanOrEqual(3_600_000);
+  });
+
+  it('anchors the next cooldown after a terminal 60-second timeout, even if fetch ignores abort', async () => {
+    saveSettings(1, 60);
+    target = async () => new Promise(() => undefined);
+    const pending = runChecks(env, 'site');
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(await pending).toEqual([{ id: 'site', status: 'timeout' }]);
+    const state = JSON.parse(
+      String(
+        db.database.prepare("SELECT value FROM metadata WHERE key='healthRunLease'").get()!.value,
+      ),
+    );
+    expect(state.lastRequestAt).toBe(startedAt + 60_000);
+    expect(state.expiresAt).toBe(0);
+  });
+
   it('retains the total 60-second budget across redirect resumes rather than restarting it', async () => {
     target = async (request) => {
       if (new URL(request.url).pathname === '/') {
@@ -227,7 +292,7 @@ describe('durable health scheduling and active deadlines', () => {
     await vi.advanceTimersByTimeAsync(25_000);
     expect(await first).toEqual([]);
     expect(JSON.parse(String(job()!.cursor)).elapsedMs).toBe(25_000);
-    vi.setSystemTime(startedAt + 3_600_000);
+    vi.setSystemTime(startedAt + 3_625_000);
     const second = runChecks({ ...env });
     await vi.advanceTimersByTimeAsync(34_999);
     expect(history()).toHaveLength(0);

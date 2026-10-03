@@ -85,6 +85,15 @@ export async function checkLink(input: HealthInput, options: HealthOptions): Pro
   const timeoutMs = Math.max(1, Math.min(options.timeoutMs ?? 12_000, 60_000));
   let previousElapsed = 0;
   let deferred: ProbeDeferred | null = null;
+  let requestPending = false;
+  let requestCompletion: Promise<void> | null = null;
+  function completeRequest() {
+    if (requestCompletion) return requestCompletion;
+    if (!requestPending) return Promise.resolve();
+    requestPending = false;
+    requestCompletion = Promise.resolve().then(() => options.afterRequest?.());
+    return requestCompletion;
+  }
   const controller = new AbortController();
   let timer: ReturnType<typeof setTimeout> | undefined;
   const fetcher = options.fetcher || fetch;
@@ -167,6 +176,8 @@ export async function checkLink(input: HealthInput, options: HealthOptions): Pro
           );
           visited.add(targetUrl.href);
           if (controller.signal.aborted) throw new ProbeError('timeout', 'PROBE_DEADLINE_EXCEEDED');
+          requestCompletion = null;
+          requestPending = true;
           const response = await fetcher(targetUrl.href, {
             method: 'GET',
             redirect: 'manual',
@@ -180,6 +191,7 @@ export async function checkLink(input: HealthInput, options: HealthOptions): Pro
             await response.body?.cancel();
             throw new ProbeError('timeout', 'PROBE_DEADLINE_EXCEEDED');
           }
+          await completeRequest();
           // A transport that followed redirects would have skipped our per-hop checks.
           if (response.redirected) {
             await response.body?.cancel();
@@ -252,6 +264,9 @@ export async function checkLink(input: HealthInput, options: HealthOptions): Pro
     controller.abort();
   } finally {
     clearTimeout(timer);
+    // A stalled fetch may ignore abort in a test transport. Persist its terminal
+    // boundary here as well, exactly once, before the scheduler releases its lease.
+    await completeRequest();
   }
   result.durationMs = previousElapsed + Math.max(0, now() - started);
   if (deferred) {

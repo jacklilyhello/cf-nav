@@ -98,6 +98,7 @@ export async function runChecks(env: Env, linkId?: string) {
             timeoutMs: jobSettings.healthTimeoutSeconds * 1000,
             beforeRequest: (signal, remainingMs) =>
               runLease.beforeRequest(signal, jobSettings.healthIntervalSeconds, remainingMs),
+            afterRequest: runLease.afterRequest,
             resume: link.cursor ? (JSON.parse(link.cursor) as HealthCursor) : undefined,
           },
         );

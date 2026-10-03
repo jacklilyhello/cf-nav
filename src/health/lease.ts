@@ -11,6 +11,7 @@ interface LeaseState {
   expiresAt: number;
   lastRequestAt: number;
   lastIntervalSeconds?: number;
+  pendingUntil?: number;
 }
 
 async function pause(milliseconds: number, signal?: AbortSignal): Promise<void> {
@@ -59,8 +60,9 @@ export async function acquireHealthLease(db: D1Database, intervalSeconds: number
     const state = row ? (JSON.parse(row.value) as LeaseState) : null;
     if (!state || state.owner !== owner || state.expiresAt <= Date.now())
       throw new ProbeDeferred(Math.max(Date.now(), state?.expiresAt || Date.now()));
-    const nextRequestAt = state.lastRequestAt
-      ? state.lastRequestAt + Math.max(interval, state.lastIntervalSeconds || 0) * 1000
+    const pacingBoundary = Math.max(state.lastRequestAt, state.pendingUntil || 0);
+    const nextRequestAt = pacingBoundary
+      ? pacingBoundary + Math.max(interval, state.lastIntervalSeconds || 0) * 1000
       : 0;
     const delay = Math.max(0, nextRequestAt - Date.now());
     // Persist a wake time instead of sleeping through a long interval or spending
@@ -90,13 +92,34 @@ export async function acquireHealthLease(db: D1Database, intervalSeconds: number
       const now = Date.now();
       const marked = await db
         .prepare(
-          `UPDATE metadata SET value=json_set(value,'$.lastRequestAt',?,'$.lastIntervalSeconds',?) WHERE key=? AND json_extract(value,'$.owner')=? AND CAST(json_extract(value,'$.expiresAt') AS INTEGER)>?`,
+          `UPDATE metadata SET value=json_set(value,'$.lastRequestAt',?,'$.lastIntervalSeconds',?,'$.pendingUntil',?) WHERE key=? AND json_extract(value,'$.owner')=? AND CAST(json_extract(value,'$.expiresAt') AS INTEGER)>?`,
         )
         // Never start a request that could outlive the lease and overlap a new owner.
-        .bind(now, interval, LEASE_KEY, owner, now + MAX_PROBE_MS)
+        .bind(
+          now,
+          interval,
+          now + Math.max(1, Math.min(MAX_PROBE_MS, remainingMs)),
+          LEASE_KEY,
+          owner,
+          now + MAX_PROBE_MS,
+        )
         .run();
       if (!marked.meta.changes) throw new ProbeDeferred(now + MAX_PROBE_MS);
       if (signal.aborted) throw new ProbeError('timeout', 'PROBE_DEADLINE_EXCEEDED');
+    },
+    async afterRequest() {
+      // A timestamp written before fetch includes variable D1 commit latency and
+      // cannot guarantee spacing as observed by the remote server. pendingUntil
+      // reserves the latest possible fetch start if an isolate loses this callback.
+      // After an observed completion, clear it and anchor the
+      // cooldown after receipt of headers (or failure/abort) instead; later
+      // requests then start at least the configured interval after that boundary.
+      await db
+        .prepare(
+          `UPDATE metadata SET value=json_set(value,'$.lastRequestAt',MAX(CAST(json_extract(value,'$.lastRequestAt') AS INTEGER),?),'$.pendingUntil',0) WHERE key=? AND json_extract(value,'$.owner')=?`,
+        )
+        .bind(Date.now(), LEASE_KEY, owner)
+        .run();
     },
     async release() {
       // Preserve previous request time and cooldown across invocation boundaries.
