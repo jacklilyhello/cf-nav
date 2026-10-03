@@ -48,14 +48,17 @@ export default {
     if (url.pathname === '/arrived') {
       const started = url.searchParams.get('started') || '';
       const interval = Date.now() - Number(started);
-      if (!/^\d{13}$/.test(started) || interval < 0 || interval > 60_000) {
+      // Allow one-hour durable cooldown acceptance plus bounded Cron queue delay.
+      if (!/^\d{13}$/.test(started) || interval < 0 || interval > 7_200_000) {
         return new Response('Invalid interval', { status: 400, headers });
       }
       return page(`${description} | interval=${interval}ms | UA=${userAgent}`);
     }
-    if (url.pathname === '/slow') {
-      await new Promise<void>((resolve) => setTimeout(resolve, 5000));
-      return page(`${description} | delayed=5000ms | UA=${userAgent}`);
+    if (['/slow', '/slow-25', '/slow-65'].includes(url.pathname)) {
+      const delay =
+        url.pathname === '/slow-25' ? 25_000 : url.pathname === '/slow-65' ? 65_000 : 5000;
+      await new Promise<void>((resolve) => setTimeout(resolve, delay));
+      return page(`${description} | delayed=${delay}ms | UA=${userAgent}`);
     }
     if (url.pathname === '/changed') {
       return page('This domain is for sale', 'This domain is parked. Buy this domain.');

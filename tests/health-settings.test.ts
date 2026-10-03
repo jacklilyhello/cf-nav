@@ -1,6 +1,6 @@
 import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { acquireHealthLease } from '../src/health/lease';
+import { acquireHealthLease, HEALTH_LEASE_MS } from '../src/health/lease';
 
 // Exercise the lease's conditional SQL against SQLite rather than a canned D1 mock.
 class LeaseDatabase {
@@ -28,6 +28,16 @@ class LeaseDatabase {
 
 let db: LeaseDatabase;
 const signal = () => new AbortController().signal;
+// Successful simulated target calls receive their response headers immediately.
+const completedRequest = async (
+  lease: NonNullable<Awaited<ReturnType<typeof acquireHealthLease>>>,
+  signal: AbortSignal,
+  interval?: number,
+  remainingMs?: number,
+) => {
+  await lease.beforeRequest(signal, interval, remainingMs);
+  await lease.afterRequest();
+};
 const claim = (interval = 2) => acquireHealthLease(db as unknown as D1Database, interval);
 beforeEach(() => {
   vi.useFakeTimers();
@@ -49,9 +59,9 @@ describe('persistent pacing shared by manual and scheduled checks', () => {
 
   it('spaces redirected requests and preserves pacing across invocation boundaries', async () => {
     const first = (await claim())!;
-    await first.beforeRequest(signal());
+    await completedRequest(first, signal());
     let completed = false;
-    const redirect = first.beforeRequest(signal()).then(() => {
+    const redirect = completedRequest(first, signal()).then(() => {
       completed = true;
     });
     await vi.advanceTimersByTimeAsync(1999);
@@ -61,7 +71,7 @@ describe('persistent pacing shared by manual and scheduled checks', () => {
     await first.release();
     const second = (await claim(5))!;
     completed = false;
-    const next = second.beforeRequest(signal()).then(() => {
+    const next = completedRequest(second, signal()).then(() => {
       completed = true;
     });
     await vi.advanceTimersByTimeAsync(4999);
@@ -73,23 +83,23 @@ describe('persistent pacing shared by manual and scheduled checks', () => {
 
   it('waits the initial cooldown before starting a short site timeout', async () => {
     const first = (await claim(10))!;
-    await first.beforeRequest(signal());
+    await completedRequest(first, signal());
     await first.release();
     const second = (await claim(10))!;
     const ready = second.waitUntilReady();
     await vi.advanceTimersByTimeAsync(10_000);
     await ready;
     const before = Date.now();
-    await second.beforeRequest(signal());
+    await completedRequest(second, signal());
     expect(Date.now()).toBe(before);
   });
 
   it('aborts pacing without recording a target request that never happened', async () => {
     const lease = (await claim(10))!;
-    await lease.beforeRequest(signal());
+    await completedRequest(lease, signal());
     const before = db.database.prepare('SELECT value FROM metadata').get()!.value;
     const controller = new AbortController();
-    const pending = lease.beforeRequest(controller.signal);
+    const pending = completedRequest(lease, controller.signal);
     const rejected = expect(pending).rejects.toThrow('PROBE_DEADLINE_EXCEEDED');
     await vi.advanceTimersByTimeAsync(1);
     controller.abort();
@@ -99,10 +109,10 @@ describe('persistent pacing shared by manual and scheduled checks', () => {
 
   it('recovers an expired lease without allowing the previous owner to release the new one', async () => {
     const first = (await claim())!;
-    await vi.advanceTimersByTimeAsync(120_000);
+    await vi.advanceTimersByTimeAsync(HEALTH_LEASE_MS);
     const second = await claim();
     expect(second).not.toBeNull();
-    await expect(first.beforeRequest(signal())).rejects.toThrow('HEALTH_RUN_LEASE_EXPIRED');
+    await expect(completedRequest(first, signal())).rejects.toThrow('HEALTH_REQUEST_DEFERRED');
     await first.release();
     expect(await claim()).toBeNull();
     await second!.release();
@@ -111,10 +121,69 @@ describe('persistent pacing shared by manual and scheduled checks', () => {
 
   it('refuses a new target request when the lease cannot cover its maximum timeout', async () => {
     const lease = (await claim())!;
-    await vi.advanceTimersByTimeAsync(100_001);
-    await expect(lease.beforeRequest(signal())).rejects.toThrow('HEALTH_RUN_LEASE_EXPIRED');
+    await vi.advanceTimersByTimeAsync(HEALTH_LEASE_MS - 60_000);
+    await expect(completedRequest(lease, signal())).rejects.toThrow('HEALTH_REQUEST_DEFERRED');
     expect(await claim()).toBeNull();
-    await vi.advanceTimersByTimeAsync(19_999);
+    await vi.advanceTimersByTimeAsync(60_000);
     expect(await claim()).not.toBeNull();
+  });
+  it('defers a 3600-second cooldown without creating any long-lived timer', async () => {
+    const first = (await claim(3600))!;
+    await completedRequest(first, signal());
+    const requestedAt = Date.now();
+    await first.release();
+    const second = (await claim(3600))!;
+    await expect(second.waitUntilReady()).rejects.toMatchObject({
+      nextRequestAt: requestedAt + 3_600_000,
+    });
+    expect(vi.getTimerCount()).toBe(0);
+    await second.release();
+    vi.setSystemTime(requestedAt + 3_599_999);
+    const early = (await claim(3600))!;
+    let completed = false;
+    const request = completedRequest(early, signal()).then(() => {
+      completed = true;
+    });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(completed).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    await request;
+    expect(completed).toBe(true);
+    const state = JSON.parse(
+      String(db.database.prepare('SELECT value FROM metadata').get()!.value),
+    );
+    expect(state.lastRequestAt).toBe(requestedAt + 3_600_000);
+  });
+
+  it('retains an already reserved long cooldown when new settings shorten the interval', async () => {
+    const first = (await claim(3600))!;
+    await completedRequest(first, signal());
+    const requestedAt = Date.now();
+    await first.release();
+    const second = (await claim(1))!;
+    await expect(completedRequest(second, signal())).rejects.toMatchObject({
+      nextRequestAt: requestedAt + 3_600_000,
+    });
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('defers a redirect when cooldown would consume the whole remaining deadline', async () => {
+    const lease = (await claim(10))!;
+    await completedRequest(lease, signal());
+    await expect(completedRequest(lease, signal(), 10, 2000)).rejects.toMatchObject({
+      nextRequestAt: Date.now() + 10_000,
+    });
+    expect(vi.getTimerCount()).toBe(0);
+  });
+  it('retains a conservative cooldown if an isolate loses the response completion callback', async () => {
+    const lease = (await claim(3600))!;
+    await lease.beforeRequest(signal());
+    const reservedAt = Date.now();
+    await lease.release();
+    const recovered = (await claim(3600))!;
+    await expect(recovered.waitUntilReady()).rejects.toMatchObject({
+      nextRequestAt: reservedAt + 60_000 + 3_600_000,
+    });
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

@@ -106,7 +106,7 @@ export default {
       );
     }
   },
-  async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(runChecks(env));
+  async scheduled(_event: ScheduledController, env: Env) {
+    await runChecks(env);
   },
 } satisfies ExportedHandler<Env>;

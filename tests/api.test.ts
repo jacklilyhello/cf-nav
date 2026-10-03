@@ -8,7 +8,7 @@ vi.mock('../src/icons', () => ({
 }));
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { generateKeyPair, SignJWT, createLocalJWKSet, exportJWK } from 'jose';
 import { adminApi, catalog } from '../src/api/catalog';
 import { authenticate, csrf, readJson, sha256 } from '../src/api/security';
@@ -34,9 +34,11 @@ beforeAll(async () => {
     }),
   );
   const db = await mf.getD1Database('DB');
-  const sql =
-    readFileSync('migrations/0001_initial.sql', 'utf8') +
-    readFileSync('migrations/0002_navigation_controls.sql', 'utf8');
+  const sql = readdirSync('migrations')
+    .filter((name) => name.endsWith('.sql'))
+    .sort()
+    .map((name) => readFileSync(`migrations/${name}`, 'utf8'))
+    .join('\n');
   for (const statement of sql
     .split(';')
     .map((x) => x.trim())

@@ -97,8 +97,8 @@ describe('persistent indexing and health controls', () => {
     }
     for (const invalid of [
       { healthIntervalSeconds: 0 },
-      { healthIntervalSeconds: 11 },
-      { healthTimeoutSeconds: 21 },
+      { healthIntervalSeconds: 3601 },
+      { healthTimeoutSeconds: 61 },
       { healthTimeoutSeconds: 1 },
       { healthUserAgent: 'bad\r\nInjected: yes' },
       { healthUserAgent: '中文' },
@@ -108,6 +108,23 @@ describe('persistent indexing and health controls', () => {
       ).rejects.toThrow();
     }
     expect((await getSettings(env)).healthIntervalSeconds).toBe(5);
+  });
+  it('persists both interval boundaries and 60-second timeout through the settings API', async () => {
+    const previous = await getSettings(env);
+    try {
+      for (const healthIntervalSeconds of [1, 3600]) {
+        const value = { ...previous, healthIntervalSeconds, healthTimeoutSeconds: 60 };
+        expect((await adminApi(request('/api/admin/settings', 'PUT', value), env)).status).toBe(
+          200,
+        );
+        expect(await getSettings(env)).toEqual(value);
+        expect(await (await adminApi(request('/api/admin/settings'), env)).json()).toMatchObject(
+          value,
+        );
+      }
+    } finally {
+      await adminApi(request('/api/admin/settings', 'PUT', previous), env);
+    }
   });
   it('keeps staging, alternate origins, APIs and private pages out of search', async () => {
     for (const [url, override] of [

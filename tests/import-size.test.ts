@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { adminApi } from '../src/api/catalog';
 import { IMPORT_MAX_BYTES, linkSchema } from '../src/api/validation';
 import type { Env } from '../src/shared/types';
@@ -43,10 +43,11 @@ beforeAll(async () => {
     }),
   );
   database = (await mf.getD1Database('DB')) as unknown as D1Database;
-  for (const statement of (
-    readFileSync('migrations/0001_initial.sql', 'utf8') +
-    readFileSync('migrations/0002_navigation_controls.sql', 'utf8')
-  )
+  for (const statement of readdirSync('migrations')
+    .filter((name) => name.endsWith('.sql'))
+    .sort()
+    .map((name) => readFileSync(`migrations/${name}`, 'utf8'))
+    .join('\n')
     .split(';')
     .map((sql) => sql.trim())
     .filter(Boolean))
